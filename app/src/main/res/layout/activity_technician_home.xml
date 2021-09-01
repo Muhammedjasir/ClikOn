@@ -1,152 +1,284 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/lite_white"
     android:layout_height="match_parent"
-    android:background="@drawable/bg5"
     tools:context=".activity.TechnicianHomeActivity">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_clikon_logo" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Technician"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
-
-        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/ic_shape8"
-            android:tooltipText="5dp">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="40dp"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
-    android:orientation="horizontal"
-    android:background="@drawable/shape7">
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <androidx.cardview.widget.CardView
-            android:id="@+id/tech_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="50dp"
-            android:minHeight="50dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:background="@color/white"
-            app:cardBackgroundColor="@color/white"
-            app:cardElevation="5dp"
-            app:cardCornerRadius="35dp"
-            app:cardPreventCornerOverlap="false">
-            <ImageView
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg5">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_clikon_logo" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Technician"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+            </RelativeLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_profile_frame"/>
+                android:background="@color/lite_white"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:orientation="horizontal"
+                        android:background="@drawable/shape7">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/tech_profile"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="50dp"
+                                android:minHeight="50dp"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginRight="15dp"
+                                android:background="@color/white"
+                                app:cardBackgroundColor="@color/white"
+                                app:cardElevation="5dp"
+                                app:cardCornerRadius="35dp"
+                                app:cardPreventCornerOverlap="false">
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/ic_profile_frame"/>
 
-        </androidx.cardview.widget.CardView>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@+id/tech_profile"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="13dp"
-            android:layout_marginTop="-5dp"
-            android:src="@drawable/ic_round_dot"/>
+                            </androidx.cardview.widget.CardView>
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_below="@+id/tech_profile"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="13dp"
+                                android:layout_marginTop="-5dp"
+                                android:src="@drawable/ic_round_dot"/>
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Technician Name"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Recently started:"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            android:drawablePadding="2dp"
-            android:drawableLeft="@drawable/ic_clock_recently"
-            android:textColor="@color/dark_gray"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="25"
-                android:layout_marginLeft="4dp"
-                android:textSize="12sp"
-                android:textStyle="normal"
-                android:textColor="@color/dark_gray"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Technician Name"
+                                android:textSize="17sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/black"/>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Recently started:"
+                                    android:textSize="12sp"
+                                    android:textStyle="normal"
+                                    android:drawablePadding="2dp"
+                                    android:drawableLeft="@drawable/ic_clock_recently"
+                                    android:textColor="@color/dark_gray"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="25"
+                                    android:layout_marginLeft="4dp"
+                                    android:textSize="12sp"
+                                    android:textStyle="normal"
+                                    android:textColor="@color/dark_gray"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Holded service:"
+                                    android:textSize="12sp"
+                                    android:textStyle="normal"
+                                    android:drawablePadding="2dp"
+                                    android:drawableLeft="@drawable/ic_holded"
+                                    android:textColor="@color/dark_gray"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="15"
+                                    android:layout_marginLeft="4dp"
+                                    android:textSize="12sp"
+                                    android:textStyle="normal"
+                                    android:textColor="@color/dark_gray"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"/>
+                            <LinearLayout
+                                android:id="@+id/received_product"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_received_product"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="Received Product"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/black"/>
+
+                            </LinearLayout>
+                            <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"/>
+                            <LinearLayout
+                                android:id="@+id/start_service"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_start_service"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="Start Service"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/black"/>
+
+                            </LinearLayout>
+                            <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"/>
+                            <LinearLayout
+                                android:id="@+id/search_product"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_search_product"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="Search Product"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/black"/>
+
+                            </LinearLayout>
+                            <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"/>
+                            <LinearLayout
+                                android:id="@+id/service_status"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_service_status"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="Service Status"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/black"/>
+
+                            </LinearLayout>
+                            <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Holded service:"
-                android:textSize="12sp"
-                android:textStyle="normal"
-                android:drawablePadding="2dp"
-                android:drawableLeft="@drawable/ic_holded"
-                android:textColor="@color/dark_gray"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="15"
-                android:layout_marginLeft="4dp"
-                android:textSize="12sp"
-                android:textStyle="normal"
-                android:textColor="@color/dark_gray"/>
-        </LinearLayout>
-
-    </LinearLayout>
-
-
-
-</LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
     </ScrollView>
 </RelativeLayout>
