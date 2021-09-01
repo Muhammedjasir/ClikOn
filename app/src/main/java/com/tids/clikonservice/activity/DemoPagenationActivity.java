@@ -37,6 +37,13 @@ Button Collection, Transport, Technician;
                 startActivity(intent);
             }
         });
+        Collection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DemoPagenationActivity.this,TechnicianHomeActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }
