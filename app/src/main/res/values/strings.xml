@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">clikon service</string>
+
+    <string name="invalid_number">Invalid Mobile Number</string>
+    <string name="invalid_password">Invalid Password</string>
+    <string name="no_network_connection">No network connection</string>
+
+
+</resources>
