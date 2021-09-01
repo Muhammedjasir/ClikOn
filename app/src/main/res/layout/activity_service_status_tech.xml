@@ -190,10 +190,7 @@
                     android:padding="5dp"
                     android:textStyle="normal"
                     android:textSize="15dp"
-
-                    android:background="@drawable/shape8_w_rectangle">
-
-                </EditText>
+                    android:background="@drawable/shape8_w_rectangle"></EditText>
             </LinearLayout>
 
         </LinearLayout>
