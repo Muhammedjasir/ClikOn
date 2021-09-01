@@ -190,10 +190,15 @@
                     android:padding="5dp"
                     android:textStyle="normal"
                     android:textSize="15dp"
-
-                    android:background="@drawable/shape8_w_rectangle">
-
-                </EditText>
+                    android:drawableRight="@drawable/ic_search_black"
+                    android:drawablePadding="5dp"
+                    android:background="@drawable/shape8_w_rectangle"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    tools:listitem="@layout/row_service_month" />
             </LinearLayout>
 
         </LinearLayout>
