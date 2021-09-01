@@ -3,6 +3,7 @@ package com.tids.clikonservice.activity;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 
@@ -26,6 +27,8 @@ public class ReceivedProductActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
+
+        Intent intent = new Intent(getApplicationContext(),TechnicianHomeActivity.class);
+        startActivity(intent);
     }
 }
