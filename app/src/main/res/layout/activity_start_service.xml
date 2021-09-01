@@ -350,7 +350,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@android:color/transparent"
-                                    android:hint="Enter the problems finded"
+                                    android:hint="Enter the spare parts used"
                                     android:maxLines="1"
                                     android:minHeight="30dp"
                                     android:textColor="@color/light_gray"
