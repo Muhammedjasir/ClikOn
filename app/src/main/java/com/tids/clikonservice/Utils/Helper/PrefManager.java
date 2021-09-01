@@ -29,6 +29,9 @@ public class PrefManager {
     public static final String SELECTED_LANGUAGE_KEY="selected_language_key";
     public static final String LOGIN_FLAG = "login_flag";
 
+    public static final String START_SERVICES = "start_services";
+    public static final String HOLD_SERVICES = "hold_services";
+
     private static final String ENCRYPTED_EMAIL = "encrypted_email";
     private static final String ENCRYPTED_MOBILE_NUMBER = "encrypted_mobile_number";
     private static final String ENCRYPTED_PASSWORD = "encrypted_password";
@@ -83,15 +86,6 @@ public class PrefManager {
 
     public void setDeviceLocationAddress(String count) {
         editor.putString(DEVICE_LOCATION_ADDRESS, count);
-        editor.commit();
-    }
-
-    public String getDeliveryFee() {
-        return pref.getString(DELIVERY_FEE, "");
-    }
-
-    public void setDeliveryFee(String fee) {
-        editor.putString(DELIVERY_FEE, fee);
         editor.commit();
     }
 
@@ -190,6 +184,25 @@ public class PrefManager {
 
     public void setSelectedLanguageKey(String selectedLanguageKey){
         editor.putString(SELECTED_LANGUAGE_KEY,selectedLanguageKey);
+        editor.commit();
+    }
+
+    public String getStartServices(){
+        return  pref.getString(START_SERVICES,"");
+    }
+
+    public void setStartServices(String startServices){
+        editor.putString(START_SERVICES,startServices);
+        editor.commit();
+    }
+
+    public String getHoldServices(){
+        return pref.getString(HOLD_SERVICES,"");
+
+    }
+
+    public void setHoldServices(String holdServices){
+        editor.putString(HOLD_SERVICES,"");
         editor.commit();
     }
 }

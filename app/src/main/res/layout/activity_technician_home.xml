@@ -74,12 +74,14 @@
                                 app:cardCornerRadius="35dp"
                                 app:cardPreventCornerOverlap="false">
                                 <ImageView
+                                    android:id="@+id/iv_profile"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:src="@drawable/ic_profile_frame"/>
 
                             </androidx.cardview.widget.CardView>
                             <ImageView
+                                android:id="@+id/iv_online_status"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentBottom="true"
@@ -96,6 +98,7 @@
                             android:layout_gravity="center"
                             android:orientation="vertical">
                             <TextView
+                                android:id="@+id/tv_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Technician Name"
@@ -116,6 +119,7 @@
                                     android:drawableLeft="@drawable/ic_clock_recently"
                                     android:textColor="@color/dark_gray"/>
                                 <TextView
+                                    android:id="@+id/tv_start_services"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="25"
@@ -138,6 +142,7 @@
                                     android:drawableLeft="@drawable/ic_holded"
                                     android:textColor="@color/dark_gray"/>
                                 <TextView
+                                    android:id="@+id/tv_hold_services"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="15"

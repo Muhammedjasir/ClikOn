@@ -123,8 +123,6 @@
 
             </LinearLayout>
 
-
-
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -137,7 +135,7 @@
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/row_product_details" />
+                tools:listitem="@layout/row_received_product" />
 
         </LinearLayout>
 
