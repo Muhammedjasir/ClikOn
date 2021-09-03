@@ -19,7 +19,7 @@
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/drawable/shape8_w_rectangle.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_demo_pagenation.xml" value="0.1" />
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_login.xml" value="0.1" />
-        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_received_product.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_received_product.xml" value="0.14666666666666667" />
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_service_status_main.xml" value="0.1" />
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_service_status_sv.xml" value="0.1" />
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_service_status_tech.xml" value="0.15896739130434784" />
@@ -31,7 +31,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

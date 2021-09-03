@@ -106,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:hint="User Name"
-                        android:inputType="numberPassword"
+                        android:inputType="text"
                         android:maxLines="1"
                         android:minHeight="40dp"
                         android:textColor="@color/light_gray"
