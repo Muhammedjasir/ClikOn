@@ -32,10 +32,6 @@ public class PrefManager {
     public static final String START_SERVICES = "start_services";
     public static final String HOLD_SERVICES = "hold_services";
 
-    private static final String ENCRYPTED_EMAIL = "encrypted_email";
-    private static final String ENCRYPTED_MOBILE_NUMBER = "encrypted_mobile_number";
-    private static final String ENCRYPTED_PASSWORD = "encrypted_password";
-
 
     // Shared Preferences
     SharedPreferences pref;
@@ -149,27 +145,6 @@ public class PrefManager {
 
     public void setUserLongitude(String longitude){
         editor.putString(USER_LONGITUDE,longitude);
-        editor.commit();
-    }
-
-    public String getEncryptedEmail() { return pref.getString(ENCRYPTED_EMAIL,""); }
-
-    public void setEncryptedEmail(String email) {
-        editor.putString(ENCRYPTED_EMAIL,email);
-        editor.commit();
-    }
-
-    public String getEncryptedMobileNumber() { return pref.getString(ENCRYPTED_MOBILE_NUMBER,""); }
-
-    public void setEncryptedMobileNumber(String mobileNumber) {
-        editor.putString(ENCRYPTED_MOBILE_NUMBER,mobileNumber);
-        editor.commit();
-    }
-
-    public String getEncryptedPassword() { return pref.getString(ENCRYPTED_PASSWORD,""); }
-
-    public void setEncryptedPassword(String password) {
-        editor.putString(ENCRYPTED_PASSWORD,password);
         editor.commit();
     }
 

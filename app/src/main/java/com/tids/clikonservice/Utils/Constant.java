@@ -6,12 +6,14 @@ public class Constant {
         //write your action here if need
     }
 
-    private static String domain = "api.techlogica.com";
-    //    public static String BASE_URL="https://api.techlogica.com/moneytrftest/moneytrf/";
-    public static String BASE_URL = "https://api.techlogica.com/MoneytrfNew/moneytrf/";
+
+    //url
+    public static String BASE_URL = "https://api.techlogica.com/atmbharath/api/";
+
 
     //We will use this to store the user token number into shared preference
     public static final String SHARED_PREF_NAME = "com.tids.clikonservice"; //pcakage name+ id
+
 
     public static final String USER_USERNAME = "username";
     public static final String USER_NUMBER = "mobilenumber";  // mobile number

@@ -92,6 +92,7 @@
                     app:cardCornerRadius="35dp"
                     app:cardPreventCornerOverlap="false">
                     <ImageView
+                        android:id="@+id/iv_scanner"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/ic_qr_code_btn"/>
@@ -127,30 +128,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:minHeight="20dp"
-                    android:background="@drawable/shape8_w_rectangle"
-                    android:textColorHint="@color/light_gray">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edt_serial_num"
-                        android:layout_width="match_parent"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:hint="Enter the QR code number"
-                        android:maxLines="1"
-                        android:textColor="@color/light_gray"
-                        android:textSize="14sp" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_weight="1"
+                        android:minHeight="20dp"
+                        android:background="@drawable/shape8_w_rectangle"
+                        android:textColorHint="@color/light_gray">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_serial_num"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:hint="Enter the QR code number"
+                            android:maxLines="1"
+                            android:textColor="@color/light_gray"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:background="@color/primary_color">
                         <ImageView
+                            android:id="@+id/iv_serial_num_add"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_btn_add"/>
@@ -168,7 +170,7 @@
             android:layout_marginRight="10dp"
             android:orientation="vertical">
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
+                android:id="@+id/rv_scanned_products"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:listitem="@layout/row_received_product" />
@@ -184,19 +186,20 @@
         android:layout_marginBottom="10dp"
         android:gravity="center">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@drawable/button_bg"
-        android:text="Completed"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:minWidth="160dp"
-        android:minHeight="40dp"
-        android:textSize="18dp"
-        android:gravity="center"
-        android:textStyle="bold" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/bt_complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@drawable/button_bg"
+            android:text="Completed"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:minWidth="160dp"
+            android:minHeight="40dp"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </RelativeLayout>

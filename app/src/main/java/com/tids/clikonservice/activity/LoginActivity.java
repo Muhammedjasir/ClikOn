@@ -11,12 +11,19 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.tids.clikonservice.R;
@@ -24,6 +31,10 @@ import com.tids.clikonservice.Utils.Constant;
 import com.tids.clikonservice.Utils.Helper.Device;
 import com.tids.clikonservice.Utils.Helper.PrefManager;
 import com.tids.clikonservice.Utils.Utils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -52,48 +63,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         edt_password = findViewById(R.id.edt_password);
         btn_login = findViewById(R.id.btn_login);
 
-//        FirebaseApp.initializeApp(getApplicationContext());
+        AndroidNetworking.initialize(getApplicationContext());
 
         pref = new PrefManager(this);
         sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-//        email = sp.getString(Constant.USER_EMAIL, "");
 
         getDeviceId();
 
         mLogin.setOnClickListener(this);
-
-        mLogin.setOnClickListener(new View.OnClickListener() {
-            boolean isAnimated=false;
-            @Override
-            public void onClick(View v) {
-                if (!isAnimated) {
-                    lockerAnim.playAnimation();
-                    lockerAnim.setSpeed(3f);
-                    isAnimated=true;}
-                else {
-                    isAnimated=false;
-                }
-                if (v == mLogin){
-
-                    String username = edt_username.getText().toString().trim();
-                    String password = edt_password.getText().toString().trim();
-
-                    if (username.isEmpty()){
-
-                    }else if (password.isEmpty()){
-
-                    }else {
-
-
-                        Intent intent = new Intent(LoginActivity.this,DemoPagenationActivity.class);
-                        startActivity(intent);
-                    }
-
-                }
-            }
-
-
-        });
 
         Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.bgvideo);
 
@@ -156,22 +133,96 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         // prevent button double click
                         btn_login.setEnabled(false);
-                        // get fcm tocken
-//                        GetDeviceToken(username,password);
+
+                        getToken(username,password);
                     } else {
                         customToast(getString(R.string.no_network_connection));
                     }
-
-                    Intent intent = new Intent(LoginActivity.this,DemoPagenationActivity.class);
-                    startActivity(intent);
                 }
 
             }
         }
     }
 
+    private void getToken(String username, String password) {
+        try {
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("username", username);
+            jsonObject.put("encryppassword", password);
+
+            AndroidNetworking.post(Constant.BASE_URL)
+                    .addJSONObjectBody(jsonObject)
+                    .setTag("login")
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.e("Response::",response.toString());
+
+                            try {
+                                String token =  response.getString("token");
+                                String tokenExpireTime =  response.getString("token_expire_time");
+
+                                Log.e("token::",token);
+                                Log.e("exp.date::",tokenExpireTime);
+
+                                getLogin(token,username);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            showError(anError);
+                        }
+                    });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void getLogin(String token,String username) {
+        try {
+
+            AndroidNetworking.get(Constant.BASE_URL+"GetTable")
+                    .addPathParameter("table_name", "ADM_USER")
+                    .addQueryParameter("condition", "USER_ID='"+username+"'")
+                    .addHeaders("Authorization", "Bearer "+token)
+                    .setTag("user_data")
+                    .setPriority(Priority.LOW)
+                    .build()
+                    .getAsJSONArray(new JSONArrayRequestListener() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+
+                            Log.e("Response::",response.toString());
+//                            Intent intent = new Intent(LoginActivity.this,DemoPagenationActivity.class);
+//                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            showError(anError);
+                        }
+                    });
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
     private void customToast(String message){
         Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.colorPrimary)).show();
+    }
+
+    private void showError(ANError anError) {
+        Toast.makeText(LoginActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+        Log.d("Error :: ", anError.getErrorBody());
     }
 
     @Override
