@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ClikonService"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.SearchProductActivity"></activity>
+        <activity android:name=".activity.DailyReportActivity"></activity>
+        <activity android:name=".activity.SearchProductActivity" />
         <activity
             android:name=".activity.SplashScreenActivity"
             android:exported="true">
