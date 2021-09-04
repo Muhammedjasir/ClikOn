@@ -24,6 +24,7 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.tids.clikonservice.R;
@@ -153,7 +154,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             AndroidNetworking.post(Constant.BASE_URL)
                     .addJSONObjectBody(jsonObject)
-                    .setTag("login")
+//                    .setTag(this)
                     .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
@@ -165,16 +166,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 String token =  response.getString("token");
                                 String tokenExpireTime =  response.getString("token_expire_time");
 
-                                Log.e("token::",token);
-                                Log.e("exp.date::",tokenExpireTime);
-
                                 getLogin(token,username);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
-
                         @Override
                         public void onError(ANError anError) {
                             showError(anError);
@@ -188,25 +185,59 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void getLogin(String token,String username) {
         try {
 
+            String condition = "USER_ID='"+username+"'";
+            String authorization = "Bearer "+token;
+
             AndroidNetworking.get(Constant.BASE_URL+"GetTable")
-                    .addPathParameter("table_name", "ADM_USER")
-                    .addQueryParameter("condition", "USER_ID='"+username+"'")
-                    .addHeaders("Authorization", "Bearer "+token)
-                    .setTag("user_data")
+                    .addQueryParameter("table_name", Constant.TECHNICIAN_USER)
+                    .addQueryParameter("condition", condition)
+                    .addHeaders("Authorization", authorization)
+                    .setTag(this)
                     .setPriority(Priority.LOW)
                     .build()
-                    .getAsJSONArray(new JSONArrayRequestListener() {
+                    .getAsJSONObject(new JSONObjectRequestListener()  {
                         @Override
-                        public void onResponse(JSONArray response) {
-
+                        public void onResponse(JSONObject response) {
                             Log.e("Response::",response.toString());
-//                            Intent intent = new Intent(LoginActivity.this,DemoPagenationActivity.class);
-//                            startActivity(intent);
-                        }
 
+                            try {
+                                if (response.getBoolean("status")){
+                                    //Get the instance of JSONArray that contains JSONObjects
+                                    JSONArray jsonArray = response.getJSONArray("data");
+
+                                    if(jsonArray.length() != 0){
+                                        String user_name = jsonArray.getJSONObject(0).getString("USER_ID");
+                                        String user_password = jsonArray.getJSONObject(0).getString("USER_PWD");
+                                        String user_type = jsonArray.getJSONObject(0).getString("USER_GROUP_ID");
+
+                                        SharedPreferences.Editor editor = sp.edit();
+                                        editor.putString(Constant.USER_USERNAME, user_name);
+                                        editor.putString(Constant.USER_PASSWORD, user_password);
+                                        editor.putString(Constant.USER_TYPE, user_type);
+                                        editor.apply();
+
+                                        pref.setKeyDevice("1");
+                                        pref.setLogin(true);
+                                        pref.setKeyDeviceId(deviceId);
+                                        pref.setLoginFlag(true);
+
+                                        Intent intent = new Intent(getApplicationContext(),TechnicianHomeActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+
+                                }else {
+                                    customToast(response.getString("message"));
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
                         @Override
                         public void onError(ANError anError) {
                             showError(anError);
+
                         }
                     });
 
@@ -215,14 +246,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    private void showError(ANError anError) {
+        Toast.makeText(LoginActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+        Log.e("Error :: ", anError.getErrorBody());
+    }
 
     private void customToast(String message){
         Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.colorPrimary)).show();
-    }
-
-    private void showError(ANError anError) {
-        Toast.makeText(LoginActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
-        Log.d("Error :: ", anError.getErrorBody());
     }
 
     @Override
