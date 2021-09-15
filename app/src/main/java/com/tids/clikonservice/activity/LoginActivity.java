@@ -206,14 +206,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     JSONArray jsonArray = response.getJSONArray("data");
 
                                     if(jsonArray.length() != 0){
+                                        String user_id = jsonArray.getJSONObject(0).getString("USER_SYS_ID");
                                         String user_name = jsonArray.getJSONObject(0).getString("USER_ID");
                                         String user_password = jsonArray.getJSONObject(0).getString("USER_PWD");
                                         String user_type = jsonArray.getJSONObject(0).getString("USER_GROUP_ID");
 
                                         SharedPreferences.Editor editor = sp.edit();
+                                        editor.putString(Constant.USER_USERID, user_id);
                                         editor.putString(Constant.USER_USERNAME, user_name);
                                         editor.putString(Constant.USER_PASSWORD, user_password);
                                         editor.putString(Constant.USER_TYPE, user_type);
+                                        editor.putString(Constant.USER_AUTHORIZATION, token);
                                         editor.apply();
 
                                         pref.setKeyDevice("1");

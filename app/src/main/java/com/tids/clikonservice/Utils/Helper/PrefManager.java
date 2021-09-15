@@ -32,6 +32,11 @@ public class PrefManager {
     public static final String START_SERVICES = "start_services";
     public static final String HOLD_SERVICES = "hold_services";
 
+    public static final String TECHNICIAN_PRODUCT_STATUS = "technician_product_status";
+    public static final String TECHNICIAN_PRODUCT_ID = "technician_product_id";
+    public static final String TECHNICIAN_PRODUCT_NAME = "technician_product_name";
+    public static final String TECHNICIAN_PRODUCT_DOC_ID = "technician_product_doc_id";
+
 
     // Shared Preferences
     SharedPreferences pref;
@@ -178,6 +183,42 @@ public class PrefManager {
 
     public void setHoldServices(String holdServices){
         editor.putString(HOLD_SERVICES,"");
+        editor.commit();
+    }
+
+    public String getTechnicianProductId(){
+        return pref.getString(TECHNICIAN_PRODUCT_ID,"");
+    }
+
+    public void setTechnicianProductId(String productId){
+        editor.putString(TECHNICIAN_PRODUCT_ID,productId);
+        editor.commit();
+    }
+
+    public String getTechnicianProductStatus(){
+        return pref.getString(TECHNICIAN_PRODUCT_STATUS,"");
+    }
+
+    public void setTechnicianProductStatus(String productStatus){
+        editor.putString(TECHNICIAN_PRODUCT_STATUS,productStatus);
+        editor.commit();
+    }
+
+    public String getTechnicianProductName(){
+        return pref.getString(TECHNICIAN_PRODUCT_NAME,"");
+    }
+
+    public void setTechnicianProductName(String productName){
+        editor.putString(TECHNICIAN_PRODUCT_NAME,productName);
+        editor.commit();
+    }
+
+    public String getTechnicianProductDocId(){
+        return pref.getString(TECHNICIAN_PRODUCT_DOC_ID,"");
+    }
+
+    public void setTechnicianProductDocId(String doc_id){
+        editor.putString(TECHNICIAN_PRODUCT_DOC_ID,doc_id);
         editor.commit();
     }
 }

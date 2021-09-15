@@ -17,8 +17,8 @@ public class DateTimeFormats {
 
     public static final String PRINT_DATE_TIME_FORMAT = "dd/MM/yyyy, HH:mm:ss ";
 
-    public static final String APP_DATE_DAY_FORMAT = "dd/MM/yy EE";
-    public static final String APP_SIMPLE_DATE_FORMAT = "dd/MM/yy";
+    public static final String APP_DATE_DAY_FORMAT = "dd/MM/yy";
+    public static final String APP_SIMPLE_DATE_FORMAT = "dd/MMM/yy";
 
 
 }

@@ -81,8 +81,8 @@ public class TechnicianHomeActivity extends AppCompatActivity {
             startActivity(intent);
         });
         findViewById(R.id.search_product).setOnClickListener(v ->{
-//            Intent intent = new Intent(getApplicationContext(),ReceivedProductActivity.class);
-//            startActivity(intent);
+            Intent intent = new Intent(getApplicationContext(),SearchProductActivity.class);
+            startActivity(intent);
         });
         findViewById(R.id.service_status).setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(),ServiceStatusTechActivity.class);

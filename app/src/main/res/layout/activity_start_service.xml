@@ -33,6 +33,7 @@
 
         </LinearLayout>
         <RelativeLayout
+            android:id="@+id/mainlayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="25dp"
@@ -44,6 +45,7 @@
                 android:layout_marginTop="30dp"
                 android:orientation="vertical">
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -75,6 +77,7 @@
                     app:cardElevation="5dp"
                     app:cardCornerRadius="10dp"
                     android:layout_marginLeft="15dp"
+                    android:layout_marginRight="20dp"
                     app:cardPreventCornerOverlap="false">
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -94,13 +97,14 @@
                                 android:gravity="center"
                                 android:textColor="@color/dark_gray"/>
                             <TextView
+                                android:id="@+id/product_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Iphone"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:layout_marginLeft="5dp"
-                                android:gravity="center"
+                                android:gravity="left"
                                 android:textColor="@color/dark_gray"/>
                         </LinearLayout>
                         <LinearLayout
@@ -116,6 +120,7 @@
                                 android:gravity="center"
                                 android:textColor="@color/dark_gray"/>
                             <TextView
+                                android:id="@+id/product_serial_number"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="JTPG27KU001"
@@ -138,6 +143,7 @@
                                 android:gravity="center"
                                 android:textColor="@color/dark_gray"/>
                             <TextView
+                                android:id="@+id/product_batch_number"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="CK34031"
@@ -160,11 +166,12 @@
                                 android:gravity="center"
                                 android:textColor="@color/dark_gray"/>
                             <TextView
+                                android:id="@+id/tv_product_complaint"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text=" Display is not working"
                                 android:textSize="16sp"
-                                android:textStyle="bold"
+                                android:textStyle="normal"
                                 android:layout_marginLeft="5dp"
                                 android:gravity="center"
                                 android:textColor="@color/dark_gray"/>
@@ -186,6 +193,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
                             android:orientation="horizontal">
                             <TextView
                                 android:layout_width="wrap_content"
@@ -196,6 +204,7 @@
                                 android:gravity="center"
                                 android:textColor="@color/dark_gray"/>
                             <TextView
+                                android:id="@+id/tv_product_service_registered"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="13/07/2021"
@@ -208,6 +217,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
                             android:orientation="horizontal">
                             <TextView
                                 android:layout_width="wrap_content"
@@ -218,9 +228,10 @@
                                 android:gravity="center"
                                 android:textColor="@color/dark_gray"/>
                             <TextView
+                                android:id="@+id/tv_product_received"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="15/07/2021"
+                                android:text=""
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:layout_marginLeft="5dp"
@@ -230,6 +241,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
                             android:orientation="horizontal">
                             <TextView
                                 android:layout_width="wrap_content"
@@ -240,6 +252,7 @@
                                 android:gravity="center"
                                 android:textColor="@color/dark_gray"/>
                             <TextView
+                                android:id="@+id/product_service_started"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="18/07/2021"
@@ -252,6 +265,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
                             android:orientation="horizontal">
                             <TextView
                                 android:layout_width="wrap_content"
@@ -262,6 +276,7 @@
                                 android:gravity="center"
                                 android:textColor="@color/dark_gray"/>
                             <TextView
+                                android:id="@+id/tv_estimate_date"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -269,6 +284,7 @@
                                 android:layout_marginRight="10dp"
                                 android:background="@drawable/edit_text_white_bg"
                                 android:drawableRight="@drawable/ic_arrow_down"
+                                android:focusable="false"
                                 android:gravity="center_vertical"
                                 android:minWidth="120dp"
                                 android:minHeight="35dp"
@@ -276,6 +292,7 @@
                                 android:textColor="@color/dark_gray"
                                 android:textSize="12sp" />
                             <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/bt_update_estimatetime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/button_bg"
@@ -292,7 +309,8 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="7dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="15dp"
                             android:gravity="center"
                             android:orientation="horizontal">
                             <com.google.android.material.textfield.TextInputLayout
@@ -303,6 +321,7 @@
                                 android:textColorHint="@color/light_gray">
 
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/ed_find_problems"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@android:color/transparent"
@@ -313,6 +332,7 @@
                                     android:textSize="14sp" />
                             </com.google.android.material.textfield.TextInputLayout>
                             <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/btn_Technician_remarks"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/button_bg"
@@ -326,60 +346,18 @@
                                 android:textSize="18dp"
                                 android:textStyle="bold" />
                             <ImageView
+                                android:visibility="gone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
                                 android:src="@drawable/ic_btn_add"/>
                         </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="7dp"
-                            android:layout_marginBottom="7dp"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@drawable/shape8_w_rectangle"
-                                android:textColorHint="@color/light_gray">
-
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:background="@android:color/transparent"
-                                    android:hint="Enter the spare parts used"
-                                    android:maxLines="1"
-                                    android:minHeight="30dp"
-                                    android:textColor="@color/light_gray"
-                                    android:textSize="14sp" />
-                            </com.google.android.material.textfield.TextInputLayout>
-                            <androidx.appcompat.widget.AppCompatButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/button_bg"
-                                android:text="Update"
-                                android:gravity="center"
-                                android:layout_marginLeft="5dp"
-                                android:layout_gravity="center"
-                                android:minWidth="90dp"
-                                android:textAllCaps="false"
-                                android:textColor="@color/white"
-                                android:textSize="18dp"
-                                android:textStyle="bold" />
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:src="@drawable/ic_btn_add"/>
-                        </LinearLayout>
-
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/white"
                             app:cardBackgroundColor="@color/white"
+                            android:layout_marginBottom="5dp"
                             app:cardElevation="5dp"
                             app:cardCornerRadius="10dp"
                             app:cardPreventCornerOverlap="false">
@@ -408,6 +386,7 @@
                                         android:textColorHint="@color/light_gray">
 
                                         <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/tv_pouse_reason"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:background="@android:color/transparent"
@@ -424,6 +403,7 @@
                                         android:layout_marginTop="9dp"
                                         android:orientation="horizontal">
                                         <androidx.appcompat.widget.AppCompatButton
+                                            android:visibility="invisible"
                                             android:id="@+id/btn_delete"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
@@ -437,12 +417,12 @@
                                             android:textSize="18dp"
                                             android:textStyle="bold" />
                                         <androidx.appcompat.widget.AppCompatButton
-                                            android:id="@+id/btn_add"
+                                            android:id="@+id/btn_pause"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_gravity="bottom"
                                             android:background="@drawable/button_bg"
-                                            android:text="Remove"
+                                            android:text="Hold"
                                             android:minWidth="115dp"
                                             android:minHeight="40dp"
                                             android:layout_marginLeft="10dp"
@@ -457,6 +437,7 @@
 
                         </androidx.cardview.widget.CardView>
                         <androidx.cardview.widget.CardView
+                            android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
@@ -617,6 +598,7 @@
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
                         <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/bt_service_completed"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
@@ -628,7 +610,7 @@
                             android:layout_marginRight="30dp"
                             android:layout_marginLeft="30dp"
                             android:layout_marginBottom="5dp"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="17dp"
                             android:gravity="center"
                             android:textStyle="bold" />
 

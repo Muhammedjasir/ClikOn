@@ -40,7 +40,6 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="120dp"
                 android:layout_height="110dp"
-                android:background="@color/white"
                 app:cardBackgroundColor="@color/white"
                 app:cardElevation="5dp"
                 app:cardCornerRadius="10dp"
@@ -49,7 +48,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="5dp"
+                    android:padding="5dp"
                     android:gravity="center"
                     android:orientation="vertical">
                     <LinearLayout
@@ -61,7 +60,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="40"
+                            android:text="0"
                             android:textSize="30sp"
                             android:textColor="@color/blue_shade"
                             android:textStyle="bold"/>
@@ -69,7 +68,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Start Service"
+                        android:text="Not Started"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:gravity="center"
@@ -97,10 +96,11 @@
                         android:gravity="center"
                         android:background="@drawable/ic_round_orange">
                         <TextView
+                            android:id="@+id/tv_hold_prd_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="25"
+                            android:text="0"
                             android:textSize="30sp"
                             android:textColor="@color/orange_shade"
                             android:textStyle="bold"/>
@@ -139,6 +139,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/ic_clock"/>
                         <LinearLayout
+                            android:visibility="gone"
                             android:layout_width="20dp"
                             android:layout_height="22dp"
                             android:gravity="center"
@@ -185,8 +186,8 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Search month or date"
+                    android:layout_height="45dp"
+                    android:hint="Search"
                     android:padding="5dp"
                     android:textStyle="normal"
                     android:textSize="15dp"
@@ -197,8 +198,7 @@
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    tools:listitem="@layout/row_service_month" />
+                    android:layout_marginTop="5dp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -207,7 +207,7 @@
         android:id="@+id/back_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_back_btn"
+        android:src="@drawable/ic_back_2"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="15dp"/>
 </RelativeLayout>

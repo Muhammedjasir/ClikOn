@@ -13,11 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ClikonService"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.DailyReportActivity"></activity>
+        <activity
+            android:name=".activity.CaptureActivity"
+            android:screenOrientation="sensorPortrait"
+            android:clearTaskOnLaunch="true"
+            android:stateNotNeeded="true"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:exported="true" />
+        <activity android:name=".activity.DailyReportActivity" />
         <activity android:name=".activity.SearchProductActivity" />
         <activity
             android:name=".activity.SplashScreenActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action
                     android:name="android.intent.action.MAIN"
@@ -45,7 +53,7 @@
         <activity android:name=".activity.ServiceStatusSvActivity" />
         <activity android:name=".activity.RegistrationActivity" />
         <activity android:name=".activity.StaffHomeActivity" />
-        <activity android:name=".activity.LoginActivity"/>
+        <activity android:name=".activity.LoginActivity" />
     </application>
 
 </manifest>

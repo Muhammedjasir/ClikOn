@@ -117,14 +117,14 @@
                         android:textColor="@color/dark_gray"/>
                 </LinearLayout>
                 <TableRow
+                    android:id="@+id/iv_play"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right">
                     <ImageView
-                        android:id="@+id/iv_play"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_play" />
+                        android:src="@drawable/ic_pause" />
                 </TableRow>
             </LinearLayout>
         </LinearLayout>

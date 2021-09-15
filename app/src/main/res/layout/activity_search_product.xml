@@ -9,8 +9,8 @@
     tools:context=".activity.SearchProductActivity">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="@color/primary_color"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/blue_shade"
         android:gravity="center_vertical"
         android:orientation="horizontal">
         <ImageView
@@ -19,15 +19,19 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back_btn"
             android:layout_marginLeft="15dp"/>
+<!--        android:drawableLeft="@drawable/ic_qr_code_gray_btn"-->
        <EditText
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:background="@drawable/shape4_ofw"
            android:gravity="center_vertical"
            android:text="Search Product"
-           android:drawableLeft="@drawable/ic_qr_code_gray_btn"
            android:drawablePadding="10dp"
-           android:padding="6dp"
+           android:paddingLeft="8dp"
+           android:paddingRight="8dp"
+           android:paddingTop="6dp"
+           android:paddingBottom="6dp"
+           android:textSize="12sp"
            android:drawableRight="@drawable/ic_search_bold_gray"
            android:layout_marginLeft="10dp"
            android:layout_marginRight="30dp"/>
