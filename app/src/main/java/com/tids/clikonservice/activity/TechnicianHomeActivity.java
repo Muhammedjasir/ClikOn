@@ -62,7 +62,7 @@ public class TechnicianHomeActivity extends AppCompatActivity {
 //        }
 
         String user_profile = sp.getString(Constant.USER_PROFILE, "");
-        if (!user_profile.equalsIgnoreCase("")){
+        if (!user_profile.equalsIgnoreCase("") || user_profile != null){
             Glide.with(getApplicationContext())
                     .load(user_profile)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -72,6 +72,16 @@ public class TechnicianHomeActivity extends AppCompatActivity {
                     .into(iv_profile);
         }
 
+        TextView tv_recently_started = findViewById(R.id.tv_start_services);
+        TextView tv_num_hold_services = findViewById(R.id.tv_hold_services);
+        tv_recently_started.setText(pref.getTechnicianProductName());
+        tv_num_hold_services.setText(pref.getHoldProductCount());
+
+
+        findViewById(R.id.layout_profile).setOnClickListener(v ->{
+            Intent intent = new Intent(getApplicationContext(),TechnicianProfileActivity.class);
+            startActivity(intent);
+        });
         findViewById(R.id.received_product).setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(),ReceivedProductActivity.class);
             startActivity(intent);

@@ -88,8 +88,6 @@ public class TechnicianScannedProductAdapter extends RecyclerView.Adapter<Techni
                     jsonObject.put("SM_STS_CODE","SERVSRT");
                     jsonObject.put("SM_SRP_SYS_ID",technicianID);
 
-                    Log.e("url::",Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
-                            model.getProductScannedId());
                     Log.e("Authorization::",authorization);
                     Log.e("body::",jsonObject.toString());
 

@@ -36,6 +36,7 @@ public class PrefManager {
     public static final String TECHNICIAN_PRODUCT_ID = "technician_product_id";
     public static final String TECHNICIAN_PRODUCT_NAME = "technician_product_name";
     public static final String TECHNICIAN_PRODUCT_DOC_ID = "technician_product_doc_id";
+    public static final String HOLD_PRODUCT_COUNT = "hold_product_count";
 
 
     // Shared Preferences
@@ -219,6 +220,15 @@ public class PrefManager {
 
     public void setTechnicianProductDocId(String doc_id){
         editor.putString(TECHNICIAN_PRODUCT_DOC_ID,doc_id);
+        editor.commit();
+    }
+
+    public String getHoldProductCount(){
+        return pref.getString(HOLD_PRODUCT_COUNT,"");
+    }
+
+    public void setHoldProductCount(String count){
+        editor.putString(HOLD_PRODUCT_COUNT,count);
         editor.commit();
     }
 }

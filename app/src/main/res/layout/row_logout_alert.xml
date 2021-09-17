@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/alert_root"
+    android:padding="15dp">
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:text="Are you sure want to log out?"
+        android:textSize="15sp"
+        android:layout_marginTop="5dp"/>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp">
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btNo"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:text="Cancel"
+            android:layout_gravity="right"
+            android:background="@drawable/button_bg"/>
+        <View
+            android:layout_width="10dp"
+            android:layout_height="5dp"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btYes"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:text="Yes"
+            android:layout_gravity="right"
+            android:background="@drawable/button_bg"/>
+    </TableRow>
+</LinearLayout>

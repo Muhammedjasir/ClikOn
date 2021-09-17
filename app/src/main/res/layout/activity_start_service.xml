@@ -390,13 +390,15 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:background="@android:color/transparent"
-                                            android:hint="Enter the reason"
+                                            android:hint="Hold reason"
                                             android:maxLines="1"
                                             android:minHeight="30dp"
                                             android:textColor="@color/light_gray"
                                             android:textSize="14sp" />
                                     </com.google.android.material.textfield.TextInputLayout>
                                     <LinearLayout
+                                        android:visibility="gone"
+                                        android:id="@+id/bt_lay1"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:gravity="center"
@@ -423,6 +425,43 @@
                                             android:layout_gravity="bottom"
                                             android:background="@drawable/button_bg"
                                             android:text="Hold"
+                                            android:minWidth="115dp"
+                                            android:minHeight="40dp"
+                                            android:layout_marginLeft="10dp"
+                                            android:textAllCaps="false"
+                                            android:textColor="@color/white"
+                                            android:textSize="18dp"
+                                            android:textStyle="bold" />
+
+                                    </LinearLayout>
+                                    <LinearLayout
+                                        android:visibility="gone"
+                                        android:id="@+id/bt_lay2"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:layout_marginTop="9dp"
+                                        android:orientation="horizontal">
+                                        <androidx.appcompat.widget.AppCompatButton
+                                            android:id="@+id/btn_release"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="bottom"
+                                            android:background="@drawable/button_bg2"
+                                            android:text="Restart"
+                                            android:textAllCaps="false"
+                                            android:minWidth="115dp"
+                                            android:minHeight="40dp"
+                                            android:textColor="@color/white"
+                                            android:textSize="18dp"
+                                            android:textStyle="bold" />
+                                        <androidx.appcompat.widget.AppCompatButton
+                                            android:id="@+id/btn_remove"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="bottom"
+                                            android:background="@drawable/button_bg"
+                                            android:text="Remove"
                                             android:minWidth="115dp"
                                             android:minHeight="40dp"
                                             android:layout_marginLeft="10dp"

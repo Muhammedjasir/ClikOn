@@ -38,6 +38,7 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_notstarted"
                 android:layout_width="120dp"
                 android:layout_height="110dp"
                 app:cardBackgroundColor="@color/white"
@@ -57,11 +58,12 @@
                         android:gravity="center"
                         android:background="@drawable/ic_arrow_round">
                         <TextView
+                            android:id="@+id/tv_notstart"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="0"
-                            android:textSize="30sp"
+                            android:textSize="20sp"
                             android:textColor="@color/blue_shade"
                             android:textStyle="bold"/>
                     </LinearLayout>
@@ -76,10 +78,10 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_hold"
                 android:layout_width="120dp"
                 android:layout_height="110dp"
-                android:background="@color/white"
-                app:cardBackgroundColor="@color/white"
+                app:cardBackgroundColor="@color/dark_gray_transparant"
                 app:cardElevation="5dp"
                 app:cardCornerRadius="10dp"
                 android:layout_margin="10dp"
@@ -101,7 +103,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="0"
-                            android:textSize="30sp"
+                            android:textSize="20sp"
                             android:textColor="@color/orange_shade"
                             android:textStyle="bold"/>
                     </LinearLayout>
@@ -118,8 +120,8 @@
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
                 android:layout_width="120dp"
+                android:id="@+id/card_overlimit"
                 android:layout_height="110dp"
-                android:background="@color/white"
                 app:cardBackgroundColor="@color/white"
                 app:cardElevation="5dp"
                 app:cardCornerRadius="10dp"

@@ -12,6 +12,7 @@
     <color name="primary_color_dark">#531313</color>
     <color name="light_gray">#838282</color>
     <color name="dark_gray">#626161</color>
+    <color name="dark_gray_transparant">#1A626161</color>
     <color name="lite_white">#eceff4</color>
     <color name="green">#0C9600</color>
     <color name="blue_shade">#000B21</color>

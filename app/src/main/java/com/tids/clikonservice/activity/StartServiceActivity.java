@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.tids.clikonservice.R;
@@ -28,6 +30,7 @@ import com.tids.clikonservice.Utils.Helper.PrefManager;
 import com.tids.clikonservice.Utils.Utils;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -39,16 +42,19 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
     private PrefManager pref;
     private SharedPreferences sp;
     private Utils utils;
+    private Bundle extras;
 
     private ImageView ivBack;
     private TextView tv_product_name,tv_product_serial_number,tv_product_batch_number,tv_product_complaint,
             tv_product_service_registered,tv_product_received,tv_product_service_started,tv_estimate_date;
-    private AppCompatButton bt_service_completed,btn_pause,bt_update_estimatetime,btn_Technician_remarks;
+    private AppCompatButton bt_service_completed,btn_pause,bt_update_estimatetime,btn_Technician_remarks,
+            btn_release,btn_remove;
     private TextInputEditText ed_pouse_reason,ed_find_problems;
     private RelativeLayout mainLayout;
+    private LinearLayout lay_bt1,lay_bt2;
 
     int mYear,mMonth,mDay;
-    String authorization = "";
+    String authorization = "", productId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +85,28 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
         ed_find_problems = findViewById(R.id.ed_find_problems);
         bt_update_estimatetime = findViewById(R.id.bt_update_estimatetime);
         btn_Technician_remarks = findViewById(R.id.btn_Technician_remarks);
+        lay_bt1 = findViewById(R.id.bt_lay1);
+        lay_bt2 = findViewById(R.id.bt_lay2);
+        btn_release = findViewById(R.id.btn_release);
+        btn_remove = findViewById(R.id.btn_remove);
 
-        getProductData();
+        extras = getIntent().getExtras();
+        if(extras != null){
+
+            lay_bt1.setVisibility(View.GONE);
+            lay_bt2.setVisibility(View.VISIBLE);
+
+            productId = extras.getString("product_id");
+            tv_product_name.setText(extras.getString("product_name"));
+
+        }else {
+            lay_bt1.setVisibility(View.VISIBLE);
+            lay_bt2.setVisibility(View.GONE);
+            productId = pref.getTechnicianProductId();
+            tv_product_name.setText(pref.getTechnicianProductName());
+        }
+
+        getProductData(productId);
 
         tv_estimate_date.setOnClickListener(this);
         bt_update_estimatetime.setOnClickListener(this);
@@ -88,6 +114,8 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
         bt_service_completed.setOnClickListener(this);
         bt_update_estimatetime.setOnClickListener(this);
         btn_Technician_remarks.setOnClickListener(this);
+        btn_release.setOnClickListener(this);
+        btn_remove.setOnClickListener(this);
     }
 
     private void setDate(){
@@ -115,10 +143,12 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
         mDatePicker.show();
     }
 
-    private void getProductData() {
+    private void getProductData(String productId) {
+
         try {
-            Log.e("TechnicianProductId::",pref.getTechnicianProductId());
-            String condition = "SM_CTI_SYS_ID='" + pref.getTechnicianProductId() + "'";
+            Log.e("TechnicianProductId::",productId);
+
+            String condition = "SM_CTI_SYS_ID='" + productId + "'";
 
             AndroidNetworking.get(Constant.BASE_URL + "GetTable")
                     .addQueryParameter("table_name", Constant.SERVICE_PRODUCT_INFO)
@@ -144,7 +174,6 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
                                         String product_serial_number = jsonArray.getJSONObject(0).getString("SM_SERIAL_NO");
                                         String product_batch_number = jsonArray.getJSONObject(0).getString("SM_BATCH_CODE");
 
-                                        tv_product_name.setText(pref.getTechnicianProductName());
                                         tv_product_serial_number.setText(product_serial_number);
                                         tv_product_batch_number.setText(product_batch_number);
 
@@ -215,6 +244,106 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
         }
         if (v == btn_Technician_remarks){
             updateTechnicianRemarks();
+        }
+        if (v == btn_remove){
+            removeProduct();
+        }
+        if (v == btn_release){
+            releaseToSatart();
+        }
+    }
+
+    private void releaseToSatart() {
+        if (!pref.getTechnicianProductStatus().equalsIgnoreCase("start")){
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("SM_STS_CODE","SERVSRT");
+
+                Log.e("link::",Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
+                        extras.getString("product_doc_id"));
+                Log.e("body::",jsonObject.toString());
+
+                AndroidNetworking.put(Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
+                        extras.getString("product_doc_id"))
+                        .addHeaders("Authorization", authorization)
+                        .addJSONObjectBody(jsonObject)
+                        .setTag(this)
+                        .setPriority(Priority.LOW)
+                        .build()
+                        .getAsJSONObject(new JSONObjectRequestListener() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.e("Response::",response.toString());
+
+                                try {
+                                    if (response.getBoolean("status")) {
+
+                                        lay_bt1.setVisibility(View.VISIBLE);
+                                        lay_bt2.setVisibility(View.GONE);
+
+                                        pref.setTechnicianProductStatus("start");
+                                        pref.setTechnicianProductId(extras.getString("product_id"));
+                                        pref.setTechnicianProductName(extras.getString("product_name"));
+                                        pref.setTechnicianProductDocId(extras.getString("product_doc_id"));
+
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            @Override
+                            public void onError(ANError anError) {
+//                                    showError(anError);
+                            }
+                        });
+
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private void removeProduct() {
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("SM_STS_CODE","PENSERV");
+            jsonObject.put("SM_SRP_SYS_ID","");
+
+            Log.e("link::",Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
+                    extras.getString("product_doc_id"));
+            Log.e("body::",jsonObject.toString());
+
+
+            AndroidNetworking.put(Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
+                    extras.getString("product_doc_id"))
+                    .addHeaders("Authorization", authorization)
+                    .addJSONObjectBody(jsonObject)
+                    .setTag(this)
+                    .setPriority(Priority.LOW)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.e("Response::",response.toString());
+
+                            try {
+                                if (response.getBoolean("status")) {
+                                    onBackPressed();
+                                }else {
+                                    customToast(response.getString("message"));
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        @Override
+                        public void onError(ANError anError) {
+//                                    showError(anError);
+                        }
+                    });
+
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
     }
 

@@ -2,6 +2,7 @@ package com.tids.clikonservice.adapter.technician;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.tids.clikonservice.R;
 import com.tids.clikonservice.Utils.Constant;
 import com.tids.clikonservice.Utils.Helper.PrefManager;
+import com.tids.clikonservice.activity.StartServiceActivity;
 import com.tids.clikonservice.model.ScannedProductModel;
 
 import org.json.JSONException;
@@ -71,45 +73,19 @@ public class TechnicianHoldProductsAdapter extends RecyclerView.Adapter<Technici
             holder.iv_play.setVisibility(View.GONE);
         }
 
-        holder.iv_play.setOnClickListener(v -> {
+        holder.card_play.setOnClickListener(v -> {
 
-            try {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("SM_STS_CODE","PENSERV");
-                jsonObject.put("SM_SRP_SYS_ID","");
+            Intent intent = new Intent(mContext, StartServiceActivity.class);
 
-                AndroidNetworking.put(Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
-                        model.getProductDocId())
-                        .addHeaders("Authorization", authorization)
-                        .addJSONObjectBody(jsonObject)
-                        .setTag(this)
-                        .setPriority(Priority.LOW)
-                        .build()
-                        .getAsJSONObject(new JSONObjectRequestListener() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                Log.e("Response::",response.toString());
-
-                                try {
-                                    if (response.getBoolean("status")) {
-
-                                        modelList.remove(holder.getAdapterPosition());
-                                        notifyDataSetChanged();
-
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            @Override
-                            public void onError(ANError anError) {
-//                                    showError(anError);
-                            }
-                        });
-
-            }catch (Exception ex){
-                ex.printStackTrace();
+            if (model.getPageFlag().equalsIgnoreCase("hold")){
+                intent.putExtra("type","hold");
+            }else if (model.getPageFlag().equalsIgnoreCase("over")){
+                intent.putExtra("type","over");
             }
+            intent.putExtra("product_id",model.getProductScannedId());
+            intent.putExtra("product_name",model.getProductName());
+            intent.putExtra("product_doc_id",model.getProductDocId());
+            mContext.startActivity(intent);
         });
 
     }

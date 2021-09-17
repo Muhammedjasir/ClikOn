@@ -14,12 +14,15 @@
         android:theme="@style/Theme.ClikonService"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activity.CaptureActivity"
-            android:screenOrientation="sensorPortrait"
-            android:clearTaskOnLaunch="true"
-            android:stateNotNeeded="true"
-            android:windowSoftInputMode="stateAlwaysHidden"
+            android:name=".activity.TechnicianProfileActivity"
             android:exported="true" />
+        <activity
+            android:name=".activity.CaptureActivity"
+            android:clearTaskOnLaunch="true"
+            android:exported="true"
+            android:screenOrientation="sensorPortrait"
+            android:stateNotNeeded="true"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".activity.DailyReportActivity" />
         <activity android:name=".activity.SearchProductActivity" />
         <activity

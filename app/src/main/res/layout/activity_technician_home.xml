@@ -44,6 +44,7 @@
                         android:orientation="horizontal"
                         android:background="@drawable/shape7">
                         <LinearLayout
+                            android:id="@+id/layout_profile"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
@@ -110,7 +111,7 @@
                                     android:id="@+id/tv_start_services"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="25"
+                                    android:text=""
                                     android:layout_marginLeft="4dp"
                                     android:textSize="12sp"
                                     android:textStyle="normal"
@@ -133,7 +134,7 @@
                                     android:id="@+id/tv_hold_services"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="15"
+                                    android:text=""
                                     android:layout_marginLeft="4dp"
                                     android:textSize="12sp"
                                     android:textStyle="normal"
