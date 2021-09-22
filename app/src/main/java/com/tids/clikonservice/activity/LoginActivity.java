@@ -22,9 +22,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.tids.clikonservice.R;
@@ -32,6 +30,8 @@ import com.tids.clikonservice.Utils.Constant;
 import com.tids.clikonservice.Utils.Helper.Device;
 import com.tids.clikonservice.Utils.Helper.PrefManager;
 import com.tids.clikonservice.Utils.Utils;
+import com.tids.clikonservice.activity.driver.DriversHomeActivity;
+import com.tids.clikonservice.activity.technician.TechnicianHomeActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -224,7 +224,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         pref.setKeyDeviceId(deviceId);
                                         pref.setLoginFlag(true);
 
-                                        Intent intent = new Intent(getApplicationContext(),TechnicianHomeActivity.class);
+                                        if(user_type.equalsIgnoreCase("DRVR")){
+                                            Intent intent = new Intent(getApplicationContext(), DriversHomeActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }else if (user_type.equalsIgnoreCase("SRVC")){
+                                            Intent intent = new Intent(getApplicationContext(), TechnicianHomeActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                        Intent intent = new Intent(getApplicationContext(), TechnicianHomeActivity.class);
                                         startActivity(intent);
                                         finish();
                                     }

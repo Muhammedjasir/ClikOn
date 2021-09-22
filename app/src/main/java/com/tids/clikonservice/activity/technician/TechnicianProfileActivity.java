@@ -1,4 +1,4 @@
-package com.tids.clikonservice.activity;
+package com.tids.clikonservice.activity.technician;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -31,6 +30,7 @@ import com.tids.clikonservice.R;
 import com.tids.clikonservice.Utils.Constant;
 import com.tids.clikonservice.Utils.Helper.AesBase64Wrapper;
 import com.tids.clikonservice.Utils.Helper.PrefManager;
+import com.tids.clikonservice.activity.LoginActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -226,6 +226,10 @@ public class TechnicianProfileActivity extends AppCompatActivity {
             ed.apply();
             pref.setLogin(false);
             pref.setLoginFlag(false);
+
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+            finish();
         });
         btcancel.setOnClickListener(v -> {
             alertDialog.cancel();

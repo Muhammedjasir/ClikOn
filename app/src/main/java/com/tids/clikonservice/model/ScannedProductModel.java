@@ -9,20 +9,25 @@ public class ScannedProductModel {
     private String productBatchNumber;
     private String productComplaint;
     private String pageFlag;
+    private String productReferId;
+    private String productCode;
 
     public ScannedProductModel(String productDocId, String productScannedId, String productName,
-                               String productSerialNumber, String productBatchNumber, String productComplaint) {
+                               String productSerialNumber, String productBatchNumber,
+                               String productComplaint, String productReferId, String productCode) {
         this.productDocId = productDocId;
         this.productScannedId = productScannedId;
         this.productName = productName;
         this.productSerialNumber = productSerialNumber;
         this.productBatchNumber = productBatchNumber;
         this.productComplaint = productComplaint;
+        this.productReferId = productReferId;
+        this.productCode = productCode;
     }
 
     public ScannedProductModel(String productDocId, String productScannedId, String productName,
                                String productSerialNumber, String productBatchNumber, String productComplaint,
-                               String pageFlag) {
+                               String pageFlag, String productReferId, String productCode) {
         this.productDocId = productDocId;
         this.productScannedId = productScannedId;
         this.productName = productName;
@@ -30,6 +35,24 @@ public class ScannedProductModel {
         this.productBatchNumber = productBatchNumber;
         this.productComplaint = productComplaint;
         this.pageFlag = pageFlag;
+        this.productReferId = productReferId;
+        this.productCode = productCode;
+    }
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
+    }
+
+    public String getProductReferId() {
+        return productReferId;
+    }
+
+    public void setProductReferId(String productReferId) {
+        this.productReferId = productReferId;
     }
 
     public String getProductDocId() {

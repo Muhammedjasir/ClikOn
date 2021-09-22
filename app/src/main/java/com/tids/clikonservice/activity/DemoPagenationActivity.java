@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.tids.clikonservice.R;
+import com.tids.clikonservice.activity.driver.DriversHomeActivity;
+import com.tids.clikonservice.activity.technician.TechnicianHomeActivity;
 
 public class DemoPagenationActivity extends AppCompatActivity {
 Button Collection, Transport, Technician;
@@ -33,14 +35,14 @@ Button Collection, Transport, Technician;
         Transport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DemoPagenationActivity.this,DriversHomeActivity.class);
+                Intent intent = new Intent(DemoPagenationActivity.this, DriversHomeActivity.class);
                 startActivity(intent);
             }
         });
         Collection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DemoPagenationActivity.this,TechnicianHomeActivity.class);
+                Intent intent = new Intent(DemoPagenationActivity.this, TechnicianHomeActivity.class);
                 startActivity(intent);
             }
         });

@@ -6,14 +6,11 @@ public class Constant {
         //write your action here if need
     }
 
-
     //url
     public static String BASE_URL = "http://clikonworld.dyndns.org:8082/clkservice/api/";
 
-
     //We will use this to store the user token number into shared preference
     public static final String SHARED_PREF_NAME = "com.tids.clikonservice"; //pcakage name+ id
-
 
     public static final String USER_USERID = "userid";
     public static final String USER_USERNAME = "username";

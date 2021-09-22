@@ -1,4 +1,4 @@
-package com.tids.clikonservice.activity;
+package com.tids.clikonservice.activity.technician;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,9 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -77,25 +75,24 @@ public class TechnicianHomeActivity extends AppCompatActivity {
         tv_recently_started.setText(pref.getTechnicianProductName());
         tv_num_hold_services.setText(pref.getHoldProductCount());
 
-
         findViewById(R.id.layout_profile).setOnClickListener(v ->{
-            Intent intent = new Intent(getApplicationContext(),TechnicianProfileActivity.class);
+            Intent intent = new Intent(getApplicationContext(), TechnicianProfileActivity.class);
             startActivity(intent);
         });
         findViewById(R.id.received_product).setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(),ReceivedProductActivity.class);
+            Intent intent = new Intent(getApplicationContext(), ReceivedProductActivity.class);
             startActivity(intent);
         });
         findViewById(R.id.start_service).setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(),StartServiceActivity.class);
+            Intent intent = new Intent(getApplicationContext(), StartServiceActivity.class);
             startActivity(intent);
         });
         findViewById(R.id.search_product).setOnClickListener(v ->{
-            Intent intent = new Intent(getApplicationContext(),SearchProductActivity.class);
+            Intent intent = new Intent(getApplicationContext(), SearchProductActivity.class);
             startActivity(intent);
         });
         findViewById(R.id.service_status).setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(),ServiceStatusTechActivity.class);
+            Intent intent = new Intent(getApplicationContext(), ServiceStatusTechActivity.class);
             startActivity(intent);
         });
 

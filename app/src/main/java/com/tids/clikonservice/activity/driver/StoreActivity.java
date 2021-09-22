@@ -1,4 +1,4 @@
-package com.tids.clikonservice.activity;
+package com.tids.clikonservice.activity.driver;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;

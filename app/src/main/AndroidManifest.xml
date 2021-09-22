@@ -14,7 +14,7 @@
         android:theme="@style/Theme.ClikonService"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activity.TechnicianProfileActivity"
+            android:name=".activity.technician.TechnicianProfileActivity"
             android:exported="true" />
         <activity
             android:name=".activity.CaptureActivity"
@@ -23,8 +23,8 @@
             android:screenOrientation="sensorPortrait"
             android:stateNotNeeded="true"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".activity.DailyReportActivity" />
-        <activity android:name=".activity.SearchProductActivity" />
+        <activity android:name=".activity.driver.DailyReportActivity" />
+        <activity android:name=".activity.technician.SearchProductActivity" />
         <activity
             android:name=".activity.SplashScreenActivity"
             android:exported="true"
@@ -39,18 +39,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.StartServiceActivity"
+            android:name=".activity.technician.StartServiceActivity"
             android:exported="true" />
         <activity
-            android:name=".activity.ServiceStatusTechActivity"
+            android:name=".activity.technician.ServiceStatusTechActivity"
             android:exported="true" />
         <activity
-            android:name=".activity.ReceivedProductActivity"
+            android:name=".activity.technician.ReceivedProductActivity"
             android:exported="true" />
-        <activity android:name=".activity.TechnicianHomeActivity" />
-        <activity android:name=".activity.StoreActivity" />
-        <activity android:name=".activity.CartActivity" />
-        <activity android:name=".activity.DriversHomeActivity" />
+        <activity android:name=".activity.technician.TechnicianHomeActivity" />
+        <activity android:name=".activity.driver.StoreActivity" />
+        <activity android:name=".activity.driver.CartActivity" />
+        <activity android:name=".activity.driver.DriversHomeActivity" />
         <activity android:name=".activity.DemoPagenationActivity" />
         <activity android:name=".activity.ServiceStatusMainActivity" />
         <activity android:name=".activity.ServiceStatusSvActivity" />

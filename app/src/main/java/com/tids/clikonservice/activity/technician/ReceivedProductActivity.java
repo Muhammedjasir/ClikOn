@@ -1,4 +1,4 @@
-package com.tids.clikonservice.activity;
+package com.tids.clikonservice.activity.technician;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -105,9 +105,11 @@ public class ReceivedProductActivity extends AppCompatActivity implements View.O
                                             String product_batch_number = jsonArray.getJSONObject(i).getString("SM_BATCH_CODE");
                                             String product_complaint = jsonArray.getJSONObject(i).getString("SM_REMARKS");
                                             String product_qrcode_data = jsonArray.getJSONObject(i).getString("SM_CTI_SYS_ID");
+                                            String productReferId = jsonArray.getJSONObject(i).getString("SM_CM_REF_NO");
+                                            String productCode = jsonArray.getJSONObject(i).getString("SM_CTI_ITEM_CODE");
 
                                             ScannedProductModel scannedProductModel = new ScannedProductModel(product_doc_id, product_qrcode_data, product_name,
-                                                    product_serial_number, product_batch_number, product_complaint);
+                                                    product_serial_number, product_batch_number, product_complaint,productReferId,productCode);
                                             scannedProductModelArrayList.add(scannedProductModel);
                                         }
                                         scannedProductAdapter.notifyDataSetChanged();
@@ -186,17 +188,19 @@ public class ReceivedProductActivity extends AppCompatActivity implements View.O
         }
     }
 
-
     private void getProductDetails(String scannedData) {
         try {
 
             String authorization = "Bearer " + sp.getString(Constant.USER_AUTHORIZATION, "");
-            String condition = "SM_CTI_SYS_ID='" + scannedData + "'";
+            String condition = "SELECT * FROM SERVICE_MODULE_VIEW WHERE (SM_CTI_SYS_ID LIKE '%"+
+                    scannedData+"%' OR SM_CM_REF_NO LIKE '%"+scannedData+"%') AND SM_STS_CODE = 'PENSERV'";
 
-            AndroidNetworking.get(Constant.BASE_URL + "GetTable")
-                    .addQueryParameter("table_name", Constant.SERVICE_PRODUCTS)
-                    .addQueryParameter("condition", condition)
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query",condition);
+
+            AndroidNetworking.post(Constant.BASE_URL + "GetData")
                     .addHeaders("Authorization", authorization)
+                    .addJSONObjectBody(jsonObject)
                     .setTag(this)
                     .setPriority(Priority.LOW)
                     .build()
@@ -213,17 +217,20 @@ public class ReceivedProductActivity extends AppCompatActivity implements View.O
                                     JSONArray jsonArray = response.getJSONArray("data");
                                     if (jsonArray.length() != 0) {
 
-                                        String product_doc_id = String.valueOf(jsonArray.getJSONObject(0).getInt("SM_DOC_NO"));
-                                        String product_name = jsonArray.getJSONObject(0).getString("SM_CTI_ITEM_NAME");
-                                        String product_serial_number = jsonArray.getJSONObject(0).getString("SM_SERIAL_NO");
-                                        String product_batch_number = jsonArray.getJSONObject(0).getString("SM_BATCH_CODE");
-                                        String product_complaint = jsonArray.getJSONObject(0).getString("SM_REMARKS");
-                                        String product_qrcode_data = jsonArray.getJSONObject(0).getString("SM_CTI_SYS_ID");
+                                        for (int i=0;i<jsonArray.length();++i){
+                                            String product_doc_id = String.valueOf(jsonArray.getJSONObject(i).getInt("SM_DOC_NO"));
+                                            String product_name = jsonArray.getJSONObject(i).getString("SM_CTI_ITEM_NAME");
+                                            String product_serial_number = jsonArray.getJSONObject(i).getString("SM_SERIAL_NO");
+                                            String product_batch_number = jsonArray.getJSONObject(i).getString("SM_BATCH_CODE");
+                                            String product_complaint = jsonArray.getJSONObject(i).getString("SM_REMARKS");
+                                            String product_qrcode_data = jsonArray.getJSONObject(i).getString("SM_CTI_SYS_ID");
+                                            String productReferId = jsonArray.getJSONObject(i).getString("SM_CM_REF_NO");
+                                            String productCode = jsonArray.getJSONObject(i).getString("SM_CTI_ITEM_CODE");
 
-                                        ScannedProductModel scannedProductModel = new ScannedProductModel(product_doc_id, product_qrcode_data, product_name,
-                                                product_serial_number, product_batch_number, product_complaint);
-                                        scannedProductModelArrayList.add(scannedProductModel);
-
+                                            ScannedProductModel scannedProductModel = new ScannedProductModel(product_doc_id, product_qrcode_data, product_name,
+                                                    product_serial_number, product_batch_number, product_complaint,productReferId,productCode);
+                                            scannedProductModelArrayList.add(scannedProductModel);
+                                        }
                                         scannedProductAdapter.notifyDataSetChanged();
                                     }
                                 } else {

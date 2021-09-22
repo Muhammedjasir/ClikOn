@@ -1,4 +1,4 @@
-package com.tids.clikonservice.activity;
+package com.tids.clikonservice.activity.technician;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +21,6 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.tids.clikonservice.R;
@@ -46,7 +45,8 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
 
     private ImageView ivBack;
     private TextView tv_product_name,tv_product_serial_number,tv_product_batch_number,tv_product_complaint,
-            tv_product_service_registered,tv_product_received,tv_product_service_started,tv_estimate_date;
+            tv_product_service_registered,tv_product_received,tv_product_service_started,tv_estimate_date,
+            tv_product_ref_no,tv_product_code;
     private AppCompatButton bt_service_completed,btn_pause,bt_update_estimatetime,btn_Technician_remarks,
             btn_release,btn_remove;
     private TextInputEditText ed_pouse_reason,ed_find_problems;
@@ -70,6 +70,7 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
         ivBack=findViewById(R.id.back_btn);
         ivBack.setOnClickListener(v -> onBackPressed());
 
+        tv_product_code = findViewById(R.id.tv_product_code);
         tv_product_name = findViewById(R.id.product_name);
         tv_product_serial_number = findViewById(R.id.product_serial_number);
         tv_product_batch_number = findViewById(R.id.product_batch_number);
@@ -89,6 +90,7 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
         lay_bt2 = findViewById(R.id.bt_lay2);
         btn_release = findViewById(R.id.btn_release);
         btn_remove = findViewById(R.id.btn_remove);
+        tv_product_ref_no = findViewById(R.id.tv_product_ref_no);
 
         extras = getIntent().getExtras();
         if(extras != null){
@@ -98,12 +100,16 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
 
             productId = extras.getString("product_id");
             tv_product_name.setText(extras.getString("product_name"));
+            tv_product_code.setText(extras.getString("product_code"));
+            tv_product_ref_no.setText("#"+extras.getString("product_ref_id"));
 
         }else {
             lay_bt1.setVisibility(View.VISIBLE);
             lay_bt2.setVisibility(View.GONE);
             productId = pref.getTechnicianProductId();
             tv_product_name.setText(pref.getTechnicianProductName());
+            tv_product_ref_no.setText("#"+pref.getTechnicianProductRefId());
+            tv_product_code.setText(pref.getTechnicianProductCode());
         }
 
         getProductData(productId);
@@ -528,9 +534,13 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(getApplicationContext(),TechnicianHomeActivity.class);
-        startActivity(intent);
-        finish();
+        if (tv_estimate_date.getText().toString().trim().equalsIgnoreCase("")){
+            customToast("Please set estimate date and try again");
+        }else {
+            Intent intent = new Intent(getApplicationContext(), TechnicianHomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
 }

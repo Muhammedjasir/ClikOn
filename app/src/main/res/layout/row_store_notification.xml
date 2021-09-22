@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
+        android:id="@+id/card_place"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -20,6 +21,7 @@
             android:layout_gravity="center"
             android:orientation="vertical">
                 <TextView
+                    android:id="@+id/tv_place"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Hilal Al Madina Hypermarket"
@@ -43,6 +45,7 @@
                 android:gravity="center"
                 android:textColor="@color/dark_gray"/>
                 <TextView
+                    android:id="@+id/tv_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Crystal Mall, Jebel Ali Industrial Area-1 , Dubai..."

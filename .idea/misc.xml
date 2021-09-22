@@ -27,7 +27,9 @@
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/drawable/shape7.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/drawable/shape8_w_rectangle.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_capture.xml" value="0.13858695652173914" />
+        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_cart.xml" value="0.22" />
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_demo_pagenation.xml" value="0.1" />
+        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_drivers_home.xml" value="0.22" />
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_image_select.xml" value="0.16259057971014493" />
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_received_product.xml" value="0.22" />
@@ -37,6 +39,7 @@
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_service_status_tech.xml" value="0.22" />
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_splash_screen.xml" value="0.1796875" />
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_start_service.xml" value="0.22" />
+        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_store.xml" value="0.22" />
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_technician_home.xml" value="0.22" />
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_technician_profile.xml" value="0.1308876811594203" />
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/raw_hold_products.xml" value="0.16893115942028986" />
@@ -45,6 +48,7 @@
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/row_product_details.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/row_product_list.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/row_received_product.xml" value="0.16530797101449277" />
+        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/row_store_notification.xml" value="0.16666666666666666" />
       </map>
     </option>
   </component>

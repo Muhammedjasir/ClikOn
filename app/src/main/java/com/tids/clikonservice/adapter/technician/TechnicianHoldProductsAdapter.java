@@ -4,11 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -16,18 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.tids.clikonservice.R;
 import com.tids.clikonservice.Utils.Constant;
 import com.tids.clikonservice.Utils.Helper.PrefManager;
-import com.tids.clikonservice.activity.StartServiceActivity;
+import com.tids.clikonservice.activity.technician.StartServiceActivity;
 import com.tids.clikonservice.model.ScannedProductModel;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import java.util.List;
 
 public class TechnicianHoldProductsAdapter extends RecyclerView.Adapter<TechnicianHoldProductsAdapter.MyViewHolder> {
@@ -66,6 +58,8 @@ public class TechnicianHoldProductsAdapter extends RecyclerView.Adapter<Technici
         holder.tv_product_complaint.setText(model.getProductComplaint());
         holder.tv_product_branch_name.setText(model.getProductBatchNumber());
         holder.tv_product_serial_number.setText(model.getProductSerialNumber());
+        holder.tv_product_code.setText(model.getProductCode());
+        holder.tv_ref_number.setText("#"+model.getProductReferId());
 
         if (model.getPageFlag().equalsIgnoreCase("hold")){
             holder.iv_play.setVisibility(View.VISIBLE);
@@ -85,6 +79,8 @@ public class TechnicianHoldProductsAdapter extends RecyclerView.Adapter<Technici
             intent.putExtra("product_id",model.getProductScannedId());
             intent.putExtra("product_name",model.getProductName());
             intent.putExtra("product_doc_id",model.getProductDocId());
+            intent.putExtra("product_ref_id",model.getProductDocId());
+            intent.putExtra("product_code",model.getProductCode());
             mContext.startActivity(intent);
         });
 
@@ -102,7 +98,8 @@ public class TechnicianHoldProductsAdapter extends RecyclerView.Adapter<Technici
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tv_product_name,tv_product_serial_number,tv_product_branch_name,tv_product_complaint;
+        private TextView tv_product_name,tv_product_serial_number,tv_product_branch_name,
+                tv_product_complaint,tv_ref_number,tv_product_code;
         private TableRow iv_play;
         private CardView card_play;
 
@@ -115,6 +112,8 @@ public class TechnicianHoldProductsAdapter extends RecyclerView.Adapter<Technici
             tv_product_complaint = itemView.findViewById(R.id.tv_product_complaint);
             iv_play = itemView.findViewById(R.id.iv_play);
             card_play = itemView.findViewById(R.id.card_scanned);
+            tv_ref_number = itemView.findViewById(R.id.tv_ref_number);
+            tv_product_code = itemView.findViewById(R.id.tv_product_code);
         }
     }
 }

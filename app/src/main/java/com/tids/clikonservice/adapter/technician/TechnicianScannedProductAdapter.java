@@ -23,14 +23,17 @@ import com.bumptech.glide.Glide;
 import com.tids.clikonservice.R;
 import com.tids.clikonservice.Utils.Constant;
 import com.tids.clikonservice.Utils.Helper.PrefManager;
-import com.tids.clikonservice.activity.StartServiceActivity;
+import com.tids.clikonservice.activity.technician.StartServiceActivity;
 import com.tids.clikonservice.model.ScannedProductModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class TechnicianScannedProductAdapter extends RecyclerView.Adapter<TechnicianScannedProductAdapter.MyViewHolder> {
 
@@ -70,6 +73,8 @@ public class TechnicianScannedProductAdapter extends RecyclerView.Adapter<Techni
         holder.tv_product_complaint.setText(model.getProductComplaint());
         holder.tv_product_branch_name.setText(model.getProductBatchNumber());
         holder.tv_product_serial_number.setText(model.getProductSerialNumber());
+        holder.tv_product_code.setText(model.getProductCode());
+        holder.tv_ref_number.setText("#"+model.getProductReferId());
 
         Log.e("TechnicianProductId::",pref.getTechnicianProductId());
         if (pref.getTechnicianProductStatus().equalsIgnoreCase("start") &&
@@ -84,8 +89,14 @@ public class TechnicianScannedProductAdapter extends RecyclerView.Adapter<Techni
             if (!pref.getTechnicianProductStatus().equalsIgnoreCase("start")){
 
                 try {
+                    String myFormat = "dd/MMM/yy hh:mm aaa";
+                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
+                    String todaydate = sdf.format(Calendar.getInstance().getTime());
+                    Log.e("dt-tm::", todaydate);
+
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("SM_STS_CODE","SERVSRT");
+                    jsonObject.put("SM_STRT_DT",todaydate);
                     jsonObject.put("SM_SRP_SYS_ID",technicianID);
 
                     Log.e("Authorization::",authorization);
@@ -111,6 +122,8 @@ public class TechnicianScannedProductAdapter extends RecyclerView.Adapter<Techni
                                             pref.setTechnicianProductId(model.getProductScannedId());
                                             pref.setTechnicianProductName(model.getProductName());
                                             pref.setTechnicianProductDocId(model.getProductDocId());
+                                            pref.setTechnicianProductRefId(model.getProductReferId());
+                                            pref.setTechnicianProductCode(model.getProductCode());
                                             notifyDataSetChanged();
 
                                             Intent intent = new Intent(mContext, StartServiceActivity.class);
@@ -152,7 +165,8 @@ public class TechnicianScannedProductAdapter extends RecyclerView.Adapter<Techni
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tv_product_name,tv_product_serial_number,tv_product_branch_name,tv_product_complaint;
+        private TextView tv_product_name,tv_product_serial_number,tv_product_branch_name,
+                tv_product_complaint,tv_ref_number,tv_product_code;
         private ImageView iv_play;
         private CardView card_play;
 
@@ -165,6 +179,8 @@ public class TechnicianScannedProductAdapter extends RecyclerView.Adapter<Techni
             tv_product_complaint = itemView.findViewById(R.id.tv_product_complaint);
             iv_play = itemView.findViewById(R.id.iv_play);
             card_play = itemView.findViewById(R.id.card_scanned);
+            tv_ref_number = itemView.findViewById(R.id.tv_ref_number);
+            tv_product_code = itemView.findViewById(R.id.tv_product_code);
         }
     }
 }
