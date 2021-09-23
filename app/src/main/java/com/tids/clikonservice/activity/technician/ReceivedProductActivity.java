@@ -79,7 +79,7 @@ public class ReceivedProductActivity extends AppCompatActivity implements View.O
     private void loadProducts() {
         try {
             String authorization = "Bearer " + sp.getString(Constant.USER_AUTHORIZATION, "");
-            String page_pagination = "/1/10";
+            String page_pagination = "/1/25";
 
             AndroidNetworking.get(Constant.BASE_URL + Constant.SERVICE_PRODUCTS + page_pagination)
                     .addQueryParameter("table_name", Constant.SERVICE_PRODUCTS)
@@ -107,9 +107,11 @@ public class ReceivedProductActivity extends AppCompatActivity implements View.O
                                             String product_qrcode_data = jsonArray.getJSONObject(i).getString("SM_CTI_SYS_ID");
                                             String productReferId = jsonArray.getJSONObject(i).getString("SM_CM_REF_NO");
                                             String productCode = jsonArray.getJSONObject(i).getString("SM_CTI_ITEM_CODE");
+                                            String customerName = jsonArray.getJSONObject(i).getString("SM_CM_CUST_NAME");
+                                            String customerCode = jsonArray.getJSONObject(i).getString("SM_CM_CUST_CODE");
 
                                             ScannedProductModel scannedProductModel = new ScannedProductModel(product_doc_id, product_qrcode_data, product_name,
-                                                    product_serial_number, product_batch_number, product_complaint,productReferId,productCode);
+                                                    product_serial_number, product_batch_number, product_complaint,productReferId,productCode,customerName,customerCode);
                                             scannedProductModelArrayList.add(scannedProductModel);
                                         }
                                         scannedProductAdapter.notifyDataSetChanged();
@@ -193,7 +195,8 @@ public class ReceivedProductActivity extends AppCompatActivity implements View.O
 
             String authorization = "Bearer " + sp.getString(Constant.USER_AUTHORIZATION, "");
             String condition = "SELECT * FROM SERVICE_MODULE_VIEW WHERE (SM_CTI_SYS_ID LIKE '%"+
-                    scannedData+"%' OR SM_CM_REF_NO LIKE '%"+scannedData+"%') AND SM_STS_CODE = 'PENSERV'";
+                    scannedData+"%' OR SM_CM_REF_NO LIKE '%"+scannedData+"%' OR SM_DOC_NO LIKE '%"+scannedData+"%' " +
+                    "OR SM_CTI_ITEM_CODE LIKE '%"+scannedData+"%') AND SM_STS_CODE = 'PENSERV'";
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("query",condition);
@@ -213,6 +216,10 @@ public class ReceivedProductActivity extends AppCompatActivity implements View.O
                                 edt_serial_num.setText("");
 
                                 if (response.getBoolean("status")) {
+
+                                    scannedProductModelArrayList.clear();
+                                    scannedProductAdapter.notifyDataSetChanged();
+
                                     //Get the instance of JSONArray that contains JSONObjects
                                     JSONArray jsonArray = response.getJSONArray("data");
                                     if (jsonArray.length() != 0) {
@@ -226,9 +233,11 @@ public class ReceivedProductActivity extends AppCompatActivity implements View.O
                                             String product_qrcode_data = jsonArray.getJSONObject(i).getString("SM_CTI_SYS_ID");
                                             String productReferId = jsonArray.getJSONObject(i).getString("SM_CM_REF_NO");
                                             String productCode = jsonArray.getJSONObject(i).getString("SM_CTI_ITEM_CODE");
+                                            String customerName = jsonArray.getJSONObject(i).getString("SM_CM_CUST_NAME");
+                                            String customerCode = jsonArray.getJSONObject(i).getString("SM_CM_CUST_CODE");
 
                                             ScannedProductModel scannedProductModel = new ScannedProductModel(product_doc_id, product_qrcode_data, product_name,
-                                                    product_serial_number, product_batch_number, product_complaint,productReferId,productCode);
+                                                    product_serial_number, product_batch_number, product_complaint,productReferId,productCode,customerName,customerCode);
                                             scannedProductModelArrayList.add(scannedProductModel);
                                         }
                                         scannedProductAdapter.notifyDataSetChanged();

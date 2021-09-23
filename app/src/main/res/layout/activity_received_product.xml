@@ -144,7 +144,7 @@
                             android:background="@android:color/transparent"
                             android:hint="Enter the QR code number"
                             android:maxLines="1"
-                            android:inputType="number"
+                            android:inputType="text"
                             android:textColor="@color/light_gray"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -152,12 +152,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="6dp"
                         android:background="@color/primary_color">
                         <ImageView
                             android:id="@+id/iv_serial_num_add"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_btn_add"/>
+                            android:src="@drawable/ic_search_white"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

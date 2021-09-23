@@ -59,7 +59,10 @@ public class DriverCartAdapter extends RecyclerView.Adapter<DriverCartAdapter.My
         holder.tv_product_branch_name.setText(model.getProductBatchNumber());
         holder.tv_product_serial_number.setText(model.getProductSerialNumber());
         holder.tv_product_code.setText(model.getProductCode());
-        holder.tv_ref_number.setText("#"+model.getProductReferId());
+        holder.tv_doc_id.setText("#"+model.getProductDocId());
+        holder.tv_ref_number.setText(model.getProductReferId());
+        holder.tv_customer_code.setText(model.getCustomerCode());
+        holder.tv_customer_name.setText(model.getCustomerName());
 
     }
 
@@ -71,7 +74,7 @@ public class DriverCartAdapter extends RecyclerView.Adapter<DriverCartAdapter.My
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tv_product_name,tv_product_serial_number,tv_product_branch_name,
-                tv_product_complaint,tv_ref_number,tv_product_code;
+                tv_product_complaint,tv_ref_number,tv_product_code,tv_doc_id,tv_customer_name,tv_customer_code;
         private CardView card_play;
         private ImageView iv_tick;
 
@@ -86,6 +89,9 @@ public class DriverCartAdapter extends RecyclerView.Adapter<DriverCartAdapter.My
             iv_tick = itemView.findViewById(R.id.iv_tick);
             tv_ref_number = itemView.findViewById(R.id.tv_ref_number);
             tv_product_code = itemView.findViewById(R.id.tv_product_code);
+            tv_doc_id = itemView.findViewById(R.id.tv_doc_id);
+            tv_customer_name = itemView.findViewById(R.id.tv_customer_name);
+            tv_customer_code = itemView.findViewById(R.id.tv_customer_code);
         }
     }
 }

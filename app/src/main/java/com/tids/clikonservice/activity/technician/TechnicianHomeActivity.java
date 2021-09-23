@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,6 +48,8 @@ public class TechnicianHomeActivity extends AppCompatActivity {
 
         String name = sp.getString(Constant.USER_USERNAME, "");
         tv_name.setText(name);
+
+        Log.e("id::",sp.getString(Constant.USER_USERID, ""));
 
 //        String online_status = sp.getString(Constant.USER_ONLINE_STATUS, "");
 //        if (online_status.equalsIgnoreCase("1")){

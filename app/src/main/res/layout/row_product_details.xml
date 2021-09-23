@@ -23,14 +23,37 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/tv_ref_number"
+                android:id="@+id/tv_doc_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" #"
+                android:text="#"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:textColor="@color/dark_gray"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ref.No:"
+                    android:textSize="16sp"
+                    android:textStyle="normal"
+                    android:gravity="center"
+                    android:textColor="@color/dark_gray"/>
+                <TextView
+                    android:id="@+id/tv_ref_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:textColor="@color/dark_gray"/>
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,6 +94,51 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Iphone"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/dark_gray"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Customer Code:"
+                    android:textSize="16sp"
+                    android:textStyle="normal"
+                    android:gravity="center"
+                    android:textColor="@color/dark_gray"/>
+                <TextView
+                    android:id="@+id/tv_customer_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:textColor="@color/dark_gray"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Customer Name:"
+                    android:textSize="16sp"
+                    android:textStyle="normal"
+                    android:gravity="center"
+                    android:textColor="@color/dark_gray"/>
+                <TextView
+                    android:id="@+id/tv_customer_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_marginLeft="5dp"

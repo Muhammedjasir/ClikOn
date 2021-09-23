@@ -14,19 +14,10 @@ public class PrefManager {
     // Shared preferences file name
     private static final String PREF_NAME = "CLIKON";
     // All Shared Preferences Keys
-    private static final String KEY_IS_SYNCED = "isSynced";
     private static final String KEY_LOGIN = "login";
     private static final String KEY_DEVICE = "device";
     private static final String KEY_DEVICE_KEY = "device_key";
-    private static final String KEY_EDIT_FLAG = "edit_flag";
-    private static final String KEY_EDIT_VALUE = "edit_value";
-    private static final String KEY_TIME = "time";
-    private static final String DELIVERY_FEE = "delivery_fee";
-    private static final String DEVICE_LOCATION_ADDRESS = "device_location_address";
-    private static final String USER_LATITUDE = "latitude";
-    private static final String USER_LONGITUDE = "longitude";
-    public static final String CART_NOTE="note";
-    public static final String SELECTED_LANGUAGE_KEY="selected_language_key";
+
     public static final String LOGIN_FLAG = "login_flag";
 
     public static final String START_SERVICES = "start_services";
@@ -39,6 +30,8 @@ public class PrefManager {
     public static final String HOLD_PRODUCT_COUNT = "hold_product_count";
     public static final String TECHNICIAN_PRODUCT_REF_ID = "technician_product_ref_id";
     public static final String TECHNICIAN_PRODUCT_CODE = "technician_product_code";
+    public static final String CUSTOMER_NAME = "customer_name";
+    public static final String CUSTOMER_CODE = "customer_code";
 
 
     // Shared Preferences
@@ -54,16 +47,6 @@ public class PrefManager {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
-    }
-
-    public boolean isSynced() {
-        return pref.getBoolean(KEY_IS_SYNCED, false);
-    }
-
-    public void setSynced(boolean synced) {
-
-        editor.putBoolean(KEY_IS_SYNCED, synced);
-        editor.commit();
     }
 
     public String getKeyDevice() {
@@ -84,43 +67,6 @@ public class PrefManager {
         editor.commit();
     }
 
-    public String getDeviceLocationAddress() {
-        return pref.getString(DEVICE_LOCATION_ADDRESS, "");
-    }
-
-    public void setDeviceLocationAddress(String count) {
-        editor.putString(DEVICE_LOCATION_ADDRESS, count);
-        editor.commit();
-    }
-
-    public Boolean getKeyEditFlag() {
-        return pref.getBoolean(KEY_EDIT_FLAG, false);
-    }
-
-    public void setKeyEditFlag(Boolean count) {
-        editor.putBoolean(KEY_EDIT_FLAG, count);
-        editor.commit();
-    }
-
-    public String getKeyEditValue() {
-        return pref.getString(KEY_EDIT_VALUE, "");
-    }
-
-    public void setKeyEditValue(String count) {
-        editor.putString(KEY_EDIT_VALUE, count);
-        editor.commit();
-    }
-
-    public long getTime() {
-        return pref.getLong(KEY_TIME,0);
-    }
-
-    public void setTime(long time) {
-        editor.putLong(KEY_TIME, time);
-        editor.commit();
-    }
-
-
     public boolean isLoggedIn() {
         return pref.getBoolean(KEY_LOGIN, false);
     }
@@ -135,38 +81,6 @@ public class PrefManager {
 
     public void setLoginFlag(boolean loginFlag){
         editor.putBoolean(LOGIN_FLAG,loginFlag);
-        editor.commit();
-    }
-
-    public String getUserLatitude() {
-        return pref.getString(USER_LATITUDE, "");
-    }
-
-    public String getUserLongitude() {
-        return pref.getString(USER_LONGITUDE, "");
-    }
-
-    public void setUserLatitude(String latitude){
-        editor.putString(USER_LATITUDE,latitude);
-        editor.commit();
-    }
-
-    public void setUserLongitude(String longitude){
-        editor.putString(USER_LONGITUDE,longitude);
-        editor.commit();
-    }
-
-    public String getCartNote() { return pref.getString(CART_NOTE,""); }
-
-    public void setCartNote(String cartNote){
-        editor.putString(CART_NOTE,cartNote);
-        editor.commit();
-    }
-
-    public String getSelectedLanguageKey() { return pref.getString(SELECTED_LANGUAGE_KEY,"");}
-
-    public void setSelectedLanguageKey(String selectedLanguageKey){
-        editor.putString(SELECTED_LANGUAGE_KEY,selectedLanguageKey);
         editor.commit();
     }
 
@@ -249,6 +163,24 @@ public class PrefManager {
 
     public void setTechnicianProductCode(String code){
         editor.putString(TECHNICIAN_PRODUCT_CODE,code);
+        editor.commit();
+    }
+
+    public String getCustomerName(){
+        return pref.getString(CUSTOMER_NAME,"");
+    }
+
+    public void setCustomerName(String name){
+        editor.putString(CUSTOMER_NAME,name);
+        editor.commit();
+    }
+
+    public String getCustomerCode(){
+        return pref.getString(CUSTOMER_CODE,"");
+    }
+
+    public void setCustomerCode(String code){
+        editor.putString(CUSTOMER_CODE,code);
         editor.commit();
     }
 }

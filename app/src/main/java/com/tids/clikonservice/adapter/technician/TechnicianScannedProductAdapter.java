@@ -74,7 +74,10 @@ public class TechnicianScannedProductAdapter extends RecyclerView.Adapter<Techni
         holder.tv_product_branch_name.setText(model.getProductBatchNumber());
         holder.tv_product_serial_number.setText(model.getProductSerialNumber());
         holder.tv_product_code.setText(model.getProductCode());
-        holder.tv_ref_number.setText("#"+model.getProductReferId());
+        holder.tv_doc_id.setText("#"+model.getProductDocId());
+        holder.tv_ref_number.setText(model.getProductReferId());
+        holder.tv_customer_code.setText(model.getCustomerCode());
+        holder.tv_customer_name.setText(model.getCustomerName());
 
         Log.e("TechnicianProductId::",pref.getTechnicianProductId());
         if (pref.getTechnicianProductStatus().equalsIgnoreCase("start") &&
@@ -86,66 +89,93 @@ public class TechnicianScannedProductAdapter extends RecyclerView.Adapter<Techni
         }
 
         holder.card_play.setOnClickListener(v -> {
-            if (!pref.getTechnicianProductStatus().equalsIgnoreCase("start")){
 
-                try {
-                    String myFormat = "dd/MMM/yy hh:mm aaa";
-                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
-                    String todaydate = sdf.format(Calendar.getInstance().getTime());
-                    Log.e("dt-tm::", todaydate);
-
-                    JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("SM_STS_CODE","SERVSRT");
-                    jsonObject.put("SM_STRT_DT",todaydate);
-                    jsonObject.put("SM_SRP_SYS_ID",technicianID);
-
-                    Log.e("Authorization::",authorization);
-                    Log.e("body::",jsonObject.toString());
-
-                    AndroidNetworking.put(Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
-                            model.getProductDocId())
-                            .addHeaders("Authorization", authorization)
-                            .addJSONObjectBody(jsonObject)
-                            .setTag(this)
-                            .setPriority(Priority.LOW)
-                            .build()
-                            .getAsJSONObject(new JSONObjectRequestListener() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    Log.e("Response::",response.toString());
-
-                                    try {
-                                        if (response.getBoolean("status")) {
-
-                                            Glide.with(mContext).load(getImage("ic_pause")).into(holder.iv_play);
-                                            pref.setTechnicianProductStatus("start");
-                                            pref.setTechnicianProductId(model.getProductScannedId());
-                                            pref.setTechnicianProductName(model.getProductName());
-                                            pref.setTechnicianProductDocId(model.getProductDocId());
-                                            pref.setTechnicianProductRefId(model.getProductReferId());
-                                            pref.setTechnicianProductCode(model.getProductCode());
-                                            notifyDataSetChanged();
-
-                                            Intent intent = new Intent(mContext, StartServiceActivity.class);
-                                            mContext.startActivity(intent);
-
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                @Override
-                                public void onError(ANError anError) {
-//                                    showError(anError);
-                                }
-                            });
-
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                }
-            }
+            checkTechnicianStatus(technicianID,model.getProductDocId());
         });
 
+    }
+
+    private void checkTechnicianStatus(String technicianID, String productDocId) {
+        try {
+            String condition = "SELECT * FROM SERVICE_MODULE_VIEW WHERE SM_STS_CODE = 'SERVSRT' AND" +
+                    " SM_SRP_SYS_ID ="+technicianID;
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query",condition);
+
+            AndroidNetworking.post(Constant.BASE_URL + "GetData")
+                    .addHeaders("Authorization", authorization)
+                    .addJSONObjectBody(jsonObject)
+                    .setTag(this)
+                    .setPriority(Priority.LOW)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.e("Response1::",response.toString());
+
+                            try {
+                                if (response.getBoolean("status")) {
+
+                                    startProductService(technicianID,productDocId);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        @Override
+                        public void onError(ANError anError) {
+//                                    showError(anError);
+                        }
+                    });
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    private void startProductService(String technicianID, String productDocId) {
+        try {
+            String myFormat = "dd/MMM/yy hh:mm aaa";
+            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
+            String todaydate = sdf.format(Calendar.getInstance().getTime());
+            Log.e("dt-tm::", todaydate);
+
+            String condition = "UPDATE SERVICE_MODULE_VIEW SET SM_STS_CODE ='SERVSRT',SM_SRP_SYS_ID="+
+                    technicianID + ",SM_STRT_DT="+todaydate+ "WHERE SM_DOC_NO="+productDocId;
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query",condition);
+
+            AndroidNetworking.post(Constant.BASE_URL + "GetData")
+                    .addHeaders("Authorization", authorization)
+                    .addJSONObjectBody(jsonObject)
+                    .setTag(this)
+                    .setPriority(Priority.LOW)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.e("Response2::",response.toString());
+
+                            try {
+                                if (response.getBoolean("status")) {
+
+                                    Intent intent = new Intent(mContext, StartServiceActivity.class);
+                                    mContext.startActivity(intent);
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        @Override
+                        public void onError(ANError anError) {
+//                                    showError(anError);
+                        }
+                    });
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     public int getImage(String imageName) {
@@ -166,7 +196,7 @@ public class TechnicianScannedProductAdapter extends RecyclerView.Adapter<Techni
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tv_product_name,tv_product_serial_number,tv_product_branch_name,
-                tv_product_complaint,tv_ref_number,tv_product_code;
+                tv_product_complaint,tv_ref_number,tv_product_code,tv_doc_id,tv_customer_name,tv_customer_code;
         private ImageView iv_play;
         private CardView card_play;
 
@@ -181,6 +211,9 @@ public class TechnicianScannedProductAdapter extends RecyclerView.Adapter<Techni
             card_play = itemView.findViewById(R.id.card_scanned);
             tv_ref_number = itemView.findViewById(R.id.tv_ref_number);
             tv_product_code = itemView.findViewById(R.id.tv_product_code);
+            tv_doc_id = itemView.findViewById(R.id.tv_doc_id);
+            tv_customer_name = itemView.findViewById(R.id.tv_customer_name);
+            tv_customer_code = itemView.findViewById(R.id.tv_customer_code);
         }
     }
 }

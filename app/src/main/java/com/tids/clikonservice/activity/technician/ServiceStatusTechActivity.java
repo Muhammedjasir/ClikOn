@@ -172,9 +172,12 @@ public class ServiceStatusTechActivity extends AppCompatActivity {
                                             String flag = "";
                                             String productReferId = jsonArray.getJSONObject(i).getString("SM_CM_REF_NO");
                                             String productCode = jsonArray.getJSONObject(i).getString("SM_CTI_ITEM_CODE");
+                                            String customerName = jsonArray.getJSONObject(i).getString("SM_CM_CUST_NAME");
+                                            String customerCode = jsonArray.getJSONObject(i).getString("SM_CM_CUST_CODE");
 
                                             ScannedProductModel scannedProductModel = new ScannedProductModel(product_doc_id, product_qrcode_data, product_name,
-                                                    product_serial_number, product_batch_number, product_complaint, flag, productReferId,productCode);
+                                                    product_serial_number, product_batch_number, product_complaint, flag, productReferId,productCode,
+                                                    customerName,customerCode);
                                             scannedProductModelArrayList.add(scannedProductModel);
                                         }
                                         technicianHoldProductsAdapter.notifyDataSetChanged();
@@ -233,11 +236,14 @@ public class ServiceStatusTechActivity extends AppCompatActivity {
                                             String product_qrcode_data = jsonArray.getJSONObject(i).getString("SM_CTI_SYS_ID");
                                             String flag = "hold";
                                             String productReferId = jsonArray.getJSONObject(i).getString("SM_CM_REF_NO");
+                                            String customerName = jsonArray.getJSONObject(i).getString("SM_CM_CUST_NAME");
+                                            String customerCode = jsonArray.getJSONObject(i).getString("SM_CM_CUST_CODE");
                                             String productCode = jsonArray.getJSONObject(i).getString("SM_CTI_ITEM_CODE");
 
                                             ScannedProductModel scannedProductModel = new ScannedProductModel(product_doc_id, product_qrcode_data, product_name,
-                                                    product_serial_number, product_batch_number, product_complaint, flag,productReferId, productCode);
-                                            scannedProductModelArrayList.add(scannedProductModel);
+                                                    product_serial_number, product_batch_number, product_complaint, flag, productReferId,productCode,
+                                                    customerName,customerCode);
+                                             scannedProductModelArrayList.add(scannedProductModel);
                                         }
                                         technicianHoldProductsAdapter.notifyDataSetChanged();
                                     }
@@ -302,9 +308,12 @@ public class ServiceStatusTechActivity extends AppCompatActivity {
                                             String flag = "over";
                                             String productReferId = jsonArray.getJSONObject(i).getString("SM_CM_REF_NO");
                                             String productCode = jsonArray.getJSONObject(i).getString("SM_CTI_ITEM_CODE");
+                                            String customerName = jsonArray.getJSONObject(i).getString("SM_CM_CUST_NAME");
+                                            String customerCode = jsonArray.getJSONObject(i).getString("SM_CM_CUST_CODE");
 
                                             ScannedProductModel scannedProductModel = new ScannedProductModel(product_doc_id, product_qrcode_data, product_name,
-                                                    product_serial_number, product_batch_number, product_complaint, flag, productReferId,productCode);
+                                                    product_serial_number, product_batch_number, product_complaint, flag, productReferId,productCode,
+                                                    customerName,customerCode);
                                             scannedProductModelArrayList.add(scannedProductModel);
                                         }
                                         technicianHoldProductsAdapter.notifyDataSetChanged();
@@ -331,10 +340,10 @@ public class ServiceStatusTechActivity extends AppCompatActivity {
 
     private void getSearch(CharSequence word){
         try {
-            String authorization = "Bearer " + sp.getString(Constant.USER_AUTHORIZATION, "");
-            String condition = "SELECT * FROM SERVICE_MODULE_VIEW WHERE" +
-                    " (UPPER(SM_CTI_ITEM_NAME) LIKE UPPER('%" +word+ "%') OR SM_CTI_SYS_ID LIKE '%" +word+ "%')" +
-                    " AND SM_STS_CODE = 'SERVFIN' AND SM_SRP_SYS_ID ="+ sp.getString(Constant.USER_USERID,"");
+            String condition = "SELECT * FROM SERVICE_MODULE_VIEW WHERE (UPPER(SM_CTI_ITEM_NAME) LIKE UPPER('%"+word+"%') OR" +
+                    " UPPER(SM_CTI_ITEM_CODE) LIKE UPPER('%"+word+"%') OR UPPER(SM_CM_CUST_CODE) LIKE UPPER('%"+word+"%') OR" +
+                    " SM_CTI_SYS_ID LIKE '%"+word+"%' OR SM_CM_REF_NO LIKE '%"+word+"%' OR SM_CM_DOC_NO LIKE '%"+word+"%') AND " +
+                    "SM_STS_CODE = 'SERVFIN' AND SM_SRP_SYS_ID ="+ sp.getString(Constant.USER_USERID,"");
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("query",condition);
@@ -352,6 +361,10 @@ public class ServiceStatusTechActivity extends AppCompatActivity {
 
                             try {
                                 if (response.getBoolean("status")) {
+
+                                    scannedProductModelArrayList.clear();
+                                    technicianHoldProductsAdapter.notifyDataSetChanged();
+
                                     //Get the instance of JSONArray that contains JSONObjects
                                     JSONArray jsonArray = response.getJSONArray("data");
                                     if (jsonArray.length() != 0) {
@@ -365,9 +378,12 @@ public class ServiceStatusTechActivity extends AppCompatActivity {
                                             String flag = cFlag;
                                             String productReferId = jsonArray.getJSONObject(i).getString("SM_CM_REF_NO");
                                             String productCode = jsonArray.getJSONObject(i).getString("SM_CTI_ITEM_CODE");
+                                            String customerName = jsonArray.getJSONObject(i).getString("SM_CM_CUST_NAME");
+                                            String customerCode = jsonArray.getJSONObject(i).getString("SM_CM_CUST_CODE");
 
                                             ScannedProductModel scannedProductModel = new ScannedProductModel(product_doc_id, product_qrcode_data, product_name,
-                                                    product_serial_number, product_batch_number, product_complaint, flag, productReferId,productCode);
+                                                    product_serial_number, product_batch_number, product_complaint, flag, productReferId,productCode,
+                                                    customerName,customerCode);
                                             scannedProductModelArrayList.add(scannedProductModel);
                                         }
                                         technicianHoldProductsAdapter.notifyDataSetChanged();

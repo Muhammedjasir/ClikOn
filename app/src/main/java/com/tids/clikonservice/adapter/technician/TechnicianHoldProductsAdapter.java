@@ -59,7 +59,10 @@ public class TechnicianHoldProductsAdapter extends RecyclerView.Adapter<Technici
         holder.tv_product_branch_name.setText(model.getProductBatchNumber());
         holder.tv_product_serial_number.setText(model.getProductSerialNumber());
         holder.tv_product_code.setText(model.getProductCode());
-        holder.tv_ref_number.setText("#"+model.getProductReferId());
+        holder.tv_doc_id.setText("#"+model.getProductDocId());
+        holder.tv_ref_number.setText(model.getProductReferId());
+        holder.tv_customer_code.setText(model.getCustomerCode());
+        holder.tv_customer_name.setText(model.getCustomerName());
 
         if (model.getPageFlag().equalsIgnoreCase("hold")){
             holder.iv_play.setVisibility(View.VISIBLE);
@@ -79,8 +82,10 @@ public class TechnicianHoldProductsAdapter extends RecyclerView.Adapter<Technici
             intent.putExtra("product_id",model.getProductScannedId());
             intent.putExtra("product_name",model.getProductName());
             intent.putExtra("product_doc_id",model.getProductDocId());
-            intent.putExtra("product_ref_id",model.getProductDocId());
+            intent.putExtra("product_ref_id",model.getProductReferId());
             intent.putExtra("product_code",model.getProductCode());
+            intent.putExtra("customer_name",model.getCustomerName());
+            intent.putExtra("customer_code",model.getCustomerCode());
             mContext.startActivity(intent);
         });
 
@@ -99,7 +104,8 @@ public class TechnicianHoldProductsAdapter extends RecyclerView.Adapter<Technici
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tv_product_name,tv_product_serial_number,tv_product_branch_name,
-                tv_product_complaint,tv_ref_number,tv_product_code;
+                tv_product_complaint,tv_ref_number,tv_product_code,tv_doc_id,tv_customer_name,
+                tv_customer_code,v_product_complaint;
         private TableRow iv_play;
         private CardView card_play;
 
@@ -114,6 +120,9 @@ public class TechnicianHoldProductsAdapter extends RecyclerView.Adapter<Technici
             card_play = itemView.findViewById(R.id.card_scanned);
             tv_ref_number = itemView.findViewById(R.id.tv_ref_number);
             tv_product_code = itemView.findViewById(R.id.tv_product_code);
+            tv_doc_id = itemView.findViewById(R.id.tv_doc_id);
+            tv_customer_name = itemView.findViewById(R.id.tv_customer_name);
+            tv_customer_code = itemView.findViewById(R.id.tv_customer_code);
         }
     }
 }

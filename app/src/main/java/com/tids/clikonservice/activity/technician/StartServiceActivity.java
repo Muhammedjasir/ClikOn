@@ -46,13 +46,14 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
     private ImageView ivBack;
     private TextView tv_product_name,tv_product_serial_number,tv_product_batch_number,tv_product_complaint,
             tv_product_service_registered,tv_product_received,tv_product_service_started,tv_estimate_date,
-            tv_product_ref_no,tv_product_code;
+            tv_product_ref_no,tv_product_code,tv_doc_id,tv_customer_code,tv_customer_name;
     private AppCompatButton bt_service_completed,btn_pause,bt_update_estimatetime,btn_Technician_remarks,
             btn_release,btn_remove;
     private TextInputEditText ed_pouse_reason,ed_find_problems;
     private RelativeLayout mainLayout;
     private LinearLayout lay_bt1,lay_bt2;
 
+    private boolean dateFlag = false;
     int mYear,mMonth,mDay;
     String authorization = "", productId = "";
 
@@ -70,6 +71,9 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
         ivBack=findViewById(R.id.back_btn);
         ivBack.setOnClickListener(v -> onBackPressed());
 
+        tv_customer_code = findViewById(R.id.tv_customer_code);
+        tv_customer_name = findViewById(R.id.tv_customer_name);
+        tv_doc_id = findViewById(R.id.tv_doc_id);
         tv_product_code = findViewById(R.id.tv_product_code);
         tv_product_name = findViewById(R.id.product_name);
         tv_product_serial_number = findViewById(R.id.product_serial_number);
@@ -92,27 +96,18 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
         btn_remove = findViewById(R.id.btn_remove);
         tv_product_ref_no = findViewById(R.id.tv_product_ref_no);
 
-        extras = getIntent().getExtras();
-        if(extras != null){
-
-            lay_bt1.setVisibility(View.GONE);
-            lay_bt2.setVisibility(View.VISIBLE);
-
-            productId = extras.getString("product_id");
-            tv_product_name.setText(extras.getString("product_name"));
-            tv_product_code.setText(extras.getString("product_code"));
-            tv_product_ref_no.setText("#"+extras.getString("product_ref_id"));
-
-        }else {
+//        extras = getIntent().getExtras();
+//        if(extras != null){
+//            lay_bt1.setVisibility(View.GONE);
+//            lay_bt2.setVisibility(View.VISIBLE);
+//            productId = extras.getString("product_id");
+//        }else {
             lay_bt1.setVisibility(View.VISIBLE);
             lay_bt2.setVisibility(View.GONE);
-            productId = pref.getTechnicianProductId();
-            tv_product_name.setText(pref.getTechnicianProductName());
-            tv_product_ref_no.setText("#"+pref.getTechnicianProductRefId());
-            tv_product_code.setText(pref.getTechnicianProductCode());
-        }
+//            productId = pref.getTechnicianProductId();
+//        }
 
-        getProductData(productId);
+        getProductData();
 
         tv_estimate_date.setOnClickListener(this);
         bt_update_estimatetime.setOnClickListener(this);
@@ -149,17 +144,18 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
         mDatePicker.show();
     }
 
-    private void getProductData(String productId) {
+    private void getProductData() {
 
         try {
-            Log.e("TechnicianProductId::",productId);
+            String condition = "SELECT * FROM SERVICE_MODULE_VIEW WHERE SM_STS_CODE = 'SERVSRT' AND" +
+                    " SM_SRP_SYS_ID ="+sp.getString(Constant.USER_USERID,"");
 
-            String condition = "SM_CTI_SYS_ID='" + productId + "'";
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query",condition);
 
-            AndroidNetworking.get(Constant.BASE_URL + "GetTable")
-                    .addQueryParameter("table_name", Constant.SERVICE_PRODUCT_INFO)
-                    .addQueryParameter("condition", condition)
+            AndroidNetworking.post(Constant.BASE_URL + "GetData")
                     .addHeaders("Authorization", authorization)
+                    .addJSONObjectBody(jsonObject)
                     .setTag(this)
                     .setPriority(Priority.LOW)
                     .build()
@@ -178,10 +174,22 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
                                     if (jsonArray.length() != 0) {
 
                                         String product_serial_number = jsonArray.getJSONObject(0).getString("SM_SERIAL_NO");
-                                        String product_batch_number = jsonArray.getJSONObject(0).getString("SM_BATCH_CODE");
-
                                         tv_product_serial_number.setText(product_serial_number);
+                                        String product_batch_number = jsonArray.getJSONObject(0).getString("SM_BATCH_CODE");
                                         tv_product_batch_number.setText(product_batch_number);
+                                        String product_name = jsonArray.getJSONObject(0).getString("SM_CTI_ITEM_NAME");
+                                        tv_product_name.setText(product_name);
+                                        String product_ref_id = jsonArray.getJSONObject(0).getString("SM_CM_REF_NO");
+                                        tv_product_ref_no.setText(product_ref_id);
+                                        String product_doc_id = jsonArray.getJSONObject(0).getString("SM_DOC_NO");
+                                        tv_doc_id.setText("#"+product_doc_id);
+                                        productId = product_doc_id;
+                                        String product_code = jsonArray.getJSONObject(0).getString("SM_CTI_ITEM_CODE");
+                                        tv_product_code.setText(product_code);
+                                        String customer_name = jsonArray.getJSONObject(0).getString("SM_CM_CUST_NAME");
+                                        tv_customer_name.setText(customer_name);
+                                        String customer_code = jsonArray.getJSONObject(0).getString("SM_CM_CUST_CODE");
+                                        tv_customer_code.setText(customer_code);
 
                                         if (jsonArray.getJSONObject(0).getString("SM_REMARKS")!=null)
                                             tv_product_complaint.setText(jsonArray.getJSONObject(0).getString("SM_REMARKS"));
@@ -196,21 +204,25 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
                                             String product_service_registered_date = utils.parseServerDateTime(jsonArray.getJSONObject(0).getString("SM_CR_DT"));
                                             tv_product_service_registered.setText(product_service_registered_date);
                                         }
-                                        if (jsonArray.getJSONObject(0).getString("SM_STRT_DT") != null){
-                                            String product_start_date = utils.parseServerDateTime(jsonArray.getJSONObject(0).getString("SM_STRT_DT"));
-                                            tv_product_service_started.setText(product_start_date);
-                                        }
-                                        if (jsonArray.getJSONObject(0).getString("SM_ESTIM_DT") != null){
-                                            String product_estimate_date = utils.parseServerDateTime(jsonArray.getJSONObject(0).getString("SM_ESTIM_DT"));
-                                            tv_estimate_date.setText(product_estimate_date);
-                                        }
                                         if (jsonArray.getJSONObject(0).getString("SM_CM_IN_DT") != null){
                                             String product_received_date = utils.parseServerDateTime(jsonArray.getJSONObject(0).getString("SM_CM_IN_DT"));
                                             tv_product_received.setText(product_received_date);
                                         }
+                                        if (jsonArray.getJSONObject(0).getString("SM_ESTIM_DT") != null){
+                                            String product_estimate_date = utils.parseServerDateTime(jsonArray.getJSONObject(0).getString("SM_ESTIM_DT"));
+                                            tv_estimate_date.setText(product_estimate_date);
+                                            dateFlag = true;
+                                        }else {
+                                            dateFlag = false;
+                                        }
+                                        if (jsonArray.getJSONObject(0).getString("SM_STRT_DT") != null){
+                                            String product_start_date = utils.parseServerDateTime(jsonArray.getJSONObject(0).getString("SM_STRT_DT"));
+                                            tv_product_service_started.setText(product_start_date);
+                                        }
                                     }
                                 }else {
                                     mainLayout.setVisibility(View.GONE);
+                                    dateFlag = true;
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -287,11 +299,6 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
                                         lay_bt1.setVisibility(View.VISIBLE);
                                         lay_bt2.setVisibility(View.GONE);
 
-                                        pref.setTechnicianProductStatus("start");
-                                        pref.setTechnicianProductId(extras.getString("product_id"));
-                                        pref.setTechnicianProductName(extras.getString("product_name"));
-                                        pref.setTechnicianProductDocId(extras.getString("product_doc_id"));
-
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -299,7 +306,7 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
                             }
                             @Override
                             public void onError(ANError anError) {
-//                                    showError(anError);
+                                    showError(anError);
                             }
                         });
 
@@ -410,9 +417,6 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
                             try {
                                 Log.e("rsp:", response.toString());
 
-                                pref.setTechnicianProductStatus("");
-                                pref.setTechnicianProductId("");
-                                pref.setTechnicianProductName("");
                                 mainLayout.setVisibility(View.GONE);
 
                                 customToast("Completed");
@@ -441,11 +445,11 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
                 jsonObject.put("SM_ESTIM_DT",estimateTime);
 
                 Log.e("url:",Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
-                        pref.getTechnicianProductDocId());
+                        productId);
                 Log.e("jsonbody:",jsonObject.toString());
 
                 AndroidNetworking.put(Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
-                        pref.getTechnicianProductDocId())
+                        productId)
                         .addHeaders("Authorization", authorization)
                         .addJSONObjectBody(jsonObject)
                         .setTag(this)
@@ -458,6 +462,7 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
                                     Log.e("rsp:", response.toString());
 
                                     customToast("Estimate time updated");
+                                    dateFlag = true;
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -498,11 +503,7 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
                     try {
                         Log.e("rsp:", response.toString());
 
-                        pref.setTechnicianProductStatus("");
-                        pref.setTechnicianProductId("");
-                        pref.setTechnicianProductName("");
                         mainLayout.setVisibility(View.GONE);
-
                         customToast("paused");
 
 
@@ -533,10 +534,10 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        if (tv_estimate_date.getText().toString().trim().equalsIgnoreCase("")){
-            customToast("Please set estimate date and try again");
+        if (dateFlag){
+            customToast("Please update estimate date and try again");
         }else {
+            super.onBackPressed();
             Intent intent = new Intent(getApplicationContext(), TechnicianHomeActivity.class);
             startActivity(intent);
             finish();

@@ -11,10 +11,13 @@ public class ScannedProductModel {
     private String pageFlag;
     private String productReferId;
     private String productCode;
+    private String customerName;
+    private String customerCode;
 
     public ScannedProductModel(String productDocId, String productScannedId, String productName,
                                String productSerialNumber, String productBatchNumber,
-                               String productComplaint, String productReferId, String productCode) {
+                               String productComplaint, String productReferId, String productCode,
+                               String customerName, String customerCode) {
         this.productDocId = productDocId;
         this.productScannedId = productScannedId;
         this.productName = productName;
@@ -23,11 +26,14 @@ public class ScannedProductModel {
         this.productComplaint = productComplaint;
         this.productReferId = productReferId;
         this.productCode = productCode;
+        this.customerName = customerName;
+        this.customerCode = customerCode;
     }
 
     public ScannedProductModel(String productDocId, String productScannedId, String productName,
                                String productSerialNumber, String productBatchNumber, String productComplaint,
-                               String pageFlag, String productReferId, String productCode) {
+                               String pageFlag, String productReferId, String productCode,
+                               String customerName, String customerCode) {
         this.productDocId = productDocId;
         this.productScannedId = productScannedId;
         this.productName = productName;
@@ -37,6 +43,24 @@ public class ScannedProductModel {
         this.pageFlag = pageFlag;
         this.productReferId = productReferId;
         this.productCode = productCode;
+        this.customerName = customerName;
+        this.customerCode = customerCode;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getCustomerCode() {
+        return customerCode;
+    }
+
+    public void setCustomerCode(String customerCode) {
+        this.customerCode = customerCode;
     }
 
     public String getProductCode() {

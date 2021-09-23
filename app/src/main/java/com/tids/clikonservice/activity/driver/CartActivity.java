@@ -100,9 +100,11 @@ public class CartActivity extends AppCompatActivity {
                                             String product_qrcode_data = jsonArray.getJSONObject(i).getString("SM_CTI_SYS_ID");
                                             String productReferId = jsonArray.getJSONObject(i).getString("SM_CM_REF_NO");
                                             String productCode = jsonArray.getJSONObject(i).getString("SM_CTI_ITEM_CODE");
+                                            String customerName = jsonArray.getJSONObject(i).getString("SM_CM_CUST_NAME");
+                                            String customerCode = jsonArray.getJSONObject(i).getString("SM_CM_CUST_CODE");
 
                                             ScannedProductModel scannedProductModel = new ScannedProductModel(product_doc_id, product_qrcode_data, product_name,
-                                                    product_serial_number, product_batch_number, product_complaint,productReferId,productCode);
+                                                    product_serial_number, product_batch_number, product_complaint,productReferId,productCode,customerName,customerCode);
                                             scannedProductModelArrayList.add(scannedProductModel);
                                         }
                                         cartAdapter.notifyDataSetChanged();
