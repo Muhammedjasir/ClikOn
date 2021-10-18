@@ -10,6 +10,7 @@ import android.widget.Button;
 
 import com.tids.clikonservice.R;
 import com.tids.clikonservice.activity.driver.DriversHomeActivity;
+import com.tids.clikonservice.activity.merchant.StaffHomeActivity;
 import com.tids.clikonservice.activity.technician.TechnicianHomeActivity;
 
 public class DemoPagenationActivity extends AppCompatActivity {
@@ -28,7 +29,7 @@ Button Collection, Transport, Technician;
         Collection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DemoPagenationActivity.this,StaffHomeActivity.class);
+                Intent intent = new Intent(DemoPagenationActivity.this, StaffHomeActivity.class);
                 startActivity(intent);
             }
         });

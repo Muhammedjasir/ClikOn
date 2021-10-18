@@ -17,6 +17,7 @@ import com.tids.clikonservice.R;
 import com.tids.clikonservice.Utils.Constant;
 import com.tids.clikonservice.Utils.Helper.PrefManager;
 import com.tids.clikonservice.activity.driver.DriversHomeActivity;
+import com.tids.clikonservice.activity.merchant.StaffHomeActivity;
 import com.tids.clikonservice.activity.technician.TechnicianHomeActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -56,14 +57,15 @@ public class SplashScreenActivity extends AppCompatActivity {
                         Intent i = new Intent(SplashScreenActivity.this, DriversHomeActivity.class);
                         startActivity(i);
                         finish();
-                    }else if (sp.getString(Constant.USER_TYPE, "").equalsIgnoreCase("SRVC")){
+                    }else if (sp.getString(Constant.USER_TYPE, "").equalsIgnoreCase("TECHN")){
                         Intent intent = new Intent(getApplicationContext(), TechnicianHomeActivity.class);
                         startActivity(intent);
                         finish();
+                    }else if (sp.getString(Constant.USER_TYPE, "").equalsIgnoreCase("MRCT")){
+                        Intent intent = new Intent(getApplicationContext(), StaffHomeActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
-                    Intent i = new Intent(SplashScreenActivity.this, TechnicianHomeActivity.class);
-                    startActivity(i);
-                    finish();
                 }else {
                     Intent i = new Intent(SplashScreenActivity.this, LoginActivity.class);
                     startActivity(i);

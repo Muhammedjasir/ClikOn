@@ -72,21 +72,13 @@ public class TechnicianHoldProductsAdapter extends RecyclerView.Adapter<Technici
 
         holder.card_play.setOnClickListener(v -> {
 
-            Intent intent = new Intent(mContext, StartServiceActivity.class);
+            if (model.getPageFlag().equalsIgnoreCase("hold") ||
+                    model.getPageFlag().equalsIgnoreCase("over")){
 
-            if (model.getPageFlag().equalsIgnoreCase("hold")){
-                intent.putExtra("type","hold");
-            }else if (model.getPageFlag().equalsIgnoreCase("over")){
-                intent.putExtra("type","over");
+                Intent intent = new Intent(mContext, StartServiceActivity.class);
+                intent.putExtra("product_doc_id",model.getProductDocId());
+                mContext.startActivity(intent);
             }
-            intent.putExtra("product_id",model.getProductScannedId());
-            intent.putExtra("product_name",model.getProductName());
-            intent.putExtra("product_doc_id",model.getProductDocId());
-            intent.putExtra("product_ref_id",model.getProductReferId());
-            intent.putExtra("product_code",model.getProductCode());
-            intent.putExtra("customer_name",model.getCustomerName());
-            intent.putExtra("customer_code",model.getCustomerCode());
-            mContext.startActivity(intent);
         });
 
     }

@@ -30,6 +30,22 @@ public class Utils {
         return false;
     }
 
+    public static String parseAppDisplay(String input) {
+        String output = "";
+        if (!input.isEmpty()) {
+            try {
+                SimpleDateFormat format = new SimpleDateFormat(DateTimeFormats.APP_DATE_FORMAT, Locale.ENGLISH);
+                Date newDate = format.parse(input);
+
+                format = new SimpleDateFormat(DateTimeFormats.APP_DATE_DISPLAY_FORMAT, Locale.ENGLISH);
+                output = format.format(newDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return output;
+    }
+
     public static String parseServerDateTime(String input) {
         String output = "";
         if (!input.isEmpty()) {

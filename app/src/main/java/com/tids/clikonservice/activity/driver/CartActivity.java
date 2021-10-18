@@ -4,6 +4,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -18,11 +19,11 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 import com.tids.clikonservice.R;
 import com.tids.clikonservice.Utils.Constant;
-import com.tids.clikonservice.activity.technician.ReceivedProductActivity;
+import com.tids.clikonservice.adapter.driver.DeliveryPagerAdapter;
 import com.tids.clikonservice.adapter.driver.DriverCartAdapter;
-import com.tids.clikonservice.adapter.technician.TechnicianScannedProductAdapter;
 import com.tids.clikonservice.model.ScannedProductModel;
 
 import org.json.JSONArray;
@@ -34,8 +35,8 @@ import java.util.ArrayList;
 public class CartActivity extends AppCompatActivity {
 
     private ImageView ivBack;
-    private RecyclerView rv_cart;
-    private TextView tv_cart_count;
+//    private RecyclerView rv_cart;
+//    private TextView tv_cart_count;
 
     private DriverCartAdapter cartAdapter;
     private ArrayList<ScannedProductModel> scannedProductModelArrayList = new ArrayList<>();
@@ -54,14 +55,33 @@ public class CartActivity extends AppCompatActivity {
         ivBack=findViewById(R.id.back_btn);
         ivBack.setOnClickListener(v -> onBackPressed());
 
-        tv_cart_count = findViewById(R.id.tv_cart_count);
-        rv_cart = findViewById(R.id.recycler_view);
+//        tv_cart_count = findViewById(R.id.tv_cart_count);
+//        rv_cart = findViewById(R.id.recycler_view);
+//
+//        cartAdapter = new DriverCartAdapter(CartActivity.this, scannedProductModelArrayList);
+//        rv_cart.setLayoutManager(new LinearLayoutManager(CartActivity.this,
+//                LinearLayoutManager.VERTICAL,false));
+//        rv_cart.setAdapter(cartAdapter);
+//        loadCart();
 
-        cartAdapter = new DriverCartAdapter(CartActivity.this, scannedProductModelArrayList);
-        rv_cart.setLayoutManager(new LinearLayoutManager(CartActivity.this,
-                LinearLayoutManager.VERTICAL,false));
-        rv_cart.setAdapter(cartAdapter);
-        loadCart();
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText("Merchant\nDelivery"));
+        tabLayout.addTab(tabLayout.newTab().setText("Technician\nDelivery"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        final ViewPager viewPager = findViewById(R.id.pager);
+        final DeliveryPagerAdapter adapter = new DeliveryPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) { }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) { }
+        });
     }
 
     private void loadCart() {
@@ -90,7 +110,7 @@ public class CartActivity extends AppCompatActivity {
                                     //Get the instance of JSONArray that contains JSONObjects
                                     JSONArray jsonArray = response.getJSONArray("data");
                                     if (jsonArray.length() != 0) {
-                                        tv_cart_count.setText(String.valueOf(jsonArray.length()));
+//                                        tv_cart_count.setText(String.valueOf(jsonArray.length()));
                                         for (int i = 0; i< jsonArray.length(); i++){
                                             String product_doc_id = String.valueOf(jsonArray.getJSONObject(i).getInt("SM_DOC_NO"));
                                             String product_name = jsonArray.getJSONObject(i).getString("SM_CTI_ITEM_NAME");

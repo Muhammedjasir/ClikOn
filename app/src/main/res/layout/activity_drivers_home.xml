@@ -7,195 +7,169 @@
     android:layout_height="match_parent"
     android:background="@color/lite_white"
     tools:context=".activity.driver.DriversHomeActivity">
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="55dp">
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/topBg"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:id="@+id/topBg"
-                android:layout_width="match_parent"
-                android:layout_height="210dp"
-                android:background="@drawable/bg4"
-                android:orientation="vertical"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:orientation="vertical">
+            android:layout_height="210dp"
+            android:background="@drawable/bg4"
+            android:orientation="vertical"/>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_clikon_logo"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Transportation"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"/>
-
-            </LinearLayout>
             <ImageView
-                android:id="@+id/van_building"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/topBg"
-                android:layout_marginTop="-180dp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_van_buildings"/>
+                android:layout_gravity="center"
+                android:src="@drawable/ic_clikon_logo"/>
 
-            <LinearLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Transportation"
+                android:textColor="@color/white"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/van_building"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/topBg"
+            android:layout_marginTop="-180dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_van_buildings"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/van_building"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/van_building"
-                android:orientation="vertical">
-                <androidx.cardview.widget.CardView
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/white"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp"
+                app:cardPreventCornerOverlap="false">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@color/white"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardElevation="5dp"
-                    app:cardCornerRadius="10dp"
-                    app:cardPreventCornerOverlap="false">
+                    android:orientation="vertical">
+
                     <LinearLayout
+                        android:id="@+id/profile_lay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:orientation="horizontal">
+                            android:layout_margin="5dp"
+                            android:background="@color/white"
+                            android:minWidth="50dp"
+                            android:minHeight="50dp"
+                            app:cardBackgroundColor="@color/white"
+                            app:cardCornerRadius="25dp"
+                            app:cardElevation="5dp"
+                            app:cardPreventCornerOverlap="false">
 
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:minWidth="50dp"
-                                android:minHeight="50dp"
-                                android:layout_margin="5dp"
-                                android:background="@color/white"
-                                app:cardBackgroundColor="@color/white"
-                                app:cardElevation="5dp"
-                                app:cardCornerRadius="25dp"
-                                app:cardPreventCornerOverlap="false">
-                                <ImageView
-                                    android:id="@+id/iv_profile"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:src="@drawable/ic_ivdp"/>
-
-                            </androidx.cardview.widget.CardView>
-                            <LinearLayout
+                            <ImageView
+                                android:id="@+id/iv_profile"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="3dp"
-                                android:layout_gravity="center_vertical"
-                                android:orientation="vertical">
-                                <TextView
-                                    android:id="@+id/tv_driver_name"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Driver Name"
-                                    android:textSize="17sp"
-                                    android:textStyle="bold"
-                                    android:textColor="@color/black"/>
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_vertical"
-                                    android:orientation="horizontal">
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_ivdp" />
 
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="OFF DUTY"
-                                        android:paddingRight="8dp"
-                                        android:textSize="14sp"
-                                        android:textStyle="normal"
-                                        android:textColor="@color/dark_gray"/>
+                        </androidx.cardview.widget.CardView>
 
-                                    <Switch
-                                        android:id="@+id/sw_duty"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center_vertical" />
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="ON DUTY"
-                                        android:paddingLeft="5dp"
-                                        android:textSize="14sp"
-                                        android:textStyle="normal"
-                                        android:textColor="@color/dark_gray"/>
-
-                                </LinearLayout>
-                            </LinearLayout>
-
-
-                        </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/ic_top_panal"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="3dp"
+                            android:orientation="vertical">
+
                             <TextView
+                                android:id="@+id/tv_driver_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="PICK UP"
-                                android:textSize="14sp"
-                                android:layout_marginLeft="10dp"
-                                android:textStyle="normal"
-                                android:textColor="@color/white"/>
+                                android:text="Driver Name"
+                                android:textColor="@color/black"
+                                android:textSize="17sp"
+                                android:textStyle="bold" />
+
                             <LinearLayout
-                                android:layout_width="15dp"
-                                android:layout_height="15sp"
-                                android:layout_marginLeft="5dp"
-                                android:gravity="center"
-                                android:background="@drawable/ic_shape2w">
-                                <TextView
-                                    android:id="@+id/tv_pickup_count"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="3"
-                                    android:textSize="10sp"
-                                    android:textStyle="bold"
-                                    android:textColor="@color/primary_color"/>
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/light_gray"
-                            android:orientation="horizontal">
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/recycler_view"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="5dp"
-                                tools:listitem="@layout/row_store_notification" />
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
 
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingRight="8dp"
+                                    android:text="OFF DUTY"
+                                    android:textColor="@color/dark_gray"
+                                    android:textSize="14sp"
+                                    android:textStyle="normal" />
+
+                                <Switch
+                                    android:id="@+id/sw_duty"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingLeft="5dp"
+                                    android:text="ON DUTY"
+                                    android:textColor="@color/dark_gray"
+                                    android:textSize="14sp"
+                                    android:textStyle="normal" />
+
+                            </LinearLayout>
                         </LinearLayout>
-
                     </LinearLayout>
 
-                </androidx.cardview.widget.CardView>
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tab_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:background="@drawable/ic_top_panal"
+                        app:tabIndicatorFullWidth="true"
+                        app:tabIndicatorHeight="1dp"
+                        app:tabIndicatorColor="@color/white"
+                        app:tabSelectedTextColor="@color/white"
+                        app:tabTextColor="@color/light_gray" />
 
-            </LinearLayout>
-        </RelativeLayout>
-    </ScrollView>
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/light_gray" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -262,9 +236,6 @@
                 android:gravity="center"
                 android:orientation="horizontal" />
 
-
         </LinearLayout>
-
     </RelativeLayout>
-
 </RelativeLayout>

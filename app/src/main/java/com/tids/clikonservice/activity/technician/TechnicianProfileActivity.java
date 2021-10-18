@@ -59,10 +59,10 @@ public class TechnicianProfileActivity extends AppCompatActivity {
         technicianID = sp.getString(Constant.USER_USERID,"");
 
         user_name = sp.getString(Constant.USER_USERNAME, "");
+        EditText tv_name = findViewById(R.id.tv_name);
+        tv_name.setText(user_name);
 
         iv_profile = findViewById(R.id.iv_profile);
-        EditText tv_name = findViewById(R.id.tv_name);
-
         String user_profile = sp.getString(Constant.USER_PROFILE, "");
         if (!user_profile.equalsIgnoreCase("") || user_profile != null){
             Glide.with(getApplicationContext())
@@ -73,7 +73,6 @@ public class TechnicianProfileActivity extends AppCompatActivity {
 //                    .error(R.drawable.ic_profile)
                     .into(iv_profile);
         }
-        tv_name.setText(user_name);
 
         ImageView ivBack=findViewById(R.id.back_btn);
         ivBack.setOnClickListener(v -> onBackPressed());

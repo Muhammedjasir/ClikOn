@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -20,6 +21,7 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 import com.tids.clikonservice.R;
 import com.tids.clikonservice.Utils.Constant;
 import com.tids.clikonservice.Utils.Helper.PrefManager;
@@ -114,9 +116,11 @@ public class TechnicianScannedProductAdapter extends RecyclerView.Adapter<Techni
                             Log.e("Response1::",response.toString());
 
                             try {
-                                if (response.getBoolean("status")) {
+                                if (!response.getBoolean("status")) {
 
                                     startProductService(technicianID,productDocId);
+                                }else {
+                                    Toast.makeText(mContext, "A service has already started", Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -135,17 +139,18 @@ public class TechnicianScannedProductAdapter extends RecyclerView.Adapter<Techni
 
     private void startProductService(String technicianID, String productDocId) {
         try {
-            String myFormat = "dd/MMM/yy hh:mm aaa";
+            String myFormat = "dd/MMM/yy";
             SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
             String todaydate = sdf.format(Calendar.getInstance().getTime());
-            Log.e("dt-tm::", todaydate);
 
-            String condition = "UPDATE SERVICE_MODULE_VIEW SET SM_STS_CODE ='SERVSRT',SM_SRP_SYS_ID="+
-                    technicianID + ",SM_STRT_DT="+todaydate+ "WHERE SM_DOC_NO="+productDocId;
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("query",condition);
+            jsonObject.put("SM_STS_CODE","SERVSRT");
+            jsonObject.put("SM_SRP_SYS_ID",technicianID);
+            jsonObject.put("SM_STRT_DT",todaydate);
+            Log.e("body::",jsonObject.toString());
 
-            AndroidNetworking.post(Constant.BASE_URL + "GetData")
+            AndroidNetworking.put(Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
+                    productDocId)
                     .addHeaders("Authorization", authorization)
                     .addJSONObjectBody(jsonObject)
                     .setTag(this)

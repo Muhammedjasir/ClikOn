@@ -10,7 +10,7 @@
     <VideoView
         android:id="@+id/videoView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:layout_gravity="center" />
@@ -114,7 +114,6 @@
                                 android:hint="User Name"
                                 android:inputType="text"
                                 android:maxLines="1"
-                                android:text="TESTER"
                                 android:minHeight="40dp"
                                 android:textColor="@color/light_gray"
                                 android:textSize="18sp" />
@@ -137,8 +136,7 @@
                                 android:layout_height="wrap_content"
                                 android:background="@android:color/transparent"
                                 android:hint="Password"
-                                android:text="123456789"
-                                android:inputType="numberPassword"
+                                android:inputType="textPassword"
                                 android:maxLines="1"
                                 android:minHeight="40dp"
                                 android:textColor="@color/light_gray"

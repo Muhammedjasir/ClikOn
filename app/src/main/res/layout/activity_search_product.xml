@@ -24,6 +24,7 @@
            android:id="@+id/edt_search_product"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
+           android:layout_weight="1"
            android:background="@drawable/shape4_ofw"
            android:gravity="center_vertical"
            android:text="Search Product"
@@ -35,7 +36,16 @@
            android:textSize="12sp"
            android:drawableRight="@drawable/ic_search_bold_gray"
            android:layout_marginLeft="10dp"
-           android:layout_marginRight="30dp"/>
+           android:layout_marginRight="10dp"/>
+        <ImageView
+            android:id="@+id/iv_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape4_ofw"
+            android:padding="8dp"
+            android:src="@drawable/ic_filter"
+            app:tint="@color/dark_gray"
+            android:layout_marginRight="15dp"/>
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

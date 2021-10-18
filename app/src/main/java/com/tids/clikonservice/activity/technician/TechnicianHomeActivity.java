@@ -11,17 +11,28 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.snackbar.Snackbar;
 import com.tids.clikonservice.R;
 import com.tids.clikonservice.Utils.Constant;
 import com.tids.clikonservice.Utils.Helper.PrefManager;
+import com.tids.clikonservice.model.ScannedProductModel;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class TechnicianHomeActivity extends AppCompatActivity {
 
-    SharedPreferences sp;
-    PrefManager pref;
+    private SharedPreferences sp;
+    private PrefManager pref;
+
+    private TextView tv_hold_services,tv_start_services;
 
     private static final int TIME_DELAY = 2000;
     private static long backPressed;
@@ -34,17 +45,14 @@ public class TechnicianHomeActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        TextView tv_start_services = findViewById(R.id.tv_start_services);
-        TextView tv_hold_services = findViewById(R.id.tv_hold_services);
+        tv_start_services = findViewById(R.id.tv_start_services);
+        tv_hold_services = findViewById(R.id.tv_hold_services);
         ImageView iv_profile = findViewById(R.id.iv_profile);
         ImageView iv_online_status = findViewById(R.id.iv_online_status);
         TextView tv_name = findViewById(R.id.tv_name);
 
         pref = new PrefManager(this);
         sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-
-        tv_start_services.setText(pref.getStartServices());
-        tv_hold_services.setText(pref.getHoldServices());
 
         String name = sp.getString(Constant.USER_USERNAME, "");
         tv_name.setText(name);
@@ -99,6 +107,96 @@ public class TechnicianHomeActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        getRecentStartedProduct();
+        getHoldProductsCount();
+    }
+
+    private void getHoldProductsCount() {
+        try {
+            String authorization = "Bearer " + sp.getString(Constant.USER_AUTHORIZATION, "");
+            String condition = "SELECT COUNT(1) CNT FROM SERVICE_MODULE_VIEW WHERE SM_STS_CODE='SERVPUS' AND SM_SRP_SYS_ID="+
+                    sp.getString(Constant.USER_USERID,"");
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query",condition);
+
+            AndroidNetworking.post(Constant.BASE_URL + "GetData")
+                    .addHeaders("Authorization", authorization)
+                    .addJSONObjectBody(jsonObject)
+                    .setTag(this)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.e("Response::",response.toString());
+
+                            try {
+                                if (response.getBoolean("status")) {
+
+                                    //Get the instance of JSONArray that contains JSONObjects
+                                    JSONArray jsonArray = response.getJSONArray("data");
+                                    int hold_products = jsonArray.getJSONObject(0).getInt("CNT");
+                                    tv_hold_services.setText(hold_products + "");
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        @Override
+                        public void onError(ANError anError) {
+//                            showError(anError);
+                        }
+                    });
+
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    private void getRecentStartedProduct(){
+        try {
+            String authorization = "Bearer " + sp.getString(Constant.USER_AUTHORIZATION, "");
+            String condition = "SELECT SM_CTI_ITEM_NAME FROM SERVICE_MODULE_VIEW WHERE SM_STS_CODE='SERVSRT' AND SM_SRP_SYS_ID="+
+                    sp.getString(Constant.USER_USERID,"");
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query",condition);
+
+            AndroidNetworking.post(Constant.BASE_URL + "GetData")
+                    .addHeaders("Authorization", authorization)
+                    .addJSONObjectBody(jsonObject)
+                    .setTag(this)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.e("Response::",response.toString());
+
+                            try {
+                                if (response.getBoolean("status")) {
+
+                                    //Get the instance of JSONArray that contains JSONObjects
+                                    JSONArray jsonArray = response.getJSONArray("data");
+                                    String products_name = jsonArray.getJSONObject(0).getString("SM_CTI_ITEM_NAME");
+                                    tv_start_services.setText(products_name);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        @Override
+                        public void onError(ANError anError) {
+//                            showError(anError);
+                        }
+                    });
+
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     //double back press to exit

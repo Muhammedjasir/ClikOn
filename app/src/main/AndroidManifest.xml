@@ -14,15 +14,14 @@
         android:theme="@style/Theme.ClikonService"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activity.technician.TechnicianProfileActivity"
+            android:name=".activity.driver.ProfileDriverActivity"
             android:exported="true" />
         <activity
-            android:name=".activity.CaptureActivity"
-            android:clearTaskOnLaunch="true"
-            android:exported="true"
-            android:screenOrientation="sensorPortrait"
-            android:stateNotNeeded="true"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:name=".activity.merchant.MerchantProfileActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.technician.TechnicianProfileActivity"
+            android:exported="true" />
         <activity android:name=".activity.driver.DailyReportActivity" />
         <activity android:name=".activity.technician.SearchProductActivity" />
         <activity
@@ -52,10 +51,10 @@
         <activity android:name=".activity.driver.CartActivity" />
         <activity android:name=".activity.driver.DriversHomeActivity" />
         <activity android:name=".activity.DemoPagenationActivity" />
-        <activity android:name=".activity.ServiceStatusMainActivity" />
-        <activity android:name=".activity.ServiceStatusSvActivity" />
-        <activity android:name=".activity.RegistrationActivity" />
-        <activity android:name=".activity.StaffHomeActivity" />
+        <activity android:name=".activity.merchant.ServiceStatusMainActivity" />
+        <activity android:name=".activity.merchant.ServiceStatusSvActivity" />
+        <activity android:name=".activity.merchant.RegistrationActivity" />
+        <activity android:name=".activity.merchant.StaffHomeActivity" />
         <activity android:name=".activity.LoginActivity" />
     </application>
 

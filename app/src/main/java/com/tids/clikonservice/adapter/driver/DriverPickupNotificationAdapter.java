@@ -2,6 +2,7 @@ package com.tids.clikonservice.adapter.driver;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tids.clikonservice.R;
 import com.tids.clikonservice.Utils.Constant;
 import com.tids.clikonservice.Utils.Helper.PrefManager;
+import com.tids.clikonservice.activity.driver.StoreActivity;
 import com.tids.clikonservice.model.LocationModel;
 
 
@@ -52,9 +54,17 @@ public class DriverPickupNotificationAdapter extends RecyclerView.Adapter<Driver
         technicianID = sp.getString(Constant.USER_USERID,"");
         authorization = "Bearer " + sp.getString(Constant.USER_AUTHORIZATION, "");
 
-        holder.tv_place.setText(model.getLocation());
+        holder.tv_place.setText(model.getShopName());
         holder.tv_address.setText(model.getAddress());
 
+        holder.card_place.setOnClickListener(v -> {
+            Intent intent = new Intent(mContext, StoreActivity.class);
+            intent.putExtra("type",model.getType());
+            intent.putExtra("consumerShopDocId",model.getId());
+            intent.putExtra("shopName",model.getShopName());
+            intent.putExtra("shopAddress",model.getAddress());
+            mContext.startActivity(intent);
+        });
     }
 
     @Override

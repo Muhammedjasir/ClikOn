@@ -31,6 +31,7 @@ import com.tids.clikonservice.Utils.Helper.Device;
 import com.tids.clikonservice.Utils.Helper.PrefManager;
 import com.tids.clikonservice.Utils.Utils;
 import com.tids.clikonservice.activity.driver.DriversHomeActivity;
+import com.tids.clikonservice.activity.merchant.StaffHomeActivity;
 import com.tids.clikonservice.activity.technician.TechnicianHomeActivity;
 
 import org.json.JSONArray;
@@ -151,6 +152,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("username", username);
             jsonObject.put("encryppassword", password);
+            Log.e("body::",jsonObject.toString());
 
             AndroidNetworking.post(Constant.BASE_URL)
                     .addJSONObjectBody(jsonObject)
@@ -163,10 +165,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Log.e("Response::",response.toString());
 
                             try {
-                                String token =  response.getString("token");
-                                String tokenExpireTime =  response.getString("token_expire_time");
-
-                                getLogin(token,username);
+                                if(response.getBoolean("status")){
+                                    String token =  response.getString("token");
+                                    String tokenExpireTime =  response.getString("token_expire_time");
+                                    getLogin(token,username);
+                                }else {
+                                    btn_login.setEnabled(true);
+                                    customToast("Try again");
+                                }
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -198,7 +204,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     .getAsJSONObject(new JSONObjectRequestListener()  {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Log.e("Response::",response.toString());
+                            Log.e("Login.Response::",response.toString());
 
                             try {
                                 if (response.getBoolean("status")){
@@ -206,10 +212,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     JSONArray jsonArray = response.getJSONArray("data");
 
                                     if(jsonArray.length() != 0){
-                                        String user_id = jsonArray.getJSONObject(0).getString("USER_SYS_ID");
-                                        String user_name = jsonArray.getJSONObject(0).getString("USER_ID");
+                                        String user_name = jsonArray.getJSONObject(0).getString("USER_DESC");
                                         String user_password = jsonArray.getJSONObject(0).getString("USER_PWD");
                                         String user_type = jsonArray.getJSONObject(0).getString("USER_GROUP_ID");
+                                        String user_id = "";
+                                        if(user_type.equalsIgnoreCase("MRCT")){
+                                            user_id = jsonArray.getJSONObject(0).getString("USER_ID");
+                                        }else {
+                                            user_id = jsonArray.getJSONObject(0).getString("USER_SYS_ID");
+                                        }
 
                                         SharedPreferences.Editor editor = sp.edit();
                                         editor.putString(Constant.USER_USERID, user_id);
@@ -228,28 +239,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             Intent intent = new Intent(getApplicationContext(), DriversHomeActivity.class);
                                             startActivity(intent);
                                             finish();
-                                        }else if (user_type.equalsIgnoreCase("SRVC")){
+                                        }else if (user_type.equalsIgnoreCase("TECHN")){
                                             Intent intent = new Intent(getApplicationContext(), TechnicianHomeActivity.class);
                                             startActivity(intent);
                                             finish();
+                                        }else if (user_type.equalsIgnoreCase("MRCT")){
+                                            Intent intent = new Intent(getApplicationContext(), StaffHomeActivity.class);
+                                            startActivity(intent);
+                                            finish();
                                         }
-                                        Intent intent = new Intent(getApplicationContext(), TechnicianHomeActivity.class);
-                                        startActivity(intent);
-                                        finish();
                                     }
 
                                 }else {
+                                    btn_login.setEnabled(true);
                                     customToast(response.getString("message"));
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         }
                         @Override
                         public void onError(ANError anError) {
                             showError(anError);
-
                         }
                     });
 

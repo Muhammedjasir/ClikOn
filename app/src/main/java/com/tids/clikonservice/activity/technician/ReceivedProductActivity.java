@@ -194,9 +194,10 @@ public class ReceivedProductActivity extends AppCompatActivity implements View.O
         try {
 
             String authorization = "Bearer " + sp.getString(Constant.USER_AUTHORIZATION, "");
-            String condition = "SELECT * FROM SERVICE_MODULE_VIEW WHERE (SM_CTI_SYS_ID LIKE '%"+
-                    scannedData+"%' OR SM_CM_REF_NO LIKE '%"+scannedData+"%' OR SM_DOC_NO LIKE '%"+scannedData+"%' " +
-                    "OR SM_CTI_ITEM_CODE LIKE '%"+scannedData+"%') AND SM_STS_CODE = 'PENSERV'";
+            String condition = "SELECT * FROM SERVICE_MODULE_VIEW WHERE (UPPER(SM_CTI_SYS_ID) LIKE ('%"+
+                    scannedData+"%') OR UPPER(SM_CM_REF_NO) LIKE UPPER('%"+scannedData+
+                    "%') OR UPPER(SM_DOC_NO) LIKE UPPER('%"+scannedData+
+                    "%') OR UPPER(SM_CTI_ITEM_CODE) LIKE UPPER('%"+scannedData+"%')) AND SM_STS_CODE = 'PENSERV'";
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("query",condition);

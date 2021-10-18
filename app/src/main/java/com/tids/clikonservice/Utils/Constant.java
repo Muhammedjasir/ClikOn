@@ -27,5 +27,22 @@ public class Constant {
     public static final String SERVICE_PRODUCTS = "SERVICE_MODULE_VIEW";
     public static final String SERVICE_PRODUCT_INFO = "OT_SERVICE_MODULE";
 
+    public static final String[] PRODUCT_HOLD_REASONS = new String[]{
+            "Parts not available",
+            "Can't repairable"
+    };
+
+    public static final String[] PRODUCT_STATUS = new String[]{
+            "Entered",
+            "Pickup",
+            "Collected",
+            "Pending in service",
+            "Service finished",
+            "Pending in delivery",
+            "Delivered",
+            "Service Started",
+            "Service Paused"
+    };
+
 }
 
