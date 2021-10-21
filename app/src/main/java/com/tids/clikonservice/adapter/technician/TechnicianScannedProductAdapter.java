@@ -145,6 +145,7 @@ public class TechnicianScannedProductAdapter extends RecyclerView.Adapter<Techni
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("SM_STS_CODE","SERVSRT");
+            jsonObject.put("SM_STS_SYS_ID","6");
             jsonObject.put("SM_SRP_SYS_ID",technicianID);
             jsonObject.put("SM_STRT_DT",todaydate);
             Log.e("body::",jsonObject.toString());

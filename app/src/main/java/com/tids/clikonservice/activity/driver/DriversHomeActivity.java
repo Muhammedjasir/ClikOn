@@ -20,13 +20,12 @@ import com.google.android.material.tabs.TabLayout;
 import com.tids.clikonservice.R;
 import com.tids.clikonservice.Utils.Constant;
 import com.tids.clikonservice.Utils.Helper.PrefManager;
-import com.tids.clikonservice.activity.merchant.RegistrationActivity;
 import com.tids.clikonservice.adapter.driver.PickupPagerAdapter;
 
 public class DriversHomeActivity extends AppCompatActivity {
 
     TextView tv_driver_name,tv_cart_count;
-    LinearLayout lay_cart,lay_daiy_report,lay_service_registration,profile_lay;
+    LinearLayout lay_cart,lay_service_registration,profile_lay;
     ImageView iv_profile;
     Switch sw_duty;
 
@@ -51,7 +50,6 @@ public class DriversHomeActivity extends AppCompatActivity {
         lay_cart = findViewById(R.id.lay_cart);
         profile_lay = findViewById(R.id.profile_lay);
         tv_cart_count = findViewById(R.id.tv_cart_count);
-        lay_daiy_report = findViewById(R.id.lay_daiy_report);
         lay_service_registration = findViewById(R.id.lay_service_registration);
         sw_duty = findViewById(R.id.sw_duty);
 
@@ -98,7 +96,12 @@ public class DriversHomeActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.lay_service_registration).setOnClickListener(v -> {
-            Intent intent = new Intent(DriversHomeActivity.this, RegistrationActivity.class);
+            Intent intent = new Intent(DriversHomeActivity.this, ProductRegistrationActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.lay_daiy_report).setOnClickListener(v -> {
+            Intent intent = new Intent(DriversHomeActivity.this, DailyReportActivity.class);
             startActivity(intent);
         });
 

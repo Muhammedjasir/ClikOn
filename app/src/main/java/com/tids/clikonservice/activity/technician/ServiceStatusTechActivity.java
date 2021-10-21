@@ -353,7 +353,7 @@ public class ServiceStatusTechActivity extends AppCompatActivity implements View
                     "%') OR UPPER(SM_CM_CUST_CODE) LIKE UPPER('%"+word+"%') OR UPPER(SM_CTI_SYS_ID) LIKE UPPER('%"+
                     word+"%') OR UPPER(SM_CM_REF_NO) LIKE UPPER('%"+word+
                     "%') OR UPPER(SM_CM_DOC_NO) LIKE UPPER('%"+word+
-                    "%')) AND SM_STS_CODE != 'SERVFIN' AND SM_SRP_SYS_ID ="+ sp.getString(Constant.USER_USERID,"");
+                    "%')) AND SM_STS_CODE != 'PENDLV' AND SM_SRP_SYS_ID ="+ sp.getString(Constant.USER_USERID,"");
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("query",condition);
@@ -511,7 +511,7 @@ public class ServiceStatusTechActivity extends AppCompatActivity implements View
     private void loadFilterData(String from_date, String to_date) {
         try {
             String condition = "SELECT * FROM SERVICE_MODULE_VIEW WHERE SM_CM_IN_DT BETWEEN '"+
-                    from_date+"' AND '"+to_date+"' SM_STS_CODE != 'SERVFIN' AND SM_SRP_SYS_ID ="+
+                    from_date+"' AND '"+to_date+"' SM_STS_CODE != 'PENDLV' AND SM_SRP_SYS_ID ="+
                     sp.getString(Constant.USER_USERID,"");
 
             JSONObject jsonObject = new JSONObject();

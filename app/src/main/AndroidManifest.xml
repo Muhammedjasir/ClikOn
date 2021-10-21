@@ -14,6 +14,9 @@
         android:theme="@style/Theme.ClikonService"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activity.driver.ProductRegistrationActivity"
+            android:exported="true" />
+        <activity
             android:name=".activity.driver.ProfileDriverActivity"
             android:exported="true" />
         <activity

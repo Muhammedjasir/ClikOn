@@ -72,8 +72,10 @@ public class DeliveredCartAdapter extends RecyclerView.Adapter<DeliveredCartAdap
             JSONObject jsonObject = new JSONObject();
             if (type.equalsIgnoreCase("merchant_delivery")){
                 jsonObject.put("CTI_STS_CODE","DLV");
+                jsonObject.put("CTI_STS_SYS_ID","5");
             }else {
                 jsonObject.put("CTI_STS_CODE","PENSERV");
+                jsonObject.put("CTI_STS_SYS_ID","2");
             }
             Log.e("body::",jsonObject.toString());
 

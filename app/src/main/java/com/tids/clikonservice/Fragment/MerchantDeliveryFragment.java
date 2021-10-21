@@ -23,7 +23,9 @@ import com.tids.clikonservice.R;
 import com.tids.clikonservice.Utils.Constant;
 import com.tids.clikonservice.activity.driver.StoreActivity;
 import com.tids.clikonservice.adapter.driver.DeliveredCartAdapter;
+import com.tids.clikonservice.adapter.driver.DriverPickupNotificationAdapter;
 import com.tids.clikonservice.adapter.driver.DriverProductsAdapter;
+import com.tids.clikonservice.model.LocationModel;
 import com.tids.clikonservice.model.ProductModel;
 
 import org.json.JSONArray;
@@ -39,8 +41,8 @@ public class MerchantDeliveryFragment extends Fragment {
 
     private RecyclerView rv_orders;
 
-    private DeliveredCartAdapter deliveredCartAdapter;
-    private ArrayList<ProductModel> productModelArrayList = new ArrayList<>();
+    private DriverPickupNotificationAdapter pickupNotificationAdapter;
+    private ArrayList<LocationModel> locationModelArrayList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,11 +55,10 @@ public class MerchantDeliveryFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_merchant_delivery, container, false);
 
         rv_orders = view.findViewById(R.id.recycler_view);
-
-        deliveredCartAdapter = new DeliveredCartAdapter(getActivity(), productModelArrayList);
+        pickupNotificationAdapter = new DriverPickupNotificationAdapter(getActivity(), locationModelArrayList);
         rv_orders.setLayoutManager(new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL,false));
-        rv_orders.setAdapter(deliveredCartAdapter);
+        rv_orders.setAdapter(pickupNotificationAdapter);
         loadProducts();
 
         return view;
@@ -65,14 +66,15 @@ public class MerchantDeliveryFragment extends Fragment {
 
     private void loadProducts() {
         try {
-            JSONObject jsonObject = new JSONObject();
-            String condition = "SELECT COLLECTION.*,ITEM.ITEM_NAME from OT_CLCTN_ITEMS COLLECTION INNER " +
-                    "JOIN OM_ITEM ITEM ON COLLECTION.CTI_ITEM_CODE=ITEM.ITEM_CODE WHERE " +
-                    "COLLECTION.CTI_STS_CODE = 'PENDLY'  ORDER BY COLLECTION.CTI_SYS_ID DESC";
-            jsonObject.put("query",condition);
-
             SharedPreferences sp = getActivity().getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
             String authorization = "Bearer " + sp.getString(Constant.USER_AUTHORIZATION, "");
+
+            String condition = "SELECT CUST_CODE,CUST_NAME,CUST_DEL_ADD_2,CUST_DEL_ADD_3 FROM OM_CUSTOMER " +
+                    "WHERE CUST_CODE IN (SELECT CM_CUST_CODE FROM OT_COLLECTION_MODULE WHERE CM_DOC_NO " +
+                    "IN (SELECT CTI_CM_DOC_NO FROM OT_CLCTN_ITEMS WHERE CTI_STS_CODE='PENDLV'))";
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query",condition);
 
             AndroidNetworking.post(Constant.BASE_URL + "GetData")
                     .addHeaders("Authorization", authorization)
@@ -83,7 +85,7 @@ public class MerchantDeliveryFragment extends Fragment {
                     .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Log.e("list.Response::",response.toString());
+                            Log.e("Response::",response.toString());
 
                             try {
                                 if (response.getBoolean("status")) {
@@ -91,22 +93,18 @@ public class MerchantDeliveryFragment extends Fragment {
                                     JSONArray jsonArray = response.getJSONArray("data");
                                     if (jsonArray.length() != 0) {
                                         for (int i = 0; i< jsonArray.length(); i++){
-                                            int id = jsonArray.getJSONObject(i).getInt("CTI_SYS_ID");
-                                            String product_name = jsonArray.getJSONObject(i).getString("ITEM_NAME");
-                                            String product_code = jsonArray.getJSONObject(i).getString("CTI_ITEM_CODE");
-                                            String product_serial_number = jsonArray.getJSONObject(i).getString("CTI_SERIAL_NO");
-                                            String product_batch_number = jsonArray.getJSONObject(i).getString("CTI_BATCH");
-                                            String product_status = jsonArray.getJSONObject(i).getString("CTI_STS_CODE");
-                                            String product_date = "merchant_delivery";
+                                            String id = jsonArray.getJSONObject(i).getString("CUST_CODE");
+                                            String shop_name = jsonArray.getJSONObject(i).getString("CUST_NAME");
+                                            String address1 = jsonArray.getJSONObject(i).getString("CUST_DEL_ADD_2");
+                                            String address2 = jsonArray.getJSONObject(i).getString("CUST_DEL_ADD_3");
+                                            String address = address1+" "+address2;
+                                            String type = "merchant_delivery";
 
-                                            ProductModel productModel = new ProductModel(id, product_code, product_name, product_date, product_status,
-                                                    product_serial_number, product_batch_number);
-                                            productModelArrayList.add(productModel);
+                                            LocationModel locationModel = new LocationModel(id,shop_name,address,type);
+                                            locationModelArrayList.add(locationModel);
                                         }
-                                        deliveredCartAdapter.notifyDataSetChanged();
+                                        pickupNotificationAdapter.notifyDataSetChanged();
                                     }
-                                }else {
-                                    customToast("No product available");
                                 }
 
                             } catch (JSONException e) {
@@ -118,6 +116,7 @@ public class MerchantDeliveryFragment extends Fragment {
                             showError(anError);
                         }
                     });
+
         }catch (Exception ex){
             ex.printStackTrace();
         }

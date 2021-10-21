@@ -101,7 +101,7 @@ public class SearchProductActivity extends AppCompatActivity implements View.OnC
 
     private void loadProducts() {
         try {
-            String condition = "SELECT * FROM SERVICE_MODULE_VIEW WHERE SM_STS_CODE='SERVFIN' AND SM_SRP_SYS_ID="+
+            String condition = "SELECT * FROM SERVICE_MODULE_VIEW WHERE SM_STS_CODE='PENDLV' AND SM_SRP_SYS_ID="+
                     sp.getString(Constant.USER_USERID,"");
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("query",condition);
@@ -165,12 +165,12 @@ public class SearchProductActivity extends AppCompatActivity implements View.OnC
 //            String condition = "SELECT * FROM SERVICE_MODULE_VIEW WHERE (UPPER(SM_CTI_ITEM_NAME) LIKE
 //            UPPER('%BLENDER%') OR UPPER(SM_CTI_ITEM_CODE) LIKE UPPER('%BLENDER%') OR UPPER(SM_CM_CUST_CODE) LIKE
 //            UPPER('%BLENDER%') OR SM_CTI_SYS_ID LIKE '%BLENDER%' OR SM_CM_REF_NO LIKE '%BLENDER%' OR SM_CM_DOC_NO LIKE
-//            '%BLENDER%') AND SM_STS_CODE = 'SERVFIN' AND SM_SRP_SYS_ID ="+ sp.getString(Constant.USER_USERID,"");
+//            '%BLENDER%') AND SM_STS_CODE = 'PENDLV' AND SM_SRP_SYS_ID ="+ sp.getString(Constant.USER_USERID,"");
             String condition = "SELECT * FROM SERVICE_MODULE_VIEW WHERE (UPPER(SM_CTI_ITEM_NAME) LIKE UPPER('%"+
                     word+"%') OR UPPER(SM_CTI_ITEM_CODE) LIKE UPPER('%"+word+
                     "%') OR UPPER(SM_CM_CUST_CODE) LIKE UPPER('%"+word+"%') OR UPPER(SM_CTI_SYS_ID) LIKE UPPER('%"
                     +word+"%') OR UPPER(SM_CM_REF_NO) LIKE UPPER('%"+word+"%') OR UPPER(SM_CM_DOC_NO) LIKE UPPER('%"+
-                    word+"%')) AND SM_STS_CODE = 'SERVFIN' AND SM_SRP_SYS_ID ="+ sp.getString(Constant.USER_USERID,"");
+                    word+"%')) AND SM_STS_CODE = 'PENDLV' AND SM_SRP_SYS_ID ="+ sp.getString(Constant.USER_USERID,"");
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("query",condition);
@@ -325,7 +325,7 @@ public class SearchProductActivity extends AppCompatActivity implements View.OnC
     private void loadFilterData(String from_date,String to_date) {
         try {
             String condition = "SELECT * FROM SERVICE_MODULE_VIEW WHERE  SM_CM_IN_DT BETWEEN '"+
-                    from_date+"' AND '"+to_date+"' AND SM_STS_CODE='SERVFIN' AND SM_SRP_SYS_ID ="+
+                    from_date+"' AND '"+to_date+"' AND SM_STS_CODE='PENDLV' AND SM_SRP_SYS_ID ="+
                     sp.getString(Constant.USER_USERID,"");
 
             JSONObject jsonObject = new JSONObject();

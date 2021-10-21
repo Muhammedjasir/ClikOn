@@ -38,6 +38,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private VideoView mVideoView;
@@ -166,14 +168,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                             try {
                                 if(response.getBoolean("status")){
-                                    String token =  response.getString("token");
-                                    String tokenExpireTime =  response.getString("token_expire_time");
+                                    //Get the instance of JSONArray that contains JSONObjects
+                                    JSONObject jsonObject1 = response.getJSONObject("data");
+
+                                    String token = jsonObject1.getString("token");
+                                    String tokenExpireTime = jsonObject1.getString("token_expire_time");
                                     getLogin(token,username);
                                 }else {
                                     btn_login.setEnabled(true);
                                     customToast("Try again");
                                 }
-
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -190,7 +194,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void getLogin(String token,String username) {
         try {
-
             String condition = "USER_ID='"+username+"'";
             String authorization = "Bearer "+token;
 
@@ -201,11 +204,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     .setTag(this)
                     .setPriority(Priority.LOW)
                     .build()
-                    .getAsJSONObject(new JSONObjectRequestListener()  {
+                    .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Log.e("Login.Response::",response.toString());
-
+//                            Log.e("Login.Response::",response.toString());
                             try {
                                 if (response.getBoolean("status")){
                                     //Get the instance of JSONArray that contains JSONObjects

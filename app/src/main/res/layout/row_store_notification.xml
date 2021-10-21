@@ -24,7 +24,6 @@
                     android:id="@+id/tv_place"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hilal Al Madina Hypermarket"
                     android:paddingRight="10dp"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -48,7 +47,6 @@
                     android:id="@+id/tv_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Crystal Mall, Jebel Ali Industrial Area-1 , Dubai..."
                     android:textSize="14sp"
                     android:textStyle="normal"
                     android:textColor="@color/dark_gray"/>

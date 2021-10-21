@@ -23,13 +23,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:orientation="vertical">
-
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_clikon_logo" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,7 +35,6 @@
                 android:text="Daily Report"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
-
         </LinearLayout>
     </RelativeLayout>
 
@@ -50,6 +47,7 @@
         android:layout_marginTop="-111dp"
         android:layout_marginRight="20dp"
         android:src="@drawable/ic_van_and_box" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -62,22 +60,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Today Delivered"
                 android:textSize="18sp"
                 android:textStyle="normal"
+                android:layout_gravity="left"
                 android:layout_marginRight="5dp"
                 android:textColor="@color/black"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.2dp"
                 android:background="@color/dark_gray"/>
-        </LinearLayout>
 
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+        </LinearLayout>
     </LinearLayout>
+
     <ImageView
         android:id="@+id/back_btn"
         android:layout_width="wrap_content"

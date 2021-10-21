@@ -60,7 +60,7 @@ public class DriverPickupNotificationAdapter extends RecyclerView.Adapter<Driver
         holder.card_place.setOnClickListener(v -> {
             Intent intent = new Intent(mContext, StoreActivity.class);
             intent.putExtra("type",model.getType());
-            intent.putExtra("consumerShopDocId",model.getId());
+            intent.putExtra("customerCode",model.getId());
             intent.putExtra("shopName",model.getShopName());
             intent.putExtra("shopAddress",model.getAddress());
             mContext.startActivity(intent);

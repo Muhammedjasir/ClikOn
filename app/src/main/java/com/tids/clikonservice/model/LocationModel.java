@@ -3,14 +3,14 @@ package com.tids.clikonservice.model;
 public class LocationModel {
 
     private String id;
-    private String shopUnit;
     private String shopName;
     private String address;
     private String type;
 
-    public LocationModel(String id, String shopUnit, String shopName, String address, String type) {
+
+
+    public LocationModel(String id, String shopName, String address, String type) {
         this.id = id;
-        this.shopUnit = shopUnit;
         this.shopName = shopName;
         this.address = address;
         this.type = type;
@@ -30,14 +30,6 @@ public class LocationModel {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getShopUnit() {
-        return shopUnit;
-    }
-
-    public void setShopUnit(String shopUnit) {
-        this.shopUnit = shopUnit;
     }
 
     public String getShopName() {

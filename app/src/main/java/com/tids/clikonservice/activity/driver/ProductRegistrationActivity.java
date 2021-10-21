@@ -1,10 +1,9 @@
-package com.tids.clikonservice.activity.merchant;
+package com.tids.clikonservice.activity.driver;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,19 +13,16 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -41,13 +37,9 @@ import com.tids.clikonservice.Utils.Constant;
 import com.tids.clikonservice.Utils.Helper.PrefManager;
 import com.tids.clikonservice.Utils.RoomDb.ClikonModel;
 import com.tids.clikonservice.Utils.RoomDb.ClikonViewModel;
-import com.tids.clikonservice.activity.technician.ReceivedProductActivity;
-import com.tids.clikonservice.activity.technician.StartServiceActivity;
-import com.tids.clikonservice.adapter.SpinnerAdapter;
 import com.tids.clikonservice.adapter.SpinnerSearchAdapter;
 import com.tids.clikonservice.adapter.merchant.AddProductAdapter;
 import com.tids.clikonservice.model.ResponseModel;
-import com.tids.clikonservice.model.SparepartsModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,25 +51,29 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener,
-        AddProductAdapter.ItemClickListener, CompoundButton.OnCheckedChangeListener {
+public class ProductRegistrationActivity extends AppCompatActivity implements View.OnClickListener,
+        AddProductAdapter.ItemClickListener, CompoundButton.OnCheckedChangeListener{
 
     private PrefManager pref;
     private SharedPreferences sp;
     private ClikonViewModel clikonViewModel;
     private ClikonModel selectAdapterModel;
 
-    private String authorization="", MERCHANT_ID="",productCode="",productName="";
+    private String authorization="", MERCHANT_ID="",productCode="",productName="",merchant_name ="",
+            merchant_code="";
     int add_product_id = -1;
 
     private ArrayList<ResponseModel> searchProductsArrayList;
     private SpinnerSearchAdapter searchProductsAdapter;
 
+    private ArrayList<ResponseModel> searchMerchantArrayList;
+    private SpinnerSearchAdapter searchMerchantAdapter;
+
     private AddProductAdapter addProductAdapter;
 
     private LinearLayout add_product_lay;
     private RecyclerView rv_products;
-    private AutoCompleteTextView act_search_product;
+    private AutoCompleteTextView act_search_product,act_search_merchant;
     private TextInputEditText edt_serial_num,edt_batch_number,edt_complaint,ed_customer_name,
             ed_customer_contact,ed_customer_email,ed_customer_pobox,ed_customer_address;
     private AppCompatButton btn_delete,btn_add,btn_register;
@@ -87,7 +83,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
+        setContentView(R.layout.activity_product_registration);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
@@ -103,6 +99,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         add_product_lay = findViewById(R.id.add_product_lay);
         rv_products = findViewById(R.id.rv_products);
         act_search_product = findViewById(R.id.edt_search_product);
+        act_search_merchant = findViewById(R.id.edt_search_merchant);
         edt_serial_num = findViewById(R.id.edt_serial_num);
         edt_batch_number = findViewById(R.id.edt_batch_number);
         edt_complaint = findViewById(R.id.edt_complaint);
@@ -119,7 +116,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         btn_register = findViewById(R.id.btn_register);
 
         //configuring recycler view
-        rv_products.setLayoutManager(new LinearLayoutManager(RegistrationActivity.this,
+        rv_products.setLayoutManager(new LinearLayoutManager(ProductRegistrationActivity.this,
                 LinearLayoutManager.HORIZONTAL,false));
         rv_products.setHasFixedSize(true);
         // setting adapter in recycler view
@@ -161,6 +158,86 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void afterTextChanged(Editable s) { }
         });
+
+        // initialize search model
+        searchMerchantArrayList = new ArrayList<>();
+        act_search_merchant.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                listMerchant(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+
+    }
+
+    private void listMerchant(CharSequence param) {
+        try {
+            String word = param.toString().trim();
+            String condition = "SELECT  CUST_CODE,CUST_NAME FROM OM_CUSTOMER WHERE (UPPER(CUST_CODE) " +
+                    "LIKE UPPER('%"+word+"%') OR UPPER(CUST_NAME) LIKE UPPER('%"+word+"%'))";
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query", condition);
+
+            AndroidNetworking.post(Constant.BASE_URL + "GetData")
+                    .addHeaders("Authorization", authorization)
+                    .addJSONObjectBody(jsonObject)
+                    .setTag(this)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @SuppressLint("ClickableViewAccessibility")
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.e("prd.rsp::",response.toString());
+
+                            try {
+                                if (response.getBoolean("status")) {
+                                    JSONArray jsonArray = response.getJSONArray("data");
+
+                                    if (jsonArray.length() != 0) {
+                                        //clear arraylist
+                                        searchMerchantArrayList.clear();
+
+                                        for (int i = 0; i< jsonArray.length(); ++i){
+                                            String parts_id = "";
+                                            String merchant_code = jsonArray.getJSONObject(i).getString("CUST_CODE");
+                                            String merchant_name = jsonArray.getJSONObject(i).getString("CUST_NAME");
+
+                                            ResponseModel responseModel = new ResponseModel(parts_id,merchant_name,merchant_code);
+                                            searchMerchantArrayList.add(responseModel);
+                                        }
+                                        searchMerchantAdapter = new SpinnerSearchAdapter(ProductRegistrationActivity.this,
+                                                R.layout.row_spinner_adapter, R.id.text1, searchMerchantArrayList);
+                                        act_search_merchant.setAdapter(searchMerchantAdapter);
+
+                                        act_search_merchant.setOnItemClickListener((adapterView, view, i, l) -> {
+                                            merchant_name = searchMerchantArrayList.get(i).getCode();
+                                            merchant_code = searchMerchantArrayList.get(i).getName();
+                                            Log.e("p.code&p.name==",merchant_code+"-"+merchant_name);
+                                        });
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        @Override
+                        public void onError(ANError anError) {
+                            showError(anError);
+                        }
+                    });
+
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -184,8 +261,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     }
 
-    private void listProducts(CharSequence word) {
+    private void listProducts(CharSequence param) {
         try {
+            String word = param.toString().trim();
             String condition = "SELECT  ITEM_CODE,ITEM_NAME FROM OM_ITEM WHERE (UPPER(ITEM_CODE) LIKE UPPER('%"+
                     word+"%') OR UPPER(ITEM_NAME) LIKE UPPER('%"+word+"%'))";
             JSONObject jsonObject = new JSONObject();
@@ -219,7 +297,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                             ResponseModel responseModel = new ResponseModel(parts_id,parts_name,parts_code);
                                             searchProductsArrayList.add(responseModel);
                                         }
-                                        searchProductsAdapter = new SpinnerSearchAdapter(RegistrationActivity.this,
+                                        searchProductsAdapter = new SpinnerSearchAdapter(ProductRegistrationActivity.this,
                                                 R.layout.row_spinner_adapter, R.id.text1, searchProductsArrayList);
                                         act_search_product.setAdapter(searchProductsAdapter);
 
@@ -265,10 +343,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private void checkProducts() {
         //add observer to for view model getProductCount()(LiveData)
         // check roomdb product table count
-        clikonViewModel.getProductCount().observe(RegistrationActivity.this, integer -> {
+        clikonViewModel.getProductCount().observe(ProductRegistrationActivity.this, integer -> {
             int count = integer;
             if (count != 0){
-                getDocNumber();
+                if (merchant_code.equalsIgnoreCase("")){
+                    customToast("Please select the merchant");
+                }else {
+                    getDocNumber();
+                }
             }
         });
     }
@@ -282,7 +364,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("CM_DOC_DT",todaydate);
             jsonObject.put("CM_REF_NO",MERCHANT_ID);
-            jsonObject.put("CM_CUST_CODE", MERCHANT_ID);
+            jsonObject.put("CM_CUST_CODE",merchant_code);
             Log.e("body::",jsonObject.toString());
 
             AndroidNetworking.post(Constant.BASE_URL + "OT_COLLECTION_MODULE")
@@ -335,6 +417,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         add_product_id = -1;
         productName = "";
         productCode = "";
+        act_search_product.setText("");
         edt_serial_num.setText("");
         edt_batch_number.setText("");
         edt_complaint.setText("");
@@ -342,7 +425,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     private void deleteSelectedProduct() {
         //Alert Dialog for deleting all todo
-        new AlertDialog.Builder(RegistrationActivity.this)
+        new AlertDialog.Builder(ProductRegistrationActivity.this)
                 .setTitle("Delete")
                 .setMessage("Are you sure you want to delete?")
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
@@ -369,18 +452,18 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void addProduct() {
-         String serial_no = edt_serial_num.getText().toString().trim();
-         String batch_no = edt_batch_number.getText().toString().trim();
-         String compaint = edt_complaint.getText().toString().trim();
+        String serial_no = edt_serial_num.getText().toString().trim();
+        String batch_no = edt_batch_number.getText().toString().trim();
+        String compaint = edt_complaint.getText().toString().trim();
 
-         if (productCode.trim().isEmpty()){
-             customToast("Please select a product");
-         }else {
-             ClikonModel clikonModel = new ClikonModel(productCode, productName, serial_no, batch_no, compaint);
-             clikonViewModel.insert(clikonModel);
-             Toast.makeText(this, "Product added", Toast.LENGTH_SHORT).show();
-             loadNewProductTab();
-         }
+        if (productCode.trim().isEmpty()){
+            customToast("Please select a product");
+        }else {
+            ClikonModel clikonModel = new ClikonModel(productCode, productName, serial_no, batch_no, compaint);
+            clikonViewModel.insert(clikonModel);
+            Toast.makeText(this, "Product added", Toast.LENGTH_SHORT).show();
+            loadNewProductTab();
+        }
 
     }
 
@@ -395,7 +478,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             String cust_address = ed_customer_address.getText().toString().trim();
             String cust_homeShop = "";
             if (sw_home_shop.isChecked()){
-               cust_homeShop = "HMSRVC";
+                cust_homeShop = "HMSRVC";
             }else {
                 cust_homeShop = "SHPSRVC";
             }
@@ -433,7 +516,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private void register(JSONObject jsonObject) {
         //add observer to for view model getTodolist()(LiveData)
         // get all product from roomdb product table
-        clikonViewModel.getProductlist().observe(RegistrationActivity.this, new Observer<List<ClikonModel>>() {
+        clikonViewModel.getProductlist().observe(ProductRegistrationActivity.this, new Observer<List<ClikonModel>>() {
             @Override
             public void onChanged(List<ClikonModel> clikonModels) {
                 // check list size is not zero
@@ -488,7 +571,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void showError(ANError anError) {
-        Toast.makeText(RegistrationActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+        Toast.makeText(ProductRegistrationActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
         Log.e("Error :: ", anError.getErrorBody());
     }
 

@@ -2,7 +2,6 @@ package com.tids.clikonservice.adapter.driver;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -23,7 +22,6 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.bumptech.glide.Glide;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -31,17 +29,12 @@ import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.tids.clikonservice.R;
 import com.tids.clikonservice.Utils.Constant;
-import com.tids.clikonservice.activity.merchant.ServiceStatusMainActivity;
-import com.tids.clikonservice.activity.technician.StartServiceActivity;
 import com.tids.clikonservice.model.ProductModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class DriverProductsAdapter extends RecyclerView.Adapter<DriverProductsAdapter.MyViewHolder> {
 
@@ -95,60 +88,56 @@ public class DriverProductsAdapter extends RecyclerView.Adapter<DriverProductsAd
             if (model.getProduct_date().equalsIgnoreCase("merchant_pickup")) { // where date contain pickup type value (value: merchant_pickup or technician_pickup)
                 // generate QR Code using product code
                 generateQrCode(model.getId(),model.getProduct_code(),model.getProduct_name(),position);
-            }else {
-                // pickup product from technician
-                if (!model.getProduct_status().equalsIgnoreCase("PENDLV")){ // check it's already pickedup
-                    pickupProduct(model.getId(),position);
-                }
             }
+//            else {
+//                // pickup product from technician
+//                if (!model.getProduct_status().equalsIgnoreCase("PENDLV")){ // check it's already pickedup
+//                    pickupProduct(model.getId(),position);
+//                }
+//            }
         });
     }
 
-    public int getImage(String imageName) {
-        int drawableResourceId = mContext.getResources().getIdentifier(imageName, "drawable", mContext.getPackageName());
-        return drawableResourceId;
-    }
-
-    private void pickupProduct(int id, int position) {
-        try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("CTI_STS_CODE","PENDLV");
-            Log.e("body::",jsonObject.toString());
-
-            AndroidNetworking.put(Constant.BASE_URL + "OT_CLCTN_ITEMS/" +
-                    id)
-                    .addHeaders("Authorization", authorization)
-                    .addJSONObjectBody(jsonObject)
-                    .setTag(this)
-                    .setPriority(Priority.LOW)
-                    .build()
-                    .getAsJSONObject(new JSONObjectRequestListener() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Log.e("Response2::",response.toString());
-
-                            try {
-                                if (response.getBoolean("status")) {
-                                    modelList.get(position).setProduct_status("PENDLV");
-                                    notifyDataSetChanged();
-                                    Toast.makeText(mContext, "Product Pickedup", Toast.LENGTH_SHORT).show();
-                                }else {
-                                    Toast.makeText(mContext, response.getString("message"), Toast.LENGTH_SHORT).show();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        @Override
-                        public void onError(ANError anError) {
-//                                    showError(anError);
-                        }
-                    });
-
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
+//    private void pickupProduct(int id, int position) {
+//        try {
+//            JSONObject jsonObject = new JSONObject();
+//            jsonObject.put("CTI_STS_CODE","PENDLV");
+//            Log.e("body::",jsonObject.toString());
+//
+//            AndroidNetworking.put(Constant.BASE_URL + "OT_CLCTN_ITEMS/" +
+//                    id)
+//                    .addHeaders("Authorization", authorization)
+//                    .addJSONObjectBody(jsonObject)
+//                    .setTag(this)
+//                    .setPriority(Priority.LOW)
+//                    .build()
+//                    .getAsJSONObject(new JSONObjectRequestListener() {
+//                        @Override
+//                        public void onResponse(JSONObject response) {
+//                            Log.e("Response2::",response.toString());
+//
+//                            try {
+//                                if (response.getBoolean("status")) {
+//                                    modelList.get(position).setProduct_status("PENDLV");
+//                                    notifyDataSetChanged();
+//                                    Toast.makeText(mContext, "Product Pickedup", Toast.LENGTH_SHORT).show();
+//                                }else {
+//                                    Toast.makeText(mContext, response.getString("message"), Toast.LENGTH_SHORT).show();
+//                                }
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                        @Override
+//                        public void onError(ANError anError) {
+////                                    showError(anError);
+//                        }
+//                    });
+//
+//        }catch (Exception ex){
+//            ex.printStackTrace();
+//        }
+//    }
 
     private void generateQrCode(int id, String product_code,String product_name,int position) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);

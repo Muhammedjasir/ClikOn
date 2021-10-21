@@ -69,9 +69,9 @@ public class TechnicianPickupFragment extends Fragment {
     private void getPickupNotifications() {
         try {
             String authorization = "Bearer " + sp.getString(Constant.USER_AUTHORIZATION, "");
-            String condition = "SELECT COLLECTION.*, CUSTOMER.CUST_NAME,CUSTOMER.CUST_DEL_ADD_1,CUSTOMER.CUST_CODE FROM " +
-                    "OT_CLCTN_ITEMS COLLECTION INNER JOIN OM_CUSTOMER CUSTOMER ON COLLECTION.CTI_MERCHT_ID = CUSTOMER.CUST_CODE " +
-                    "WHERE COLLECTION.CTI_STS_CODE='SERVFIN' ORDER BY COLLECTION.CTI_SYS_ID DESC" ;
+            String condition = "SELECT CUST_CODE,CUST_NAME,CUST_DEL_ADD_2,CUST_DEL_ADD_3 FROM OM_CUSTOMER WHERE " +
+                    "CUST_CODE IN (SELECT CM_CUST_CODE FROM OT_COLLECTION_MODULE WHERE CM_DOC_NO " +
+                    "IN (SELECT CTI_CM_DOC_NO FROM OT_CLCTN_ITEMS WHERE CTI_STS_CODE='PENDLV'))" ;
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("query",condition);
@@ -94,19 +94,14 @@ public class TechnicianPickupFragment extends Fragment {
                                     if (jsonArray.length() != 0) {
 //                                        tv_pickup_count.setText(String.valueOf(jsonArray.length()));
                                         for (int i = 0; i< jsonArray.length(); i++){
-                                            String id = String.valueOf(jsonArray.getJSONObject(i).getInt("CTI_CM_DOC_NO"));
-                                            String shop_unit = jsonArray.getJSONObject(i).getString("CTI_SHP_CONS_UNIT");
-                                            String shop_name = "",address = "";
-                                            if (shop_unit.equalsIgnoreCase("CONSUMER")){
-                                                shop_name = jsonArray.getJSONObject(i).getString("CTI_CUSTOMER_NAME");
-                                                address = jsonArray.getJSONObject(i).getString("CTI_CNSMR_ADDRSS");
-                                            }else {
-                                                shop_name = jsonArray.getJSONObject(i).getString("CUST_NAME");
-                                                address = jsonArray.getJSONObject(i).getString("CUST_DEL_ADD_1");
-                                            }
+                                            String id = jsonArray.getJSONObject(i).getString("CUST_CODE");
+                                            String shop_name = jsonArray.getJSONObject(i).getString("CUST_NAME");
+                                            String address1 = jsonArray.getJSONObject(i).getString("CUST_DEL_ADD_2");
+                                            String address2 = jsonArray.getJSONObject(i).getString("CUST_DEL_ADD_3");
+                                            String address = address1+" "+address2;
                                             String type = "Technician_pickup";
 
-                                            LocationModel locationModel = new LocationModel(id,shop_unit,shop_name,address,type);
+                                            LocationModel locationModel = new LocationModel(id,shop_name,address,type);
                                             locationModelArrayList.add(locationModel);
                                         }
                                         pickupNotificationAdapter.notifyDataSetChanged();

@@ -79,14 +79,16 @@ public class ReceivedProductActivity extends AppCompatActivity implements View.O
     private void loadProducts() {
         try {
             String authorization = "Bearer " + sp.getString(Constant.USER_AUTHORIZATION, "");
-            String page_pagination = "/1/25";
+//            String condition = "SELECT * FROM SERVICE_MODULE_VIEW WHERE SM_STS_CODE='PENSERV' AND SM_CTI_ITEM_CODE = 'CK2901' ORDER BY SM_DOC_NO DESC";
+            String condition = "SELECT * FROM SERVICE_MODULE_VIEW WHERE SM_STS_CODE='PENSERV' ORDER BY SM_DOC_NO ASC";
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query",condition);
 
-            AndroidNetworking.get(Constant.BASE_URL + Constant.SERVICE_PRODUCTS + page_pagination)
-                    .addQueryParameter("table_name", Constant.SERVICE_PRODUCTS)
-                    .addQueryParameter("condition", "SM_STS_CODE='PENSERV'")
+            AndroidNetworking.post(Constant.BASE_URL + "GetData")
                     .addHeaders("Authorization", authorization)
+                    .addJSONObjectBody(jsonObject)
                     .setTag(this)
-                    .setPriority(Priority.LOW)
+                    .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override
