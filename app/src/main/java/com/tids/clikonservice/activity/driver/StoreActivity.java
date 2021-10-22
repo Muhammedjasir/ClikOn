@@ -67,6 +67,8 @@ public class StoreActivity extends AppCompatActivity {
             String full_address = extras.getString("shopAddress");
             String type = extras.getString("type");
 
+            Log.e("type1==",type);
+
             if (type.equalsIgnoreCase("merchant_pickup") || type.equalsIgnoreCase("Technician_pickup")){
                 loadPickupProducts(customerCode,type);
             }else if (type.equalsIgnoreCase("merchant_delivery") || type.equalsIgnoreCase("technician_delivery")){
@@ -202,7 +204,7 @@ public class StoreActivity extends AppCompatActivity {
                                             String product_serial_number = jsonArray.getJSONObject(i).getString("CTI_SERIAL_NO");
                                             String product_batch_number = jsonArray.getJSONObject(i).getString("CTI_BATCH");
                                             String product_status = jsonArray.getJSONObject(i).getString("CTI_STS_CODE");
-                                            String product_date = "technician_delivery";
+                                            String product_date = type;
 
                                             ProductModel productModel = new ProductModel(id, product_code, product_name, product_date, product_status,
                                                     product_serial_number, product_batch_number);

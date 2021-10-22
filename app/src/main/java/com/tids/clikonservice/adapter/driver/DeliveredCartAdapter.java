@@ -70,6 +70,7 @@ public class DeliveredCartAdapter extends RecyclerView.Adapter<DeliveredCartAdap
     private void deliveryProduct(int id, String type, int position) {
         try {
             JSONObject jsonObject = new JSONObject();
+            Log.e("type==",type.toString());
             if (type.equalsIgnoreCase("merchant_delivery")){
                 jsonObject.put("CTI_STS_CODE","DLV");
                 jsonObject.put("CTI_STS_SYS_ID","5");
@@ -77,7 +78,7 @@ public class DeliveredCartAdapter extends RecyclerView.Adapter<DeliveredCartAdap
                 jsonObject.put("CTI_STS_CODE","PENSERV");
                 jsonObject.put("CTI_STS_SYS_ID","2");
             }
-            Log.e("body::",jsonObject.toString());
+            Log.e("body + ID::",jsonObject.toString()+ "-"+ id);
 
             AndroidNetworking.put(Constant.BASE_URL + "OT_CLCTN_ITEMS/" +
                     id)
@@ -95,7 +96,7 @@ public class DeliveredCartAdapter extends RecyclerView.Adapter<DeliveredCartAdap
                                 if (response.getBoolean("status")) {
                                     modelList.remove(position);
                                     notifyDataSetChanged();
-                                    Toast.makeText(mContext, "Product DELIVERED", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext, "Product delivered", Toast.LENGTH_SHORT).show();
                                 }else {
                                     Toast.makeText(mContext, response.getString("message"), Toast.LENGTH_SHORT).show();
                                 }
