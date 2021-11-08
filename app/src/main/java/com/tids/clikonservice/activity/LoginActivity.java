@@ -207,7 +207,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override
                         public void onResponse(JSONObject response) {
-//                            Log.e("Login.Response::",response.toString());
+                            Log.e("Login.Response::",response.toString());
                             try {
                                 if (response.getBoolean("status")){
                                     //Get the instance of JSONArray that contains JSONObjects
@@ -218,12 +218,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         String user_password = jsonArray.getJSONObject(0).getString("USER_PWD");
                                         String user_type = jsonArray.getJSONObject(0).getString("USER_GROUP_ID");
                                         String user_id = "";
-                                        if(user_type.equalsIgnoreCase("MRCT")){
+                                        if(user_type.equalsIgnoreCase("MRCT") || user_type.equalsIgnoreCase("DRVR")){
                                             user_id = jsonArray.getJSONObject(0).getString("USER_ID");
                                         }else {
                                             user_id = jsonArray.getJSONObject(0).getString("USER_SYS_ID");
                                         }
 
+                                        Log.e("user_id::",user_id);
                                         SharedPreferences.Editor editor = sp.edit();
                                         editor.putString(Constant.USER_USERID, user_id);
                                         editor.putString(Constant.USER_USERNAME, user_name);

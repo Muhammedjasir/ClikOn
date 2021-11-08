@@ -66,13 +66,12 @@ public class StoreActivity extends AppCompatActivity {
             String place = extras.getString("shopName");
             String full_address = extras.getString("shopAddress");
             String type = extras.getString("type");
-
-            Log.e("type1==",type);
+            String unit = extras.getString("unit");
 
             if (type.equalsIgnoreCase("merchant_pickup") || type.equalsIgnoreCase("Technician_pickup")){
-                loadPickupProducts(customerCode,type);
+                loadPickupProducts(customerCode,type,unit);
             }else if (type.equalsIgnoreCase("merchant_delivery") || type.equalsIgnoreCase("technician_delivery")){
-                loadDeliveryProducts(customerCode,type);
+                loadDeliveryProducts(customerCode,type,unit);
             }
             tv_place.setText(place);
             tv_full_address.setText(full_address);
@@ -81,24 +80,39 @@ public class StoreActivity extends AppCompatActivity {
         }
     }
 
-    private void loadPickupProducts(String customerCode, String type) {
+    private void loadPickupProducts(String customerCode, String type, String unit) {
         try {
             JSONObject jsonObject = new JSONObject();
             String condition = "";
             if (type.equalsIgnoreCase("merchant_pickup")){
-                condition = "SELECT COLLECTION.CTI_SYS_ID,COLLECTION.CTI_ITEM_CODE,COLLECTION.CTI_BATCH," +
-                        "COLLECTION.CTI_SERIAL_NO,COLLECTION.CTI_STS_CODE,ITEM.ITEM_NAME FROM " +
-                        "OT_CLCTN_ITEMS COLLECTION INNER JOIN OM_ITEM ITEM ON COLLECTION.CTI_ITEM_CODE=ITEM.ITEM_CODE " +
-                        "WHERE CTI_STS_CODE='DVRETR' AND CTI_CM_DOC_NO IN (SELECT CM_DOC_NO FROM OT_COLLECTION_MODULE WHERE " +
-                        "CM_CUST_CODE = '"+customerCode+"')";
+                if (unit.equalsIgnoreCase("consumer")){
+                    condition = "SELECT COLLECTION.CTI_SYS_ID,COLLECTION.CTI_ITEM_CODE,COLLECTION.CTI_BATCH," +
+                            "COLLECTION.CTI_SERIAL_NO,COLLECTION.CTI_STS_CODE,ITEM.ITEM_NAME FROM " +
+                            "OT_CLCTN_ITEMS COLLECTION INNER JOIN OM_ITEM ITEM ON COLLECTION.CTI_ITEM_CODE=ITEM.ITEM_CODE " +
+                            "WHERE CTI_STS_CODE='DVRASN' AND CTI_CM_DOC_NO = '"+customerCode+"'";
+                }else {
+                    condition = "SELECT COLLECTION.CTI_SYS_ID,COLLECTION.CTI_ITEM_CODE,COLLECTION.CTI_BATCH," +
+                            "COLLECTION.CTI_SERIAL_NO,COLLECTION.CTI_STS_CODE,ITEM.ITEM_NAME FROM " +
+                            "OT_CLCTN_ITEMS COLLECTION INNER JOIN OM_ITEM ITEM ON COLLECTION.CTI_ITEM_CODE=ITEM.ITEM_CODE " +
+                            "WHERE CTI_STS_CODE='DVRASN' AND CTI_CM_DOC_NO IN (SELECT CM_DOC_NO FROM OT_COLLECTION_MODULE WHERE " +
+                            "CM_CUST_CODE = '"+customerCode+"')";
+                }
             }else if (type.equalsIgnoreCase("Technician_pickup")){
-                condition = "SELECT COLLECTION.CTI_SYS_ID,COLLECTION.CTI_ITEM_CODE,COLLECTION.CTI_BATCH," +
-                        "COLLECTION.CTI_SERIAL_NO,COLLECTION.CTI_STS_CODE,ITEM.ITEM_NAME FROM " +
-                        "OT_CLCTN_ITEMS COLLECTION INNER JOIN OM_ITEM ITEM ON COLLECTION.CTI_ITEM_CODE=ITEM.ITEM_CODE " +
-                        "WHERE CTI_STS_CODE='PENDLV' AND CTI_CM_DOC_NO IN (SELECT CM_DOC_NO FROM OT_COLLECTION_MODULE WHERE " +
-                        "CM_CUST_CODE = '"+customerCode+"')";
+                if (unit.equalsIgnoreCase("consumer")){
+                    condition = "SELECT COLLECTION.CTI_SYS_ID,COLLECTION.CTI_ITEM_CODE,COLLECTION.CTI_BATCH," +
+                            "COLLECTION.CTI_SERIAL_NO,COLLECTION.CTI_STS_CODE,ITEM.ITEM_NAME FROM " +
+                            "OT_CLCTN_ITEMS COLLECTION INNER JOIN OM_ITEM ITEM ON COLLECTION.CTI_ITEM_CODE=ITEM.ITEM_CODE " +
+                            "WHERE CTI_STS_CODE='DRDASN' AND CTI_CM_DOC_NO = '"+customerCode+"'";
+                }else {
+                    condition = "SELECT COLLECTION.CTI_SYS_ID,COLLECTION.CTI_ITEM_CODE,COLLECTION.CTI_BATCH," +
+                            "COLLECTION.CTI_SERIAL_NO,COLLECTION.CTI_STS_CODE,ITEM.ITEM_NAME FROM " +
+                            "OT_CLCTN_ITEMS COLLECTION INNER JOIN OM_ITEM ITEM ON COLLECTION.CTI_ITEM_CODE=ITEM.ITEM_CODE " +
+                            "WHERE CTI_STS_CODE='DRDASN' AND CTI_CM_DOC_NO IN (SELECT CM_DOC_NO FROM OT_COLLECTION_MODULE WHERE " +
+                            "CM_CUST_CODE = '"+customerCode+"')";
+                }
             }
             jsonObject.put("query",condition);
+            Log.e("query::",jsonObject.toString());
 
             AndroidNetworking.post(Constant.BASE_URL + "GetData")
                     .addHeaders("Authorization", authorization)
@@ -155,25 +169,39 @@ public class StoreActivity extends AppCompatActivity {
         }
     }
 
-    private void loadDeliveryProducts(String customerCode, String type){
+    private void loadDeliveryProducts(String customerCode, String type, String unit){
         try {
             JSONObject jsonObject = new JSONObject();
             String condition = "";
             if (type.equalsIgnoreCase("merchant_delivery")){
-                condition = "SELECT COLLECTION.CTI_SYS_ID,COLLECTION.CTI_ITEM_CODE,COLLECTION.CTI_BATCH," +
-                        "COLLECTION.CTI_SERIAL_NO,COLLECTION.CTI_STS_CODE,ITEM.ITEM_NAME FROM " +
-                        "OT_CLCTN_ITEMS COLLECTION INNER JOIN OM_ITEM ITEM ON COLLECTION.CTI_ITEM_CODE=ITEM.ITEM_CODE " +
-                        "WHERE CTI_STS_CODE='PENDLV' AND CTI_CM_DOC_NO IN (SELECT CM_DOC_NO FROM OT_COLLECTION_MODULE WHERE " +
-                        "CM_CUST_CODE = '"+customerCode+"')";
+                if (unit.equalsIgnoreCase("consumer")){
+                    condition = "SELECT COLLECTION.CTI_SYS_ID,COLLECTION.CTI_ITEM_CODE,COLLECTION.CTI_BATCH," +
+                            "COLLECTION.CTI_SERIAL_NO,COLLECTION.CTI_STS_CODE,ITEM.ITEM_NAME FROM " +
+                            "OT_CLCTN_ITEMS COLLECTION INNER JOIN OM_ITEM ITEM ON COLLECTION.CTI_ITEM_CODE=ITEM.ITEM_CODE " +
+                            "WHERE CTI_STS_CODE='DRDASN' AND CTI_CM_DOC_NO = '"+customerCode+"'";
+                }else {
+                    condition = "SELECT COLLECTION.CTI_SYS_ID,COLLECTION.CTI_ITEM_CODE,COLLECTION.CTI_BATCH," +
+                            "COLLECTION.CTI_SERIAL_NO,COLLECTION.CTI_STS_CODE,ITEM.ITEM_NAME FROM " +
+                            "OT_CLCTN_ITEMS COLLECTION INNER JOIN OM_ITEM ITEM ON COLLECTION.CTI_ITEM_CODE=ITEM.ITEM_CODE " +
+                            "WHERE CTI_STS_CODE='DRDASN' AND CTI_CM_DOC_NO IN (SELECT CM_DOC_NO FROM OT_COLLECTION_MODULE WHERE " +
+                            "CM_CUST_CODE = '"+customerCode+"')";
+                }
             }else if(type.equalsIgnoreCase("technician_delivery")){
-                condition = "SELECT COLLECTION.CTI_SYS_ID,COLLECTION.CTI_ITEM_CODE,COLLECTION.CTI_BATCH," +
-                        "COLLECTION.CTI_SERIAL_NO,COLLECTION.CTI_STS_CODE,ITEM.ITEM_NAME FROM " +
-                        "OT_CLCTN_ITEMS COLLECTION INNER JOIN OM_ITEM ITEM ON COLLECTION.CTI_ITEM_CODE=ITEM.ITEM_CODE " +
-                        "WHERE CTI_STS_CODE='DVRPCP' AND CTI_CM_DOC_NO IN (SELECT CM_DOC_NO FROM OT_COLLECTION_MODULE WHERE " +
-                        "CM_CUST_CODE = '"+customerCode+"')";
+                if (unit.equalsIgnoreCase("consumer")){
+                    condition = "SELECT COLLECTION.CTI_SYS_ID,COLLECTION.CTI_ITEM_CODE,COLLECTION.CTI_BATCH," +
+                            "COLLECTION.CTI_SERIAL_NO,COLLECTION.CTI_STS_CODE,ITEM.ITEM_NAME FROM " +
+                            "OT_CLCTN_ITEMS COLLECTION INNER JOIN OM_ITEM ITEM ON COLLECTION.CTI_ITEM_CODE=ITEM.ITEM_CODE " +
+                            "WHERE CTI_STS_CODE='DVRPCP' AND CTI_CM_DOC_NO = '"+customerCode+"'";
+                }else {
+                    condition = "SELECT COLLECTION.CTI_SYS_ID,COLLECTION.CTI_ITEM_CODE,COLLECTION.CTI_BATCH," +
+                            "COLLECTION.CTI_SERIAL_NO,COLLECTION.CTI_STS_CODE,ITEM.ITEM_NAME FROM " +
+                            "OT_CLCTN_ITEMS COLLECTION INNER JOIN OM_ITEM ITEM ON COLLECTION.CTI_ITEM_CODE=ITEM.ITEM_CODE " +
+                            "WHERE CTI_STS_CODE='DVRPCP' AND CTI_CM_DOC_NO IN (SELECT CM_DOC_NO FROM OT_COLLECTION_MODULE WHERE " +
+                            "CM_CUST_CODE = '"+customerCode+"')";
+                }
             }
             jsonObject.put("query",condition);
-
+            Log.e("query::",jsonObject.toString());
 
             AndroidNetworking.post(Constant.BASE_URL + "GetData")
                     .addHeaders("Authorization", authorization)

@@ -79,7 +79,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private RecyclerView rv_products;
     private AutoCompleteTextView act_search_product;
     private TextInputEditText edt_serial_num,edt_batch_number,edt_complaint,ed_customer_name,
-            ed_customer_contact,ed_customer_email,ed_customer_pobox,ed_customer_address;
+            ed_customer_contact,ed_customer_email,ed_customer_pobox,ed_customer_address,edt_reference_number;
     private AppCompatButton btn_delete,btn_add,btn_register;
     private SwitchMaterial sw_shop_consumer,sw_home_shop;
     private CardView cv_customer_details;
@@ -100,6 +100,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         MERCHANT_ID = sp.getString(Constant.USER_USERID,"");
         Log.e("MERCHANT_ID=",MERCHANT_ID);
 
+        edt_reference_number = findViewById(R.id.edt_reference_number);
         add_product_lay = findViewById(R.id.add_product_lay);
         rv_products = findViewById(R.id.rv_products);
         act_search_product = findViewById(R.id.edt_search_product);
@@ -268,12 +269,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         clikonViewModel.getProductCount().observe(RegistrationActivity.this, integer -> {
             int count = integer;
             if (count != 0){
-                getDocNumber();
+                String ref_no = edt_reference_number.getText().toString().trim();
+                getDocNumber(ref_no);
             }
         });
     }
 
-    private void getDocNumber() {
+    private void getDocNumber(String ref_no) {
         try {
             String myFormat = "dd/MMM/yy";
             SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
@@ -281,7 +283,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("CM_DOC_DT",todaydate);
-            jsonObject.put("CM_REF_NO",MERCHANT_ID);
+            jsonObject.put("CM_REF_NO",ref_no);
             jsonObject.put("CM_CUST_CODE", MERCHANT_ID);
             Log.e("body::",jsonObject.toString());
 
@@ -298,7 +300,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                             try {
                                 if (response.getBoolean("status")) {
-
                                     String doc_no = String.valueOf(response.getInt("data"));
                                     getENteredData(doc_no);
                                 }else {

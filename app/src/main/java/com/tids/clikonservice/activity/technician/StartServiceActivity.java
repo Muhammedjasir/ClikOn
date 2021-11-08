@@ -1113,10 +1113,18 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void updateStatusComplete() {
+        String myFormat = "dd/MMM/yy hh:mm aaa";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
+        String todaydate = sdf.format(Calendar.getInstance().getTime());
+        Log.e("dt-tm::", todaydate);
+
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("SM_STS_CODE","PENDLV");
             jsonObject.put("SM_STS_SYS_ID","4");
+            jsonObject.put("SM_SRVCD_DT",todaydate);
+
+            Log.e("send to delivery::productDocId::",jsonObject.toString()+"::"+productDocId);
 
             AndroidNetworking.put(Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
                     productDocId)
@@ -1138,7 +1146,6 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
                                 Intent intent = new Intent(StartServiceActivity.this,TechnicianHomeActivity.class);
                                 startActivity(intent);
                                 finish();
-
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

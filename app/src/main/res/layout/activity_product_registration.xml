@@ -167,6 +167,25 @@
                                     android:layout_marginRight="10dp"
                                     android:src="@drawable/ic_search_white"/>
                             </LinearLayout>
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/ic_edt_txt_bg"
+                                android:textColorHint="@color/light_gray">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edt_reference_number"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@android:color/transparent"
+                                    android:hint="Reference Number"
+                                    android:inputType="text"
+                                    android:maxLines="1"
+                                    android:minHeight="30dp"
+                                    android:textColor="@color/light_gray"
+                                    android:textSize="14sp" />
+                            </com.google.android.material.textfield.TextInputLayout>
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

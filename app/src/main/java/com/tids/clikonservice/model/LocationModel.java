@@ -6,14 +6,23 @@ public class LocationModel {
     private String shopName;
     private String address;
     private String type;
+    private String unit;
 
 
-
-    public LocationModel(String id, String shopName, String address, String type) {
+    public LocationModel(String id, String shopName, String address, String type, String unit) {
         this.id = id;
         this.shopName = shopName;
         this.address = address;
         this.type = type;
+        this.unit = unit;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public String getType() {

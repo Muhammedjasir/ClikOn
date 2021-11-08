@@ -64,6 +64,7 @@ public class DriverPickupNotificationAdapter extends RecyclerView.Adapter<Driver
             intent.putExtra("customerCode",model.getId());
             intent.putExtra("shopName",model.getShopName());
             intent.putExtra("shopAddress",model.getAddress());
+            intent.putExtra("unit",model.getUnit());
             mContext.startActivity(intent);
         });
     }

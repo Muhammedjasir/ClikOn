@@ -64,7 +64,7 @@
             android:gravity="center"
             android:layout_gravity="center"
             android:background="@drawable/button_bg"
-            android:text="Print"
+            android:text="Pickup"
             android:textAllCaps="false"
             android:minWidth="135dp"
             android:textColor="@color/white"

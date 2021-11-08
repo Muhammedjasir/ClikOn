@@ -177,6 +177,7 @@ public class DriverProductsAdapter extends RecyclerView.Adapter<DriverProductsAd
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("CTI_STS_CODE","DVRPCP");
+            jsonObject.put("CTI_STS_SYS_ID","9");
             Log.e("body::",jsonObject.toString());
 
             AndroidNetworking.put(Constant.BASE_URL + "OT_CLCTN_ITEMS/" +

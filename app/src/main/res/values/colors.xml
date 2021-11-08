@@ -19,4 +19,6 @@
     <color name="blue_light_shade">#03528B</color>
     <color name="orange_shade">#F85A00</color>
     <color name="red">#E11B1E</color>
+
+    <color name="text">#E5E5E5</color>
 </resources>

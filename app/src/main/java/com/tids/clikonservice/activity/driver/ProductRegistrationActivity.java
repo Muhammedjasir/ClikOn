@@ -75,7 +75,7 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
     private RecyclerView rv_products;
     private AutoCompleteTextView act_search_product,act_search_merchant;
     private TextInputEditText edt_serial_num,edt_batch_number,edt_complaint,ed_customer_name,
-            ed_customer_contact,ed_customer_email,ed_customer_pobox,ed_customer_address;
+            ed_customer_contact,ed_customer_email,ed_customer_pobox,ed_customer_address,edt_reference_number;
     private AppCompatButton btn_delete,btn_add,btn_register;
     private SwitchMaterial sw_shop_consumer,sw_home_shop;
     private CardView cv_customer_details;
@@ -96,6 +96,7 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
         MERCHANT_ID = sp.getString(Constant.USER_USERID,"");
         Log.e("MERCHANT_ID=",MERCHANT_ID);
 
+        edt_reference_number = findViewById(R.id.edt_reference_number);
         add_product_lay = findViewById(R.id.add_product_lay);
         rv_products = findViewById(R.id.rv_products);
         act_search_product = findViewById(R.id.edt_search_product);
@@ -218,8 +219,8 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
                                         act_search_merchant.setAdapter(searchMerchantAdapter);
 
                                         act_search_merchant.setOnItemClickListener((adapterView, view, i, l) -> {
-                                            merchant_name = searchMerchantArrayList.get(i).getCode();
-                                            merchant_code = searchMerchantArrayList.get(i).getName();
+                                            merchant_name = searchMerchantArrayList.get(i).getName();
+                                            merchant_code = searchMerchantArrayList.get(i).getCode();
                                             Log.e("p.code&p.name==",merchant_code+"-"+merchant_name);
                                         });
                                     }
@@ -349,13 +350,14 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
                 if (merchant_code.equalsIgnoreCase("")){
                     customToast("Please select the merchant");
                 }else {
-                    getDocNumber();
+                    String ref_no = edt_reference_number.getText().toString().trim();
+                    getDocNumber(ref_no);
                 }
             }
         });
     }
 
-    private void getDocNumber() {
+    private void getDocNumber(String ref_no) {
         try {
             String myFormat = "dd/MMM/yy";
             SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
@@ -363,7 +365,7 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("CM_DOC_DT",todaydate);
-            jsonObject.put("CM_REF_NO",MERCHANT_ID);
+            jsonObject.put("CM_REF_NO",ref_no);
             jsonObject.put("CM_CUST_CODE",merchant_code);
             Log.e("body::",jsonObject.toString());
 
@@ -380,7 +382,6 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
 
                             try {
                                 if (response.getBoolean("status")) {
-
                                     String doc_no = String.valueOf(response.getInt("data"));
                                     getENteredData(doc_no);
                                 }else {
