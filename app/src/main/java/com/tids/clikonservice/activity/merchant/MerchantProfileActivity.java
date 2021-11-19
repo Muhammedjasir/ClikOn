@@ -173,7 +173,7 @@ public class MerchantProfileActivity extends AppCompatActivity {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("USER_PWD",decodeData);
 
-            AndroidNetworking.put(Constant.BASE_URL + Constant.TECHNICIAN_USER + "/" +
+            AndroidNetworking.put(Constant.BASE_URL + Constant.ADM_USER + "/" +
                     technicianID)
                     .addHeaders("Authorization", authorization)
                     .addJSONObjectBody(jsonObject)

@@ -13,12 +13,14 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -52,16 +54,18 @@ import java.util.List;
 import java.util.Locale;
 
 public class ProductRegistrationActivity extends AppCompatActivity implements View.OnClickListener,
-        AddProductAdapter.ItemClickListener, CompoundButton.OnCheckedChangeListener{
+        AddProductAdapter.ItemClickListener, CompoundButton.OnCheckedChangeListener {
 
     private PrefManager pref;
     private SharedPreferences sp;
+
     private ClikonViewModel clikonViewModel;
     private ClikonModel selectAdapterModel;
 
     private String authorization="", MERCHANT_ID="",productCode="",productName="",merchant_name ="",
-            merchant_code="";
+            merchant_code="",areaCode="",areaName="",merchantAreaCode="",merchantAreaName="";
     int add_product_id = -1;
+    private String OT_COLLECTION_MODULE_DOC_NO="", OT_CLCTN_ITEMS_DOC_NO="",OT_DVR_REQ_ALLCTN_SYS_ID="";
 
     private ArrayList<ResponseModel> searchProductsArrayList;
     private SpinnerSearchAdapter searchProductsAdapter;
@@ -69,13 +73,20 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
     private ArrayList<ResponseModel> searchMerchantArrayList;
     private SpinnerSearchAdapter searchMerchantAdapter;
 
+    private ArrayList<ResponseModel> searchAreaArrayList;
+    private SpinnerSearchAdapter searchAreaAdapter;
+
+    private ArrayList<ResponseModel> searchMerchantAreaArrayList;
+    private SpinnerSearchAdapter searchMerchantAreaAdapter;
+
     private AddProductAdapter addProductAdapter;
 
     private LinearLayout add_product_lay;
     private RecyclerView rv_products;
-    private AutoCompleteTextView act_search_product,act_search_merchant;
+    private AutoCompleteTextView act_search_product,act_search_merchant,act_search_area,
+            act_search_merchant_area;
     private TextInputEditText edt_serial_num,edt_batch_number,edt_complaint,ed_customer_name,
-            ed_customer_contact,ed_customer_email,ed_customer_pobox,ed_customer_address,edt_reference_number;
+            ed_customer_contact,ed_customer_email,ed_customer_address,edt_reference_number;
     private AppCompatButton btn_delete,btn_add,btn_register;
     private SwitchMaterial sw_shop_consumer,sw_home_shop;
     private CardView cv_customer_details;
@@ -112,9 +123,10 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
         ed_customer_name = findViewById(R.id.ed_customer_name);
         ed_customer_contact = findViewById(R.id.ed_customer_contact);
         ed_customer_email = findViewById(R.id.ed_customer_email);
-        ed_customer_pobox = findViewById(R.id.ed_customer_pobox);
+        act_search_area = findViewById(R.id.act_search_area);
         ed_customer_address = findViewById(R.id.ed_customer_address);
         btn_register = findViewById(R.id.btn_register);
+        act_search_merchant_area = findViewById(R.id.act_search_merchant_area);
 
         //configuring recycler view
         rv_products.setLayoutManager(new LinearLayoutManager(ProductRegistrationActivity.this,
@@ -161,6 +173,22 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
         });
 
         // initialize search model
+        searchAreaArrayList = new ArrayList<>();
+        act_search_area.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                loadAreas(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+
+        // initialize search model
         searchMerchantArrayList = new ArrayList<>();
         act_search_merchant.addTextChangedListener(new TextWatcher() {
             @Override
@@ -175,16 +203,100 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
             public void afterTextChanged(Editable s) { }
         });
 
+        searchMerchantAreaArrayList = new ArrayList<>();
+        act_search_merchant_area.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                listMerchantArea(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+    }
+
+    private void listMerchantArea(CharSequence area) {
+        try {
+            String condition = "SELECT ARE_CODE,ARE_NAME FROM OM_AREA WHERE (UPPER(ARE_CODE) LIKE UPPER('%"+
+                    area+"%') OR UPPER(ARE_NAME) LIKE UPPER('%"+area+"%')) AND ARE_COU_CODE='UAE'";
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query", condition);
+
+            AndroidNetworking.post(Constant.BASE_URL + "GetData")
+                    .addHeaders("Authorization", authorization)
+                    .addJSONObjectBody(jsonObject)
+                    .setTag(this)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @SuppressLint("ClickableViewAccessibility")
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.e("area.rsp::",response.toString());
+
+                            try {
+                                if (response.getBoolean("status")) {
+                                    JSONArray jsonArray = response.getJSONArray("data");
+
+                                    if (jsonArray.length() != 0) {
+                                        //clear arraylist
+                                        searchMerchantAreaArrayList.clear();
+
+                                        for (int i = 0; i< jsonArray.length(); ++i){
+                                            String area_id = "";
+                                            String area_code = jsonArray.getJSONObject(i).getString("ARE_CODE");
+                                            String area_name = jsonArray.getJSONObject(i).getString("ARE_NAME");
+
+                                            ResponseModel responseModel = new ResponseModel(area_id,area_name,area_code);
+                                            searchMerchantAreaArrayList.add(responseModel);
+                                        }
+                                        searchMerchantAreaAdapter = new SpinnerSearchAdapter(ProductRegistrationActivity.this,
+                                                R.layout.row_spinner_adapter, R.id.text1, searchMerchantAreaArrayList);
+                                        act_search_merchant_area.setAdapter(searchMerchantAreaAdapter);
+
+                                        act_search_merchant_area.setOnItemClickListener((adapterView, view, i, l) -> {
+                                            merchantAreaCode = searchMerchantAreaArrayList.get(i).getCode();
+                                            merchantAreaName = searchMerchantAreaArrayList.get(i).getName();
+                                            Log.e("area.code&p.name==",merchantAreaCode+"-"+merchantAreaName);
+                                        });
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        @Override
+                        public void onError(ANError anError) {
+                            showError(anError);
+                        }
+                    });
+
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     private void listMerchant(CharSequence param) {
         try {
             String word = param.toString().trim();
-            String condition = "SELECT  CUST_CODE,CUST_NAME FROM OM_CUSTOMER WHERE (UPPER(CUST_CODE) " +
-                    "LIKE UPPER('%"+word+"%') OR UPPER(CUST_NAME) LIKE UPPER('%"+word+"%'))";
+            String condition = "";
+            if (act_search_merchant_area.getText().toString().trim().isEmpty() ||
+                    merchantAreaCode.equalsIgnoreCase("")){
+                merchantAreaCode = "";
+                condition = "SELECT  CUST_CODE,CUST_NAME FROM OM_CUSTOMER WHERE (UPPER(CUST_CODE) " +
+                        "LIKE UPPER('%"+word+"%') OR UPPER(CUST_NAME) LIKE UPPER('%"+word+"%'))";
+            }else {
+                condition = "SELECT  CUST_CODE,CUST_NAME FROM OM_CUSTOMER WHERE (UPPER(CUST_CODE) " +
+                        "LIKE UPPER('%"+word+"%') OR UPPER(CUST_NAME) LIKE UPPER('%"+word+"%')) " +
+                        "AND CUST_ARE_CODE = '"+merchantAreaCode+"'";
+            }
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("query", condition);
+            Log.e("search::",jsonObject.toString());
 
             AndroidNetworking.post(Constant.BASE_URL + "GetData")
                     .addHeaders("Authorization", authorization)
@@ -325,6 +437,68 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
         }
     }
 
+    private void loadAreas(CharSequence area){
+        try {
+            String condition = "SELECT ARE_CODE,ARE_NAME FROM OM_AREA WHERE (UPPER(ARE_CODE) LIKE UPPER('%"+
+                    area+"%') OR UPPER(ARE_NAME) LIKE UPPER('%"+area+"%')) AND ARE_COU_CODE='UAE'";
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query", condition);
+
+            AndroidNetworking.post(Constant.BASE_URL + "GetData")
+                    .addHeaders("Authorization", authorization)
+                    .addJSONObjectBody(jsonObject)
+                    .setTag(this)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @SuppressLint("ClickableViewAccessibility")
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.e("area.rsp::",response.toString());
+
+                            try {
+                                if (response.getBoolean("status")) {
+                                    JSONArray jsonArray = response.getJSONArray("data");
+
+                                    if (jsonArray.length() != 0) {
+                                        //clear arraylist
+                                        searchAreaArrayList.clear();
+
+                                        for (int i = 0; i< jsonArray.length(); ++i){
+                                            String area_id = "";
+                                            String area_code = jsonArray.getJSONObject(i).getString("ARE_CODE");
+                                            String area_name = jsonArray.getJSONObject(i).getString("ARE_NAME");
+
+                                            ResponseModel responseModel = new ResponseModel(area_id,area_name,area_code);
+                                            searchAreaArrayList.add(responseModel);
+                                        }
+                                        searchAreaAdapter = new SpinnerSearchAdapter(ProductRegistrationActivity.this,
+                                                R.layout.row_spinner_adapter, R.id.text1, searchAreaArrayList);
+                                        act_search_area.setAdapter(searchAreaAdapter);
+
+                                        act_search_area.setOnItemClickListener((adapterView, view, i, l) -> {
+                                            areaCode = searchAreaArrayList.get(i).getCode();
+                                            areaName = searchAreaArrayList.get(i).getName();
+                                            Log.e("area.code&p.name==",areaCode+"-"+areaName);
+                                        });
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        @Override
+                        public void onError(ANError anError) {
+                            showError(anError);
+                        }
+                    });
+
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
     @Override
     public void onClick(View v) {
         if (v == btn_add){
@@ -334,6 +508,13 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
             deleteSelectedProduct();
         }
         if (v == btn_register){
+            // Hide keyboard after button click
+            try {
+                InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
             checkProducts();
         }
         if (v == add_product_lay){
@@ -350,8 +531,12 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
                 if (merchant_code.equalsIgnoreCase("")){
                     customToast("Please select the merchant");
                 }else {
-                    String ref_no = edt_reference_number.getText().toString().trim();
-                    getDocNumber(ref_no);
+                    if (OT_COLLECTION_MODULE_DOC_NO.equalsIgnoreCase("")){
+                        String ref_no = edt_reference_number.getText().toString().trim();
+                        getDocNumber(ref_no);
+                    }else {
+                        getENteredData();
+                    }
                 }
             }
         });
@@ -365,11 +550,13 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("CM_DOC_DT",todaydate);
+            jsonObject.put("CM_IN_DT",todaydate);
             jsonObject.put("CM_REF_NO",ref_no);
             jsonObject.put("CM_CUST_CODE",merchant_code);
+            jsonObject.put("CM_AREA",merchantAreaCode);
             Log.e("body::",jsonObject.toString());
 
-            AndroidNetworking.post(Constant.BASE_URL + "OT_COLLECTION_MODULE")
+            AndroidNetworking.post(Constant.BASE_URL + Constant.OT_COLLECTION_MODULE)
                     .addHeaders("Authorization", authorization)
                     .addJSONObjectBody(jsonObject)
                     .setTag(this)
@@ -382,8 +569,8 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
 
                             try {
                                 if (response.getBoolean("status")) {
-                                    String doc_no = String.valueOf(response.getInt("data"));
-                                    getENteredData(doc_no);
+                                    OT_COLLECTION_MODULE_DOC_NO = String.valueOf(response.getInt("data"));
+                                    getENteredData();
                                 }else {
                                     customToast(response.getString("message"));
                                 }
@@ -465,17 +652,15 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
             Toast.makeText(this, "Product added", Toast.LENGTH_SHORT).show();
             loadNewProductTab();
         }
-
     }
 
-    private void getENteredData(String docNo) {
+    private void getENteredData() {
         String unit = "";
         if (sw_shop_consumer.isChecked()){
             unit = "CONSUMER";
             String cust_name = ed_customer_name.getText().toString().trim();
             String cust_number = ed_customer_contact.getText().toString().trim();
             String cust_email = ed_customer_email.getText().toString().trim();
-            String cust_pobox = ed_customer_pobox.getText().toString().trim();
             String cust_address = ed_customer_address.getText().toString().trim();
             String cust_homeShop = "";
             if (sw_home_shop.isChecked()){
@@ -485,14 +670,14 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
             }
             try {
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("CTI_CM_DOC_NO", docNo);
+                jsonObject.put("CTI_CM_DOC_NO", OT_COLLECTION_MODULE_DOC_NO);
                 jsonObject.put("CTI_MERCHT_ID", MERCHANT_ID);
                 jsonObject.put("CTI_SHP_CONS_UNIT", unit);
                 jsonObject.put("CTI_CONS_SRVC", cust_homeShop);
                 jsonObject.put("CTI_CUSTOMER_NAME", cust_name);
                 jsonObject.put("CTI_CUSTOMER_MOBILE", cust_number);
                 jsonObject.put("CTI_CUSTOMER_EMAIL", cust_email);
-                jsonObject.put("CTI_PO_BOX", cust_pobox);
+                jsonObject.put("CTI_AREA_CODE", areaName);
                 jsonObject.put("CTI_CNSMR_ADDRSS", cust_address);
                 //rigister data
                 register(jsonObject);
@@ -503,7 +688,7 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
             unit = "SHOP";
             try {
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("CTI_CM_DOC_NO", docNo);
+                jsonObject.put("CTI_CM_DOC_NO", OT_COLLECTION_MODULE_DOC_NO);
                 jsonObject.put("CTI_MERCHT_ID", MERCHANT_ID);
                 jsonObject.put("CTI_SHP_CONS_UNIT", unit);
                 //rigister data
@@ -529,11 +714,11 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
                             jsonObject.put("CTI_BATCH", clikonModels.get(i).getBatch_no());
                             jsonObject.put("CTI_REPORTED_COMP", clikonModels.get(i).getComplaint());
                             jsonObject.put("CTI_QTY", "1");
-                            jsonObject.put("CTI_STS_CODE", "DVRETR");
-                            jsonObject.put("CTI_STS_SYS_ID", "8");
+                            jsonObject.put("CTI_STS_CODE", "DRDASN");
+                            jsonObject.put("CTI_STS_SYS_ID", "11");
                             Log.e("reg.ip::",jsonObject.toString());
                             int finalI = i;
-                            AndroidNetworking.post(Constant.BASE_URL + "OT_CLCTN_ITEMS")
+                            AndroidNetworking.post(Constant.BASE_URL + Constant.OT_CLCTN_ITEMS)
                                     .addHeaders("Authorization", authorization)
                                     .addJSONObjectBody(jsonObject)
                                     .setTag(this)
@@ -547,7 +732,11 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
                                                 if (response.getBoolean("status")) {
                                                     if (finalI == (clikonModels.size()-1)){
                                                         deleteAllProducts();
-                                                        onBackPressed();
+                                                        customToast(response.getString("message"));
+
+                                                        int sys_id = response.getInt("data");
+                                                        getDocNumberSysid(sys_id);
+//                                                        onBackPressed();
                                                     }
                                                 }else {
                                                     customToast(response.getString("message"));
@@ -571,6 +760,126 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
         });
     }
 
+    private void getDocNumberSysid(int sys_id) {
+
+        String myFormat = "dd/MMM/yy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
+        String todaydate = sdf.format(Calendar.getInstance().getTime());
+        Log.e("dt-tm::", todaydate);
+
+        try {
+            String condition = "SELECT CTI_CM_DOC_NO FROM OT_CLCTN_ITEMS WHERE CTI_SYS_ID = "+sys_id;
+            JSONObject jsonObject1 = new JSONObject();
+            jsonObject1.put("query", condition);
+
+            AndroidNetworking.post(Constant.BASE_URL + "GetData")
+                    .addHeaders("Authorization", authorization)
+                    .addJSONObjectBody(jsonObject1)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.e("DOCNO.rsp::",response.toString());
+                            try {
+                                if (response.getBoolean("status")) {
+                                    JSONArray jsonArray = response.getJSONArray("data");
+                                    OT_CLCTN_ITEMS_DOC_NO = String.valueOf(jsonArray.getJSONObject(0).getInt("CTI_CM_DOC_NO"));
+                                    Log.e("OT_CLCTN_ITEMS_DOC_NO==",OT_CLCTN_ITEMS_DOC_NO);
+                                    update_OT_DVR_CLCTN();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        @Override
+                        public void onError(ANError anError) {
+                            showError(anError);
+                        }
+                    });
+
+            JSONObject jsonObject2 = new JSONObject();
+            jsonObject2.put("DV_DVR_CODE", MERCHANT_ID);
+            jsonObject2.put("DV_DATE", todaydate);
+            jsonObject2.put("DV_CRUSR", MERCHANT_ID);
+            jsonObject2.put("DV_PK_DLV", "Pickup");
+
+            AndroidNetworking.post(Constant.BASE_URL + Constant.OT_DVR_REQ_ALLCTN)
+                    .addHeaders("Authorization", authorization)
+                    .addJSONObjectBody(jsonObject2)
+                    .setTag(this)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.e("driverId.Response::",response.toString());
+                            try {
+                                if (response.getBoolean("status")) {
+                                    OT_DVR_REQ_ALLCTN_SYS_ID = String.valueOf(response.getInt("data"));
+                                    Log.e("OT_DVR_REQ_ALLCTN_SYS_ID==",OT_DVR_REQ_ALLCTN_SYS_ID);
+                                    update_OT_DVR_CLCTN();
+                                }else {
+                                    customToast(response.getString("message"));
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        @Override
+                        public void onError(ANError anError) {
+                            showError(anError);
+                        }
+                    });
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    private void update_OT_DVR_CLCTN() {
+        if (!OT_CLCTN_ITEMS_DOC_NO.equalsIgnoreCase("") ||
+                !OT_DVR_REQ_ALLCTN_SYS_ID.equalsIgnoreCase("")){
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("DVR_DV_SYS_ID", OT_DVR_REQ_ALLCTN_SYS_ID);
+                jsonObject.put("DVR_CLCN_DOCNO", OT_CLCTN_ITEMS_DOC_NO);
+                jsonObject.put("DVR_CRUSR", MERCHANT_ID);
+                jsonObject.put("DVR_CUST_CODE", merchant_name);
+                jsonObject.put("DVR_AREA_CODE", merchantAreaCode);
+
+                AndroidNetworking.post(Constant.BASE_URL + Constant.OT_DVR_CLCTN)
+                        .addHeaders("Authorization", authorization)
+                        .addJSONObjectBody(jsonObject)
+                        .setTag(this)
+                        .setPriority(Priority.MEDIUM)
+                        .build()
+                        .getAsJSONObject(new JSONObjectRequestListener() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.e("driverId.Response::",response.toString());
+                                try {
+                                    if (response.getBoolean("status")) {
+                                        onBackPressed();
+                                    }else {
+                                        customToast(response.getString("message"));
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            @Override
+                            public void onError(ANError anError) {
+                                showError(anError);
+                            }
+                        });
+
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
+    }
+
     private void showError(ANError anError) {
         Toast.makeText(ProductRegistrationActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
         Log.e("Error :: ", anError.getErrorBody());
@@ -583,6 +892,8 @@ public class ProductRegistrationActivity extends AppCompatActivity implements Vi
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent = new Intent(ProductRegistrationActivity.this,DriversHomeActivity.class);
+        startActivity(intent);
         finish();
     }
 }

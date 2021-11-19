@@ -4,13 +4,11 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
@@ -35,12 +33,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.tids.clikonservice.R;
 import com.tids.clikonservice.Utils.Constant;
 import com.tids.clikonservice.Utils.Utils;
-import com.tids.clikonservice.activity.technician.SearchProductActivity;
-import com.tids.clikonservice.activity.technician.ServiceStatusTechActivity;
-import com.tids.clikonservice.activity.technician.StartServiceActivity;
 import com.tids.clikonservice.adapter.merchant.MerchantProductAdapter;
 import com.tids.clikonservice.model.ProductModel;
-import com.tids.clikonservice.model.ScannedProductModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;

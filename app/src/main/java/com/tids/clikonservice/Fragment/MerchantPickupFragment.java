@@ -71,13 +71,14 @@ public class MerchantPickupFragment extends Fragment {
     private void getConsumerPickupNotifications() {
         try {
             String authorization = "Bearer " + sp.getString(Constant.USER_AUTHORIZATION, "");
-            String condition = "SELECT CTI_CM_DOC_NO,CTI_CUSTOMER_NAME,CTI_PO_BOX,CTI_CNSMR_ADDRSS," +
+            String condition = "SELECT DISTINCT CTI_CM_DOC_NO,CTI_CUSTOMER_NAME,CTI_AREA_CODE,CTI_CNSMR_ADDRSS," +
                     "CTI_CUSTOMER_MOBILE FROM OT_CLCTN_ITEMS WHERE CTI_STS_CODE='DVRASN' AND" +
                     " CTI_SHP_CONS_UNIT = 'CONSUMER' AND CTI_CM_DOC_NO IN " +
                     "(SELECT DVR_CLCN_DOCNO FROM OT_DVR_CLCTN WHERE DVR_DV_SYS_ID IN " +
                     "(SELECT DV_SYS_ID FROM OT_DVR_REQ_ALLCTN WHERE DV_DVR_CODE = '"+DRIVER_ID+"'))";
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("query",condition);
+            Log.e("query1::",condition);
 
             AndroidNetworking.post(Constant.BASE_URL + "GetData")
                     .addHeaders("Authorization", authorization)
@@ -88,7 +89,7 @@ public class MerchantPickupFragment extends Fragment {
                     .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Log.e("Response::",response.toString());
+                            Log.e("Response1::",response.toString());
 
                             try {
                                 if (response.getBoolean("status")) {
@@ -99,10 +100,10 @@ public class MerchantPickupFragment extends Fragment {
                                         for (int i = 0; i< jsonArray.length(); i++){
                                             String id = jsonArray.getJSONObject(i).getString("CTI_CM_DOC_NO");
                                             String shop_name = jsonArray.getJSONObject(i).getString("CTI_CUSTOMER_NAME");
-                                            String address1 = jsonArray.getJSONObject(i).getString("CTI_PO_BOX");
+                                            String address1 = jsonArray.getJSONObject(i).getString("CTI_AREA_CODE");
                                             String address2 = jsonArray.getJSONObject(i).getString("CTI_CNSMR_ADDRSS");
                                             String mobile_number = jsonArray.getJSONObject(i).getString("CTI_CUSTOMER_MOBILE");
-                                            String address = address1+" "+address2+"\n"+mobile_number;
+                                            String address = address1+"\n"+address2+"\n"+mobile_number;
                                             String type = "merchant_pickup";
                                             String unit = "consumer";
 
@@ -131,7 +132,7 @@ public class MerchantPickupFragment extends Fragment {
     private void getShopPickupNotifications() {
         try {
             String authorization = "Bearer " + sp.getString(Constant.USER_AUTHORIZATION, "");
-            String condition = "SELECT CUST_CODE,CUST_NAME,CUST_DEL_ADD_2,CUST_DEL_ADD_3 FROM OM_CUSTOMER WHERE " +
+            String condition = "SELECT DISTINCT CUST_CODE,CUST_NAME,CUST_DEL_ADD_2,CUST_DEL_ADD_3 FROM OM_CUSTOMER WHERE " +
                     "CUST_CODE IN (SELECT CM_CUST_CODE FROM OT_COLLECTION_MODULE WHERE CM_DOC_NO IN " +
                     "(SELECT CTI_CM_DOC_NO FROM OT_CLCTN_ITEMS WHERE CTI_STS_CODE='DVRASN' AND " +
                     "CTI_SHP_CONS_UNIT = 'SHOP' AND CTI_CM_DOC_NO IN " +
@@ -139,7 +140,7 @@ public class MerchantPickupFragment extends Fragment {
                     "(SELECT DV_SYS_ID FROM OT_DVR_REQ_ALLCTN WHERE DV_DVR_CODE = '"+DRIVER_ID+"'))))";
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("query",condition);
-//            Log.e("query::",condition);
+            Log.e("query2::",condition);
 
             AndroidNetworking.post(Constant.BASE_URL + "GetData")
                     .addHeaders("Authorization", authorization)
@@ -150,7 +151,7 @@ public class MerchantPickupFragment extends Fragment {
                     .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Log.e("Response::",response.toString());
+                            Log.e("Response2::",response.toString());
 
                             try {
                                 if (response.getBoolean("status")) {

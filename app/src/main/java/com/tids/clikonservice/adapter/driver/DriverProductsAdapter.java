@@ -1,7 +1,9 @@
 package com.tids.clikonservice.adapter.driver;
 
 import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -29,6 +31,8 @@ import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.tids.clikonservice.R;
 import com.tids.clikonservice.Utils.Constant;
+import com.tids.clikonservice.Utils.Z91_smart_POS.BluetoothUtil;
+import com.tids.clikonservice.Utils.Z91_smart_POS.PrinterFunction;
 import com.tids.clikonservice.model.ProductModel;
 
 import org.json.JSONException;
@@ -42,6 +46,8 @@ public class DriverProductsAdapter extends RecyclerView.Adapter<DriverProductsAd
     private List<ProductModel> modelList;
     private String authorization ="";
     private SharedPreferences sp;
+
+    private int BLUETOOTH_ENABLE_REQUEST = 200;
 
     public DriverProductsAdapter(Context mContext, List<ProductModel> modelList) {
         this.mContext = mContext;
@@ -89,57 +95,10 @@ public class DriverProductsAdapter extends RecyclerView.Adapter<DriverProductsAd
                 // generate QR Code using product code
                 generateQrCode(model.getId(),model.getProduct_code(),model.getProduct_name(),position);
             }
-//            else {
-//                // pickup product from technician
-//                if (!model.getProduct_status().equalsIgnoreCase("PENDLV")){ // check it's already pickedup
-//                    pickupProduct(model.getId(),position);
-//                }
-//            }
         });
     }
 
-//    private void pickupProduct(int id, int position) {
-//        try {
-//            JSONObject jsonObject = new JSONObject();
-//            jsonObject.put("CTI_STS_CODE","PENDLV");
-//            Log.e("body::",jsonObject.toString());
-//
-//            AndroidNetworking.put(Constant.BASE_URL + "OT_CLCTN_ITEMS/" +
-//                    id)
-//                    .addHeaders("Authorization", authorization)
-//                    .addJSONObjectBody(jsonObject)
-//                    .setTag(this)
-//                    .setPriority(Priority.LOW)
-//                    .build()
-//                    .getAsJSONObject(new JSONObjectRequestListener() {
-//                        @Override
-//                        public void onResponse(JSONObject response) {
-//                            Log.e("Response2::",response.toString());
-//
-//                            try {
-//                                if (response.getBoolean("status")) {
-//                                    modelList.get(position).setProduct_status("PENDLV");
-//                                    notifyDataSetChanged();
-//                                    Toast.makeText(mContext, "Product Pickedup", Toast.LENGTH_SHORT).show();
-//                                }else {
-//                                    Toast.makeText(mContext, response.getString("message"), Toast.LENGTH_SHORT).show();
-//                                }
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                        @Override
-//                        public void onError(ANError anError) {
-////                                    showError(anError);
-//                        }
-//                    });
-//
-//        }catch (Exception ex){
-//            ex.printStackTrace();
-//        }
-//    }
-
-    private void generateQrCode(int id, String product_code,String product_name,int position) {
+    private void generateQrCode(int sys_id, String product_code,String product_name,int position) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
         alertDialogBuilder.setCancelable(true);
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
@@ -154,9 +113,9 @@ public class DriverProductsAdapter extends RecyclerView.Adapter<DriverProductsAd
         AppCompatButton btn_print = popupInputDialogView.findViewById(R.id.btn_print);
 
         tv_product_name.setText(product_name);
-        tv_product_code.setText(product_code);
+        tv_product_code.setText(sys_id+"-"+product_code);
 
-        String text=product_code; // Whatever you need to encode in the QR code
+        String text= String.valueOf(sys_id); // Whatever you need to encode in the QR code
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
             BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE,200,200);
@@ -169,23 +128,24 @@ public class DriverProductsAdapter extends RecyclerView.Adapter<DriverProductsAd
 
         btn_print.setOnClickListener(v -> {
             alertDialog.cancel();
-            printQRCode(id,position);
+            printLayout(sys_id,position,product_code,product_name);
         });
     }
 
-    private void printQRCode(int id,int position) {
+    private void changePrintStatus(int sys_id,int position,String product_code,String product_name) {
         try {
+            String condition = "UPDATE OT_CLCTN_ITEMS SET CTI_STS_CODE='DVRPCP', CTI_STS_SYS_ID=9 " +
+                    "WHERE CTI_SYS_ID="+sys_id;
+
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("CTI_STS_CODE","DVRPCP");
-            jsonObject.put("CTI_STS_SYS_ID","9");
+            jsonObject.put("query",condition);
             Log.e("body::",jsonObject.toString());
 
-            AndroidNetworking.put(Constant.BASE_URL + "OT_CLCTN_ITEMS/" +
-                    id)
+            AndroidNetworking.post(Constant.BASE_URL + "UpdateData")
                     .addHeaders("Authorization", authorization)
                     .addJSONObjectBody(jsonObject)
                     .setTag(this)
-                    .setPriority(Priority.LOW)
+                    .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override
@@ -213,6 +173,28 @@ public class DriverProductsAdapter extends RecyclerView.Adapter<DriverProductsAd
         }catch (Exception ex){
             ex.printStackTrace();
         }
+    }
+
+    //print operation text setup
+    public void printLayout(int sys_id,int position,String product_code,String product_name) {
+
+        // check bluetooth connection
+        if (new BluetoothUtil().is_bluetooth_enable()) {
+            //change order status
+            changePrintStatus(sys_id,position,product_code,product_name);
+            // printer function
+            Log.e("print::",product_name+"-"+sys_id+"-"+product_code);
+            new PrinterFunction().printQR(product_name,sys_id,product_code);
+        }
+        else {
+            enable_bluetooth();
+        }
+    }
+
+    private void enable_bluetooth() {
+        Intent bluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//        bluetoothIntent.addFlags(BLUETOOTH_ENABLE_REQUEST);
+        mContext.startActivity(bluetoothIntent);
     }
 
     @Override

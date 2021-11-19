@@ -138,6 +138,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         // prevent button double click
                         btn_login.setEnabled(false);
 
+                        // Hide keyboard after button click
+                        try {
+                            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                        } catch (Exception e) {
+                            // TODO: handle exception
+                        }
+
                         getToken(username,password);
                     } else {
                         customToast(getString(R.string.no_network_connection));
@@ -185,6 +193,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void onError(ANError anError) {
                             showError(anError);
+                            btn_login.setEnabled(true);
                         }
                     });
         }catch (Exception e){
@@ -198,7 +207,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String authorization = "Bearer "+token;
 
             AndroidNetworking.get(Constant.BASE_URL+"GetTable")
-                    .addQueryParameter("table_name", Constant.TECHNICIAN_USER)
+                    .addQueryParameter("table_name", "ADM_USER")
                     .addQueryParameter("condition", condition)
                     .addHeaders("Authorization", authorization)
                     .setTag(this)
@@ -264,6 +273,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void onError(ANError anError) {
                             showError(anError);
+                            btn_login.setEnabled(true);
                         }
                     });
 

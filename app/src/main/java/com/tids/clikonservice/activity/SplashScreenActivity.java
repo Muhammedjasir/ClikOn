@@ -42,7 +42,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         pref = new PrefManager(this);
 
-        splashVideo = (VideoView) findViewById(R.id.videoView);
+        splashVideo = findViewById(R.id.videoView);
 
         Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.clikon_spash_anim);
 

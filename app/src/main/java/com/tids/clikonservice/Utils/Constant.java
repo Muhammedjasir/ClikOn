@@ -22,10 +22,15 @@ public class Constant {
     public static final String USER_ONLINE_STATUS = "onlinestatus";  // 0-OFF & 1-ON
     public static final String USER_AUTHORIZATION = "Authorization";
 
-    // tables
-    public static final String TECHNICIAN_USER = "ADM_USER";
-    public static final String SERVICE_PRODUCTS = "SERVICE_MODULE_VIEW";
-    public static final String SERVICE_PRODUCT_INFO = "OT_SERVICE_MODULE";
+    // table names & ids
+    public static final String OT_COLLECTION_MODULE = "6";
+    public static final String OT_CLCTN_ITEMS = "7";
+    public static final String OT_SERV_PARTS = "10";
+    public static final String ADM_USER = "17";
+    public static final String OT_SERVICE_MODULE = "27";
+    public static final String OT_PARTNT_AVLABLE = "32";
+    public static final String OT_DVR_REQ_ALLCTN = "44";
+    public static final String OT_DVR_CLCTN = "45";
 
     public static final String[] PRODUCT_HOLD_REASONS = new String[]{
             "Parts not available",

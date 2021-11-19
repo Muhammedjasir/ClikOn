@@ -6,28 +6,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.driver.DailyReportActivity">
+
     <RelativeLayout
         android:id="@+id/topBg"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="@drawable/bg4"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="15dp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
-            android:background="@color/red"/>
+            android:background="@color/red" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:orientation="vertical">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_clikon_logo" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,29 +56,45 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="2dp"
+        android:layout_below="@+id/van_and_box"
         android:layout_marginLeft="10dp"
-        android:layout_below="@+id/van_and_box">
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
+
+            <TableRow
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Today Delivered"
-                android:textSize="18sp"
-                android:textStyle="normal"
-                android:layout_gravity="left"
-                android:layout_marginRight="5dp"
-                android:textColor="@color/black"/>
+                android:gravity="center_vertical">
+                <ImageView
+                    android:visibility="gone"
+                    android:id="@+id/iv_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_filter"
+                    app:tint="@color/black"
+                    android:paddingRight="10dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginRight="5dp"
+                    android:text="Today Orders"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="normal" />
+            </TableRow>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.2dp"
-                android:background="@color/dark_gray"/>
+                android:background="@color/dark_gray" />
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -81,7 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="10dp" />
         </LinearLayout>
     </LinearLayout>
 

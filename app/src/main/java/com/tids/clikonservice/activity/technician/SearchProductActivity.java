@@ -17,7 +17,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,8 +29,6 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.tids.clikonservice.R;
 import com.tids.clikonservice.Utils.Constant;
-import com.tids.clikonservice.Utils.DateTimeFormats;
-import com.tids.clikonservice.Utils.Utils;
 import com.tids.clikonservice.adapter.technician.TechnicianCompletedProductAdapter;
 import com.tids.clikonservice.model.ScannedProductModel;
 

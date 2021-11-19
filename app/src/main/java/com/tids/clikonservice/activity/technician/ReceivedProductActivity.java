@@ -160,7 +160,7 @@ public class ReceivedProductActivity extends AppCompatActivity implements View.O
 
             String scanned_data = edt_serial_num.getText().toString().trim();
             if (!scanned_data.isEmpty() || !scanned_data.equalsIgnoreCase("")) {
-                getProductDetails(scanned_data);
+                getSearchProductDetails(scanned_data);
             } else {
                 customToast("Enter code");
             }
@@ -185,14 +185,85 @@ public class ReceivedProductActivity extends AppCompatActivity implements View.O
 //                char[] split = scanned_data.toCharArray();
 //                txtotp1.setText(String.valueOf(split[0]));
 
-                getProductDetails(scanned_data);
+                getScannedProductsDetails(scanned_data);
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    private void getProductDetails(String scannedData) {
+    private void getScannedProductsDetails(String scannedData){
+        try {
+
+            String authorization = "Bearer " + sp.getString(Constant.USER_AUTHORIZATION, "");
+            String condition = "SELECT * FROM SERVICE_MODULE_VIEW WHERE UPPER(SM_CTI_SYS_ID) LIKE ('%"+
+                    scannedData+"%') AND SM_STS_CODE = 'PENSERV'";
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query",condition);
+            Log.e("query::",jsonObject.toString());
+
+            AndroidNetworking.post(Constant.BASE_URL + "GetData")
+                    .addHeaders("Authorization", authorization)
+                    .addJSONObjectBody(jsonObject)
+                    .setTag(this)
+                    .setPriority(Priority.LOW)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                Log.e("rsp:", response.toString());
+
+                                edt_serial_num.setText("");
+
+                                if (response.getBoolean("status")) {
+
+                                    scannedProductModelArrayList.clear();
+                                    scannedProductAdapter.notifyDataSetChanged();
+
+                                    //Get the instance of JSONArray that contains JSONObjects
+                                    JSONArray jsonArray = response.getJSONArray("data");
+                                    if (jsonArray.length() != 0) {
+
+                                        for (int i=0;i<jsonArray.length();++i){
+                                            String product_doc_id = String.valueOf(jsonArray.getJSONObject(i).getInt("SM_DOC_NO"));
+                                            String product_name = jsonArray.getJSONObject(i).getString("SM_CTI_ITEM_NAME");
+                                            String product_serial_number = jsonArray.getJSONObject(i).getString("SM_SERIAL_NO");
+                                            String product_batch_number = jsonArray.getJSONObject(i).getString("SM_BATCH_CODE");
+                                            String product_complaint = jsonArray.getJSONObject(i).getString("SM_REMARKS");
+                                            String product_qrcode_data = jsonArray.getJSONObject(i).getString("SM_CTI_SYS_ID");
+                                            String productReferId = jsonArray.getJSONObject(i).getString("SM_CM_REF_NO");
+                                            String productCode = jsonArray.getJSONObject(i).getString("SM_CTI_ITEM_CODE");
+                                            String customerName = jsonArray.getJSONObject(i).getString("SM_CM_CUST_NAME");
+                                            String customerCode = jsonArray.getJSONObject(i).getString("SM_CM_CUST_CODE");
+
+                                            ScannedProductModel scannedProductModel = new ScannedProductModel(product_doc_id, product_qrcode_data, product_name,
+                                                    product_serial_number, product_batch_number, product_complaint,productReferId,productCode,customerName,customerCode);
+                                            scannedProductModelArrayList.add(scannedProductModel);
+                                        }
+                                        scannedProductAdapter.notifyDataSetChanged();
+                                    }
+                                } else {
+                                    customToast("No product available");
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            showError(anError);
+                        }
+                    });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getSearchProductDetails(String scannedData) {
         try {
 
             String authorization = "Bearer " + sp.getString(Constant.USER_AUTHORIZATION, "");
@@ -203,6 +274,7 @@ public class ReceivedProductActivity extends AppCompatActivity implements View.O
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("query",condition);
+            Log.e("query::",jsonObject.toString());
 
             AndroidNetworking.post(Constant.BASE_URL + "GetData")
                     .addHeaders("Authorization", authorization)

@@ -294,7 +294,7 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
                 jsonObject.put("SM_STRT_DT",serviceDate);
                 Log.e("jsonbody:",jsonObject.toString());
 
-                AndroidNetworking.put(Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
+                AndroidNetworking.put(Constant.BASE_URL + Constant.OT_SERVICE_MODULE + "/" +
                         productDocId)
                         .addHeaders("Authorization", authorization)
                         .addJSONObjectBody(jsonObject)
@@ -335,7 +335,7 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
             jsonObject.put("OT_SP_QTY",partsQtyHold);
             Log.e("body::",jsonObject.toString());
 
-            AndroidNetworking.post(Constant.BASE_URL + "OT_PARTNT_AVLABLE")
+            AndroidNetworking.post(Constant.BASE_URL + Constant.OT_PARTNT_AVLABLE)
                     .addHeaders("Authorization", authorization)
                     .addJSONObjectBody(jsonObject)
                     .setTag(this)
@@ -494,7 +494,7 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
             jsonObject.put("SP_QTY",partsQty);
             Log.e("body::",jsonObject.toString());
 
-            AndroidNetworking.post(Constant.BASE_URL + "OT_SERV_PARTS")
+            AndroidNetworking.post(Constant.BASE_URL + Constant.OT_SERV_PARTS)
                     .addHeaders("Authorization", authorization)
                     .addJSONObjectBody(jsonObject)
                     .setTag(this)
@@ -954,7 +954,7 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
             jsonObject.put("SM_BATCH_CODE",batch_no);
             Log.e("body::",jsonObject.toString());
 
-            AndroidNetworking.put(Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
+            AndroidNetworking.put(Constant.BASE_URL + Constant.OT_SERVICE_MODULE + "/" +
                     productDocId)
                     .addHeaders("Authorization", authorization)
                     .addJSONObjectBody(jsonObject)
@@ -991,17 +991,19 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
     private void releaseToSatart() {
         if (!pref.getTechnicianProductStatus().equalsIgnoreCase("start")){
             try {
+
+                String condition = "UPDATE OT_SERVICE_MODULE SET SM_STS_CODE='SERVSRT', SM_STS_SYS_ID=6 " +
+                        "WHERE SM_DOC_NO="+productDocId;
+
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("SM_STS_CODE","SERVSRT");
-                jsonObject.put("SM_STS_SYS_ID","6");
+                jsonObject.put("query",condition);
                 Log.e("body::",jsonObject.toString());
 
-                AndroidNetworking.put(Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
-                        productDocId)
+                AndroidNetworking.post(Constant.BASE_URL + "UpdateData")
                         .addHeaders("Authorization", authorization)
                         .addJSONObjectBody(jsonObject)
                         .setTag(this)
-                        .setPriority(Priority.LOW)
+                        .setPriority(Priority.MEDIUM)
                         .build()
                         .getAsJSONObject(new JSONObjectRequestListener() {
                             @Override
@@ -1031,17 +1033,18 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
 
     private void removeProduct() {
         try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("SM_STS_CODE","PENSERV");
-            jsonObject.put("SM_STS_SYS_ID","2");
-            jsonObject.put("SM_SRP_SYS_ID","");
+            String condition = "UPDATE OT_SERVICE_MODULE SET SM_STS_CODE='PENSERV', SM_STS_SYS_ID=2 " +
+                    "SM_SRP_SYS_ID='' WHERE SM_DOC_NO="+getIntent().getStringExtra("product_doc_id");
 
-            AndroidNetworking.put(Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
-                    getIntent().getStringExtra("product_doc_id"))
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query",condition);
+            Log.e("body::",jsonObject.toString());
+
+            AndroidNetworking.post(Constant.BASE_URL + "UpdateData")
                     .addHeaders("Authorization", authorization)
                     .addJSONObjectBody(jsonObject)
                     .setTag(this)
-                    .setPriority(Priority.LOW)
+                    .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override
@@ -1081,7 +1084,7 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
 
                 Log.e("product id == ",productDocId+"");
 
-                AndroidNetworking.put(Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
+                AndroidNetworking.put(Constant.BASE_URL + Constant.OT_SERVICE_MODULE + "/" +
                         productDocId)
                         .addHeaders("Authorization", authorization)
                         .addJSONObjectBody(jsonObject)
@@ -1113,25 +1116,24 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void updateStatusComplete() {
-        String myFormat = "dd/MMM/yy hh:mm aaa";
+        String myFormat = "dd/MMM/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
         String todaydate = sdf.format(Calendar.getInstance().getTime());
         Log.e("dt-tm::", todaydate);
 
         try {
+            String condition = "UPDATE OT_SERVICE_MODULE SET SM_STS_CODE='PENDLV', SM_STS_SYS_ID=4, " +
+                    "SM_SRVCD_DT='"+todaydate+"' WHERE SM_DOC_NO="+productDocId;
+
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("SM_STS_CODE","PENDLV");
-            jsonObject.put("SM_STS_SYS_ID","4");
-            jsonObject.put("SM_SRVCD_DT",todaydate);
+            jsonObject.put("query",condition);
+            Log.e("body::",jsonObject.toString());
 
-            Log.e("send to delivery::productDocId::",jsonObject.toString()+"::"+productDocId);
-
-            AndroidNetworking.put(Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
-                    productDocId)
+            AndroidNetworking.post(Constant.BASE_URL + "UpdateData")
                     .addHeaders("Authorization", authorization)
                     .addJSONObjectBody(jsonObject)
                     .setTag(this)
-                    .setPriority(Priority.LOW)
+                    .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override
@@ -1170,7 +1172,7 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
                 jsonObject.put("SM_ESTIM_DT",estimateTime);
                 Log.e("jsonbody:",jsonObject.toString());
 
-                AndroidNetworking.put(Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
+                AndroidNetworking.put(Constant.BASE_URL + Constant.OT_SERVICE_MODULE + "/" +
                         productDocId)
                         .addHeaders("Authorization", authorization)
                         .addJSONObjectBody(jsonObject)
@@ -1207,18 +1209,18 @@ public class StartServiceActivity extends AppCompatActivity implements View.OnCl
 
         String pause_reason = auto_reasons.getText().toString().trim();
         try {
+            String condition = "UPDATE OT_SERVICE_MODULE SET SM_STS_CODE='SERVPUS', SM_STS_SYS_ID=7, " +
+                    "SM_DLY_RSN='"+pause_reason+"' WHERE SM_DOC_NO="+productDocId;
 
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("SM_STS_CODE","SERVPUS");
-            jsonObject.put("SM_STS_SYS_ID","7");
-            jsonObject.put("SM_DLY_RSN",pause_reason);
+            jsonObject.put("query",condition);
+            Log.e("body::",jsonObject.toString());
 
-            AndroidNetworking.put(Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
-                    productDocId)
+            AndroidNetworking.post(Constant.BASE_URL + "UpdateData")
                     .addHeaders("Authorization", authorization)
                     .addJSONObjectBody(jsonObject)
                     .setTag(this)
-                    .setPriority(Priority.LOW)
+                    .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
                 @Override

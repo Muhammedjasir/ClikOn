@@ -24,10 +24,7 @@ import com.tids.clikonservice.model.SparepartsModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class SparepartsAdapter extends RecyclerView.Adapter<SparepartsAdapter.MyViewHolder> {
 
@@ -66,7 +63,7 @@ public class SparepartsAdapter extends RecyclerView.Adapter<SparepartsAdapter.My
             public void onClick(View v) {
                 try {
                     String authorization = "Bearer " + sp.getString(Constant.USER_AUTHORIZATION, "");
-                    AndroidNetworking.delete(Constant.BASE_URL+ "OT_SERV_PARTS/"+model.getTb_id() )
+                    AndroidNetworking.delete(Constant.BASE_URL+Constant.OT_SERV_PARTS+"/"+model.getTb_id() )
                             .addHeaders("Authorization", authorization)
                             .setTag(this)
                             .setPriority(Priority.LOW)

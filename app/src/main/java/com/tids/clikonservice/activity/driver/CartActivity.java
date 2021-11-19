@@ -2,16 +2,14 @@ package com.tids.clikonservice.activity.driver;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -35,8 +33,6 @@ import java.util.ArrayList;
 public class CartActivity extends AppCompatActivity {
 
     private ImageView ivBack;
-//    private RecyclerView rv_cart;
-//    private TextView tv_cart_count;
 
     private DriverCartAdapter cartAdapter;
     private ArrayList<ScannedProductModel> scannedProductModelArrayList = new ArrayList<>();
@@ -54,15 +50,6 @@ public class CartActivity extends AppCompatActivity {
 
         ivBack=findViewById(R.id.back_btn);
         ivBack.setOnClickListener(v -> onBackPressed());
-
-//        tv_cart_count = findViewById(R.id.tv_cart_count);
-//        rv_cart = findViewById(R.id.recycler_view);
-//
-//        cartAdapter = new DriverCartAdapter(CartActivity.this, scannedProductModelArrayList);
-//        rv_cart.setLayoutManager(new LinearLayoutManager(CartActivity.this,
-//                LinearLayoutManager.VERTICAL,false));
-//        rv_cart.setAdapter(cartAdapter);
-//        loadCart();
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Merchant\nDelivery"));
@@ -161,6 +148,8 @@ public class CartActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent = new Intent(CartActivity.this,DriversHomeActivity.class);
+        startActivity(intent);
         finish();
     }
 }

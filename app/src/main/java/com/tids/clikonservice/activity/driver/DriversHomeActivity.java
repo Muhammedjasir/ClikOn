@@ -79,6 +79,7 @@ public class DriversHomeActivity extends AppCompatActivity {
         lay_cart.setOnClickListener(v -> {
             Intent intent = new Intent(DriversHomeActivity.this, CartActivity.class);
             startActivity(intent);
+            finish();
         });
 
         String user_profile = sp.getString(Constant.USER_PROFILE, "");
@@ -93,16 +94,19 @@ public class DriversHomeActivity extends AppCompatActivity {
         profile_lay.setOnClickListener(v ->{
             Intent intent = new Intent(getApplicationContext(), ProfileDriverActivity.class);
             startActivity(intent);
+            finish();
         });
 
         findViewById(R.id.lay_service_registration).setOnClickListener(v -> {
             Intent intent = new Intent(DriversHomeActivity.this, ProductRegistrationActivity.class);
             startActivity(intent);
+            finish();
         });
 
         findViewById(R.id.lay_daiy_report).setOnClickListener(v -> {
             Intent intent = new Intent(DriversHomeActivity.this, DailyReportActivity.class);
             startActivity(intent);
+            finish();
         });
 
     }

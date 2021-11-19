@@ -36,35 +36,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:gravity="center"
             android:background="@drawable/shape_strock"
             android:orientation="vertical">
             <ImageView
                 android:id="@+id/zxing_barcode_scanner"
                 android:layout_width="285dp"
-                android:layout_height="285dp"/>
+                android:layout_height="200dp"/>
             <TextView
                 android:id="@+id/tv_product_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="10dp"
                 android:textColor="@color/black"/>
-
-
-
         </LinearLayout>
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_print"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:layout_gravity="center"
             android:background="@drawable/button_bg"
-            android:text="Pickup"
+            android:text="Print"
             android:textAllCaps="false"
             android:minWidth="135dp"
             android:textColor="@color/white"

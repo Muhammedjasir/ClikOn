@@ -172,7 +172,7 @@ public class ProfileDriverActivity extends AppCompatActivity {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("USER_PWD",decodeData);
 
-            AndroidNetworking.put(Constant.BASE_URL + Constant.TECHNICIAN_USER + "/" +
+            AndroidNetworking.put(Constant.BASE_URL + Constant.ADM_USER + "/" +
                     driverID)
                     .addHeaders("Authorization", authorization)
                     .addJSONObjectBody(jsonObject)
@@ -246,6 +246,8 @@ public class ProfileDriverActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent = new Intent(ProfileDriverActivity.this,DriversHomeActivity.class);
+        startActivity(intent);
         finish();
     }
 }

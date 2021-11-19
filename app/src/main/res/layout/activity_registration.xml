@@ -470,25 +470,24 @@
                                             android:textColor="@color/light_gray"
                                             android:textSize="14sp" />
                                     </com.google.android.material.textfield.TextInputLayout>
-                                    <com.google.android.material.textfield.TextInputLayout
+                                    <AutoCompleteTextView
+                                        android:id="@+id/act_search_area"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:editable="true"
+                                        android:completionThreshold="0"
+                                        android:ellipsize="end"
+                                        android:ems="3"
+                                        android:hint="Area"
                                         android:layout_marginTop="7dp"
+                                        android:paddingLeft="17dp"
                                         android:background="@drawable/ic_edt_txt_bg"
-                                        android:textColorHint="@color/light_gray">
-
-                                        <com.google.android.material.textfield.TextInputEditText
-                                            android:id="@+id/ed_customer_pobox"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:background="@android:color/transparent"
-                                            android:hint="PO Box"
-                                            android:inputType="number"
-                                            android:maxLines="1"
-                                            android:minHeight="30dp"
-                                            android:textColor="@color/light_gray"
-                                            android:textSize="14sp" />
-                                    </com.google.android.material.textfield.TextInputLayout>
+                                        android:textColorHint="@color/light_gray"
+                                        android:textColor="@color/light_gray"
+                                        android:textSize="14sp"
+                                        android:maxLines="1"
+                                        android:singleLine="true"
+                                        android:minHeight="50dp" />
                                     <com.google.android.material.textfield.TextInputLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"

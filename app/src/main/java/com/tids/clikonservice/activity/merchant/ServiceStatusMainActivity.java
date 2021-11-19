@@ -153,7 +153,7 @@ public class ServiceStatusMainActivity extends AppCompatActivity {
                                         String customer_name = jsonArray.getJSONObject(0).getString("CTI_CUSTOMER_NAME");
                                         customer_number = jsonArray.getJSONObject(0).getString("CTI_CUSTOMER_MOBILE");
                                         String customer_email = jsonArray.getJSONObject(0).getString("CTI_CUSTOMER_EMAIL");
-                                        String customer_pobox = jsonArray.getJSONObject(0).getString("CTI_PO_BOX");
+                                        String customer_pobox = jsonArray.getJSONObject(0).getString("CTI_AREA_CODE");
                                         String customer_address = jsonArray.getJSONObject(0).getString("CTI_CNSMR_ADDRSS");
                                         String unit_type = jsonArray.getJSONObject(0).getString("CTI_SHP_CONS_UNIT");
 

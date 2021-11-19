@@ -21,7 +21,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.tids.clikonservice.R;
 import com.tids.clikonservice.Utils.Constant;
 import com.tids.clikonservice.Utils.Helper.PrefManager;
-import com.tids.clikonservice.model.ScannedProductModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;

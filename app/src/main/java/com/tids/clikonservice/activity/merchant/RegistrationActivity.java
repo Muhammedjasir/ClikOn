@@ -21,6 +21,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
@@ -41,6 +42,7 @@ import com.tids.clikonservice.Utils.Constant;
 import com.tids.clikonservice.Utils.Helper.PrefManager;
 import com.tids.clikonservice.Utils.RoomDb.ClikonModel;
 import com.tids.clikonservice.Utils.RoomDb.ClikonViewModel;
+import com.tids.clikonservice.activity.driver.ProductRegistrationActivity;
 import com.tids.clikonservice.activity.technician.ReceivedProductActivity;
 import com.tids.clikonservice.activity.technician.StartServiceActivity;
 import com.tids.clikonservice.adapter.SpinnerAdapter;
@@ -67,19 +69,22 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private ClikonViewModel clikonViewModel;
     private ClikonModel selectAdapterModel;
 
-    private String authorization="", MERCHANT_ID="",productCode="",productName="";
+    private String authorization="", MERCHANT_ID="",productCode="",productName="",areaCode="",areaName="";
     int add_product_id = -1;
 
     private ArrayList<ResponseModel> searchProductsArrayList;
     private SpinnerSearchAdapter searchProductsAdapter;
 
+    private ArrayList<ResponseModel> searchAreaArrayList;
+    private SpinnerSearchAdapter searchAreaAdapter;
+
     private AddProductAdapter addProductAdapter;
 
     private LinearLayout add_product_lay;
     private RecyclerView rv_products;
-    private AutoCompleteTextView act_search_product;
+    private AutoCompleteTextView act_search_product,act_search_area;
     private TextInputEditText edt_serial_num,edt_batch_number,edt_complaint,ed_customer_name,
-            ed_customer_contact,ed_customer_email,ed_customer_pobox,ed_customer_address,edt_reference_number;
+            ed_customer_contact,ed_customer_email,ed_customer_address,edt_reference_number;
     private AppCompatButton btn_delete,btn_add,btn_register;
     private SwitchMaterial sw_shop_consumer,sw_home_shop;
     private CardView cv_customer_details;
@@ -115,7 +120,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         ed_customer_name = findViewById(R.id.ed_customer_name);
         ed_customer_contact = findViewById(R.id.ed_customer_contact);
         ed_customer_email = findViewById(R.id.ed_customer_email);
-        ed_customer_pobox = findViewById(R.id.ed_customer_pobox);
+        act_search_area = findViewById(R.id.act_search_area);
         ed_customer_address = findViewById(R.id.ed_customer_address);
         btn_register = findViewById(R.id.btn_register);
 
@@ -157,6 +162,21 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 listProducts(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+        // initialize search model
+        searchAreaArrayList = new ArrayList<>();
+        act_search_area.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                loadAreas(s);
             }
 
             @Override
@@ -247,6 +267,69 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    private void loadAreas(CharSequence area){
+        try {
+            String condition = "SELECT ARE_CODE,ARE_NAME FROM OM_AREA WHERE (UPPER(ARE_CODE) LIKE UPPER('%"+
+                    area+"%') OR UPPER(ARE_NAME) LIKE UPPER('%"+area+"%')) AND ARE_COU_CODE='UAE'";
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query", condition);
+
+            AndroidNetworking.post(Constant.BASE_URL + "GetData")
+                    .addHeaders("Authorization", authorization)
+                    .addJSONObjectBody(jsonObject)
+                    .setTag(this)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @SuppressLint("ClickableViewAccessibility")
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.e("area.rsp::",response.toString());
+
+                            try {
+                                if (response.getBoolean("status")) {
+                                    JSONArray jsonArray = response.getJSONArray("data");
+
+                                    if (jsonArray.length() != 0) {
+                                        //clear arraylist
+                                        searchAreaArrayList.clear();
+
+                                        for (int i = 0; i< jsonArray.length(); ++i){
+                                            String area_id = "";
+                                            String area_code = jsonArray.getJSONObject(i).getString("ARE_CODE");
+                                            String area_name = jsonArray.getJSONObject(i).getString("ARE_NAME");
+
+                                            ResponseModel responseModel = new ResponseModel(area_id,area_name,area_code);
+                                            searchAreaArrayList.add(responseModel);
+                                        }
+                                        searchAreaAdapter = new SpinnerSearchAdapter(RegistrationActivity.this,
+                                                R.layout.row_spinner_adapter, R.id.text1, searchAreaArrayList);
+                                        act_search_area.setAdapter(searchAreaAdapter);
+
+                                        act_search_area.setOnItemClickListener((adapterView, view, i, l) -> {
+                                            areaCode = searchAreaArrayList.get(i).getCode();
+                                            areaName = searchAreaArrayList.get(i).getName();
+                                            Log.e("area.code&p.name==",areaCode+"-"+areaName);
+                                        });
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        @Override
+                        public void onError(ANError anError) {
+                            showError(anError);
+                        }
+                    });
+
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+    }
+
     @Override
     public void onClick(View v) {
         if (v == btn_add){
@@ -256,6 +339,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             deleteSelectedProduct();
         }
         if (v == btn_register){
+            // Hide keyboard after button click
+            try {
+                InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
             checkProducts();
         }
         if (v == add_product_lay){
@@ -287,7 +377,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             jsonObject.put("CM_CUST_CODE", MERCHANT_ID);
             Log.e("body::",jsonObject.toString());
 
-            AndroidNetworking.post(Constant.BASE_URL + "OT_COLLECTION_MODULE")
+            AndroidNetworking.post(Constant.BASE_URL + Constant.OT_COLLECTION_MODULE)
                     .addHeaders("Authorization", authorization)
                     .addJSONObjectBody(jsonObject)
                     .setTag(this)
@@ -382,7 +472,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
              Toast.makeText(this, "Product added", Toast.LENGTH_SHORT).show();
              loadNewProductTab();
          }
-
     }
 
     private void getENteredData(String docNo) {
@@ -392,7 +481,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             String cust_name = ed_customer_name.getText().toString().trim();
             String cust_number = ed_customer_contact.getText().toString().trim();
             String cust_email = ed_customer_email.getText().toString().trim();
-            String cust_pobox = ed_customer_pobox.getText().toString().trim();
             String cust_address = ed_customer_address.getText().toString().trim();
             String cust_homeShop = "";
             if (sw_home_shop.isChecked()){
@@ -409,9 +497,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 jsonObject.put("CTI_CUSTOMER_NAME", cust_name);
                 jsonObject.put("CTI_CUSTOMER_MOBILE", cust_number);
                 jsonObject.put("CTI_CUSTOMER_EMAIL", cust_email);
-                jsonObject.put("CTI_PO_BOX", cust_pobox);
+                jsonObject.put("CTI_AREA_CODE", areaName);
                 jsonObject.put("CTI_CNSMR_ADDRSS", cust_address);
-                //rigister data
+                //register data
                 register(jsonObject);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -450,7 +538,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             jsonObject.put("CTI_STS_SYS_ID", "8");
                             Log.e("reg.ip::",jsonObject.toString());
                             int finalI = i;
-                            AndroidNetworking.post(Constant.BASE_URL + "OT_CLCTN_ITEMS")
+                            AndroidNetworking.post(Constant.BASE_URL + Constant.OT_CLCTN_ITEMS)
                                     .addHeaders("Authorization", authorization)
                                     .addJSONObjectBody(jsonObject)
                                     .setTag(this)

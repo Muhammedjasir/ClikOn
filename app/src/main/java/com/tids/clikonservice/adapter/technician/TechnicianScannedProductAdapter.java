@@ -143,19 +143,18 @@ public class TechnicianScannedProductAdapter extends RecyclerView.Adapter<Techni
             SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
             String todaydate = sdf.format(Calendar.getInstance().getTime());
 
+            String condition = "UPDATE OT_SERVICE_MODULE SET SM_STS_CODE = 'SERVSRT', SM_STS_SYS_ID = 6, " +
+                    "SM_SRP_SYS_ID="+technicianID+ ", SM_STRT_DT='"+todaydate+"' WHERE SM_DOC_NO="+productDocId;
+
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("SM_STS_CODE","SERVSRT");
-            jsonObject.put("SM_STS_SYS_ID","6");
-            jsonObject.put("SM_SRP_SYS_ID",technicianID);
-            jsonObject.put("SM_STRT_DT",todaydate);
+            jsonObject.put("query",condition);
             Log.e("body::",jsonObject.toString());
 
-            AndroidNetworking.put(Constant.BASE_URL + Constant.SERVICE_PRODUCT_INFO + "/" +
-                    productDocId)
+            AndroidNetworking.post(Constant.BASE_URL + "UpdateData")
                     .addHeaders("Authorization", authorization)
                     .addJSONObjectBody(jsonObject)
                     .setTag(this)
-                    .setPriority(Priority.LOW)
+                    .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override
