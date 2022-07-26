@@ -1,32 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tids.clikonservice">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.tids.clikonservicenew"
+    android:exported="true">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ClikonService"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".activity.driver.EditOrderActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:exported="true" />
         <activity
             android:name=".activity.driver.ProductRegistrationActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="true" />
         <activity
             android:name=".activity.driver.ProfileDriverActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="true" />
         <activity
             android:name=".activity.merchant.MerchantProfileActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="true" />
         <activity
             android:name=".activity.technician.TechnicianProfileActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="true" />
-        <activity android:name=".activity.driver.DailyReportActivity" />
-        <activity android:name=".activity.technician.SearchProductActivity" />
+        <activity android:name=".activity.driver.DailyReportActivity"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".activity.technician.SearchProductActivity"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".activity.SplashScreenActivity"
             android:exported="true"
@@ -42,23 +59,35 @@
         </activity>
         <activity
             android:name=".activity.technician.StartServiceActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="true" />
         <activity
             android:name=".activity.technician.ServiceStatusTechActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="true" />
         <activity
             android:name=".activity.technician.ReceivedProductActivity"
+            android:windowSoftInputMode="stateHidden"
             android:exported="true" />
-        <activity android:name=".activity.technician.TechnicianHomeActivity" />
-        <activity android:name=".activity.driver.StoreActivity" />
-        <activity android:name=".activity.driver.CartActivity" />
-        <activity android:name=".activity.driver.DriversHomeActivity" />
+        <activity android:name=".activity.technician.TechnicianHomeActivity"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".activity.driver.StoreActivity"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".activity.driver.CartActivity"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".activity.driver.DriversHomeActivity"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".activity.DemoPagenationActivity" />
-        <activity android:name=".activity.merchant.ServiceStatusMainActivity" />
-        <activity android:name=".activity.merchant.ServiceStatusSvActivity" />
-        <activity android:name=".activity.merchant.RegistrationActivity" />
-        <activity android:name=".activity.merchant.StaffHomeActivity" />
-        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.merchant.ServiceStatusMainActivity"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".activity.merchant.ServiceStatusSvActivity"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".activity.merchant.RegistrationActivity"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".activity.merchant.StaffHomeActivity"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".activity.LoginActivity"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>

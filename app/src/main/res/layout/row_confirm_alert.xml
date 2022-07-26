@@ -14,6 +14,28 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shape9_button_gray"
         android:orientation="vertical">
+        <com.google.android.material.textfield.TextInputLayout
+            android:visibility="gone"
+            android:id="@+id/lay_delivery_to"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/ic_edt_txt_bg"
+            android:textColorHint="@color/light_gray">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_delivery_to"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="Delivery to"
+                android:maxLines="1"
+                android:minHeight="30dp"
+                android:textColor="@color/dark_gray"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

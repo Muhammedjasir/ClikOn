@@ -202,6 +202,7 @@
                         android:layout_height="45dp"
                         android:hint="Search"
                         android:padding="5dp"
+                        android:textColor="@color/dark_gray"
                         android:textStyle="normal"
                         android:textSize="15dp"
                         android:drawableRight="@drawable/ic_search_black"

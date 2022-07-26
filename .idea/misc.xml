@@ -3,22 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/drawable/ic_close.xml" value="0.19583333333333333" />
-        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/drawable/shape7.xml" value="0.19583333333333333" />
-        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/drawable/shape9_button_gray.xml" value="0.19583333333333333" />
-        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_daily_report.xml" value="0.14666666666666667" />
-        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_demo_pagenation.xml" value="0.1" />
-        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_drivers_home.xml" value="0.16666666666666666" />
-        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_product_registration.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_login.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_product_registration.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_received_product.xml" value="0.1" />
-        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_registration.xml" value="0.1" />
-        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_service_status_tech.xml" value="0.22" />
-        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/row_cart_adapter.xml" value="0.1" />
-        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/row_confirm_alert.xml" value="0.1721014492753623" />
-        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/row_filter_dialog.xml" value="0.1" />
-        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/row_qrcode_generate_dialog_box.xml" value="0.14666666666666667" />
-        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/row_store_notification.xml" value="0.1" />
-        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/sunmiprinterutill/clikon_service/src/main/res/layout/activity_printer.xml" value="0.1480978260869565" />
+        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_search_product.xml" value="0.1" />
+        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/activity_start_service.xml" value="0.22" />
+        <entry key="..\:/Users/anjana/AndroidStudioProjects/ClickOn/clikon service app/app/src/main/res/layout/row_spinner_adapter.xml" value="0.1" />
+        <entry key="..\:/Users/workgroup/Desktop/money transfer/projects/Android Projects/clikon service app/app/src/main/res/layout/activity_service_status_main.xml" value="0.1796875" />
+        <entry key="..\:/Users/workgroup/Desktop/money transfer/projects/Android Projects/clikon service app/app/src/main/res/layout/activity_service_status_sv.xml" value="0.22" />
+        <entry key="..\:/Users/workgroup/Desktop/money transfer/projects/Android Projects/clikon service app/app/src/main/res/layout/activity_service_status_tech.xml" value="0.1796875" />
+        <entry key="..\:/Users/workgroup/Desktop/money transfer/projects/Android Projects/clikon service app/app/src/main/res/layout/activity_start_service.xml" value="0.1796875" />
+        <entry key="..\:/Users/workgroup/Desktop/money transfer/projects/Android Projects/clikon service app/app/src/main/res/layout/activity_technician_home.xml" value="0.22" />
+        <entry key="..\:/Users/workgroup/Desktop/money transfer/projects/Android Projects/clikon service app/app/src/main/res/layout/row_spareparts_adapter.xml" value="0.1796875" />
       </map>
     </option>
   </component>

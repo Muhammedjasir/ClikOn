@@ -17,6 +17,15 @@
         android:drawableLeft="@drawable/ic_round_dot_gray"
         android:drawablePadding="5dp"/>
     <TextView
+        android:id="@+id/tv_text_bin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="15sp"
+        android:textColor="@color/dark_gray"
+        android:textStyle="normal"
+        android:drawablePadding="5dp"/>
+    <TextView
         android:id="@+id/tv_qty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

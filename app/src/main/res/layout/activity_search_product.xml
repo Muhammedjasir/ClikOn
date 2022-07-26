@@ -27,7 +27,7 @@
            android:layout_weight="1"
            android:background="@drawable/shape4_ofw"
            android:gravity="center_vertical"
-           android:text="Search Product"
+           android:hint="Search Product"
            android:drawablePadding="10dp"
            android:paddingLeft="8dp"
            android:paddingRight="8dp"

@@ -175,6 +175,9 @@
                                     android:drawableTint="@color/primary_color"
                                     android:background="@android:color/transparent"
                                     android:editable="true"
+                                    android:hint="Search product"
+                                    android:textColorHint="@color/lite_white"
+                                    android:drawablePadding="3dp"
                                     android:completionThreshold="0"
                                     android:ellipsize="end"
                                     android:ems="3"
@@ -189,7 +192,68 @@
                                     android:layout_marginRight="10dp"
                                     android:src="@drawable/ic_search_white"/>
                             </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginTop="7dp">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:layout_marginTop="7dp"
+                                    android:background="@drawable/ic_edt_txt_bg">
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/light_gray"
+                                        android:textSize="14sp"
+                                        android:paddingLeft="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:text="  Warranty status"/>
+                                    <RadioGroup
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        android:padding="5dp"
+                                        android:id="@+id/radioGroup">
 
+                                        <RadioButton
+                                            android:id="@+id/radioMale"
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:text="Yes"
+                                            android:textColor="@color/light_gray"
+                                            android:checked="false"
+                                            android:textSize="14sp" />
+
+                                        <RadioButton
+                                            android:id="@+id/radioFemale"
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:text="No"
+                                            android:textColor="@color/light_gray"
+                                            android:checked="true"
+                                            android:textSize="14sp" />
+                                    </RadioGroup>
+                                </LinearLayout>
+                                <TextView
+                                    android:visibility="gone"
+                                    android:id="@+id/edt_puchase_date"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/ic_edt_txt_bg"
+                                    android:layout_marginTop="7dp"
+                                    android:hint="Purchase date"
+                                    android:paddingLeft="15dp"
+                                    android:maxLines="1"
+                                    android:minHeight="45dp"
+                                    android:gravity="center_vertical"
+                                    android:textColor="@color/light_gray"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -227,6 +291,24 @@
                                     android:textColor="@color/light_gray"
                                     android:textSize="14sp" />
                             </com.google.android.material.textfield.TextInputLayout>
+                            <AutoCompleteTextView
+                                android:id="@+id/act_search_product_condition"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:editable="true"
+                                android:completionThreshold="0"
+                                android:ellipsize="end"
+                                android:ems="3"
+                                android:hint="Product Condition"
+                                android:layout_marginTop="7dp"
+                                android:paddingLeft="17dp"
+                                android:background="@drawable/ic_edt_txt_bg"
+                                android:textColorHint="@color/light_gray"
+                                android:textColor="@color/light_gray"
+                                android:textSize="14sp"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:minHeight="50dp" />
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
